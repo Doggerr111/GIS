@@ -636,5 +636,6 @@ void MainWindow::on_actionNew_line_layer_triggered()
 {
     LIPNewLineLayerForm *form = new LIPNewLineLayerForm;
     form->exec();
+
 }
 
