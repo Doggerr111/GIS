@@ -22,6 +22,7 @@
 #include <QMessageBox>
 #include <liplayertreeitem.h>
 #include <liplayertreemodel.h>
+#include <QTime>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -73,9 +74,13 @@ private:
     QPainter pa;
     QImage img2;
     QVector<LIPPoint*> pVect;
+//    QTime m_time;
+//    int m_frameCount;
 
     // QWidget interface
 protected:
     void wheelEvent(QWheelEvent *event);
+
+
 };
 #endif // MAINWINDOW_H

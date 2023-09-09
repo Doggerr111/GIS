@@ -6,6 +6,7 @@
 #include "QDebug"
 #include <gdalwarper.h>
 #include "lipnewlinelayerform.h"
+#include <QOpenGLWidget>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -13,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
 
     img2 = QImage(QSize(ui->graphicsView->viewport()->width(),ui->graphicsView->viewport()->height()), QImage::Format_ARGB32_Premultiplied);
 
@@ -37,12 +39,22 @@ MainWindow::MainWindow(QWidget *parent)
     painter=new QPainter(&pix);
     painter->setPen(pen1);
     LIPMapScene *scene= new LIPMapScene();
+    scene->setItemIndexMethod(QGraphicsScene::NoIndex);
+    ui->graphicsView->setViewport(new QOpenGLWidget);
+
     LIPMapScene *calculationScene = new LIPMapScene();
     connect(scene,SIGNAL(pos_changed(QPointF)),this,SLOT(scenePos(QPointF)));
     connect(scene,SIGNAL(scene_dragging(QPointF,QPointF)),this,SLOT(changeExtent(QPointF,QPointF)));
     ui->graphicsView->setScene(scene);
     ui->graphicsView->setTransformationAnchor( QGraphicsView::AnchorUnderMouse );
-    ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
+    //ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
+    ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+        ui->graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
+        ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+
+        ui->graphicsView->setAttribute(Qt::WA_OpaquePaintEvent);
+        ui->graphicsView->setAttribute(Qt::WA_NoSystemBackground);
+        ui->graphicsView->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 
 }
 
@@ -239,6 +251,10 @@ void MainWindow::on_pushButton_3_clicked()
         LIPPointGraphicsItem * itemp = new LIPPointGraphicsItem;
 
         QGraphicsEllipseItem *el=new QGraphicsEllipseItem;
+        el->setFlag(QGraphicsItem::ItemIsMovable,false);
+        el->setFlag(QGraphicsItem::ItemIsSelectable, false);
+        el->setFlag(QGraphicsItem::ItemIsFocusable, false);
+        el->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
         el->setRect(l->pointAt(i)->x(),l->pointAt(i)->y(),3.77*5,3.77*5);
         itemp->setPoint(l->pointAt(i));
         itemp->setBoundingRect(rect);
@@ -535,8 +551,14 @@ void MainWindow::wheelEvent(QWheelEvent *event)
     {
         LIPPoint *l=new LIPPoint;
         l=pVect.at(i);
+        //ui->graphicsView->setInteractive(false);
         QGraphicsEllipseItem *el=new QGraphicsEllipseItem;
         int scaleF=ui->graphicsView->transform().m11();
+        el->setFlag(QGraphicsItem::ItemIsMovable,false);
+        el->setFlag(QGraphicsItem::ItemIsSelectable, false);
+        el->setFlag(QGraphicsItem::ItemIsFocusable, false);
+        el->setFlag(QGraphicsItem::ItemClipsToShape, false);
+        el->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
         el->setRect(l->x(),l->y(),3.77*5/scaleF,3.77*5/scaleF);
 
         QPen pen;
@@ -562,6 +584,23 @@ void MainWindow::wheelEvent(QWheelEvent *event)
     //        }
     //        ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(img2));
 }
+
+//void MainWindow::paintEvent(QPaintEvent *event)
+//{
+
+//        if (m_frameCount == 0) {
+//             m_time.start();
+//        } else {
+//            printf("FPS is %f ms\n", m_time.elapsed() / float(m_frameCount));
+//        }
+//        m_frameCount++;
+
+//        // Painting goes here...
+
+
+
+
+//}
 
 
 void MainWindow::on_treeView_clicked(const QModelIndex &index)
