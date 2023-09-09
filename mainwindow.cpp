@@ -49,12 +49,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setTransformationAnchor( QGraphicsView::AnchorUnderMouse );
     //ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
     ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
-        ui->graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
-        ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    ui->graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
+    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
-        ui->graphicsView->setAttribute(Qt::WA_OpaquePaintEvent);
-        ui->graphicsView->setAttribute(Qt::WA_NoSystemBackground);
-        ui->graphicsView->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+    ui->graphicsView->setAttribute(Qt::WA_OpaquePaintEvent);
+    ui->graphicsView->setAttribute(Qt::WA_NoSystemBackground);
+    ui->graphicsView->setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
 
 }
 
@@ -563,7 +563,7 @@ void MainWindow::wheelEvent(QWheelEvent *event)
 
         QPen pen;
 
-        pen.setWidthF(0.05);
+        pen.setWidthF(0);
 
         el->setPen(pen);
         el->setBrush(Qt::blue);
