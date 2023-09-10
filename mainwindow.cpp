@@ -671,10 +671,18 @@ void MainWindow::on_pushButton_4_clicked() //create shp test
 }
 
 
-void MainWindow::on_actionNew_line_layer_triggered()
+
+
+
+void MainWindow::on_actionNew_point_layer_triggered()
+{
+
+}
+
+
+void MainWindow::on_actionNew_line_layer_triggered() //при нажатии на кнопку создания линейного слоя
 {
     LIPNewLineLayerForm *form = new LIPNewLineLayerForm;
     form->exec();
-
 }
 

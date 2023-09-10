@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ui/icons/lineLayer.png</file>
+        <file>ui/icons/pointLayer.png</file>
+        <file>ui/icons/polygonLayer.png</file>
+    </qresource>
+</RCC>

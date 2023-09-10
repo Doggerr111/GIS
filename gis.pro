@@ -11,6 +11,7 @@ CONFIG += c++11
 SOURCES += \
     lipaddingitems.cpp \
     lipfeaturerenderer.cpp \
+    liplayercreator.cpp \
     liplayertreeitem.cpp \
     liplayertreemodel.cpp \
     lipmapcalculations.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
 HEADERS += \
     lipaddingitems.h \
     lipfeaturerenderer.h \
+    liplayercreator.h \
     liplayertreeitem.h \
     liplayertreemodel.h \
     lipmapcalculations.h \
@@ -63,3 +65,6 @@ LIBS += /usr/lib/libgdal.so
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    icons.qrc

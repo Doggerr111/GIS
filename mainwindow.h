@@ -59,6 +59,8 @@ private slots:
 
     void on_pushButton_4_clicked();
 
+    void on_actionNew_point_layer_triggered();
+
     void on_actionNew_line_layer_triggered();
 
 signals:

@@ -322,15 +322,39 @@
     <property name="title">
      <string>Vector</string>
     </property>
+    <addaction name="actionNew_point_layer"/>
     <addaction name="actionNew_line_layer"/>
+    <addaction name="actionNew_polygon_layer"/>
    </widget>
    <addaction name="menuf"/>
    <addaction name="menuf_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionNew_point_layer">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/ui/icons/pointLayer.png</normaloff>:/ui/icons/pointLayer.png</iconset>
+   </property>
+   <property name="text">
+    <string>New point layer</string>
+   </property>
+  </action>
   <action name="actionNew_line_layer">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/ui/icons/lineLayer.png</normaloff>:/ui/icons/lineLayer.png</iconset>
+   </property>
    <property name="text">
     <string>New line layer</string>
+   </property>
+  </action>
+  <action name="actionNew_polygon_layer">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/ui/icons/polygonLayer.png</normaloff>:/ui/icons/polygonLayer.png</iconset>
+   </property>
+   <property name="text">
+    <string>New polygon layer</string>
    </property>
   </action>
  </widget>
@@ -341,6 +365,8 @@
    <header>lipmapholder.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
