@@ -13,6 +13,12 @@ enum class LIPStyleUnit{
     Pixels
 };
 
+enum class LIPAttributeType{
+    INT32,
+    String,
+    Real
+};
+
 class LIPTypes
 {
 public:

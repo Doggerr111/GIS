@@ -169,7 +169,7 @@ bool LIPVectorReader::ReadGeometry()
             lipp->setX(point->getX());
             lipp->setY(point->getY());
             qDebug()<<"Coordinates: " + QString::number(point->getX()) + " " + QString::number(point->getY());
-            layer->addPoint(lipp);
+            //layer->addPoint(lipp);
             //sleep(10);
 
 

@@ -1,7 +1,6 @@
 #ifndef LIPVECTORLAYER_H
 #define LIPVECTORLAYER_H
 #include "liptypes.h"
-
 class LIPVectorLayer
 {
 public:
@@ -10,6 +9,7 @@ private:
     LIPGeometryType geometryType;
     LIPTypes::LIPCrs crs;
     char* unicode;
+
 
 
 };

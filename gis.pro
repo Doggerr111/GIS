@@ -1,5 +1,6 @@
 QT       += core gui
-
+include(vector/vector.pri)
+include(treeView/treeView.pri)
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -19,9 +20,10 @@ SOURCES += \
     lipmapscene.cpp \
     lipmultipoint.cpp \
     lipnewlinelayerform.cpp \
+    lipnewpointlayerform.cpp \
     lippoint.cpp \
     lippointgraphicsitem.cpp \
-    lippointlayer.cpp \
+    lippointlayer_1.cpp \
     lippointrenderer.cpp \
     liptypes.cpp \
     lipvectorlayer.cpp \
@@ -29,7 +31,8 @@ SOURCES += \
     lipvectorstyle.cpp \
     lipvectorstyleform.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+
 
 HEADERS += \
     lipaddingitems.h \
@@ -42,19 +45,22 @@ HEADERS += \
     lipmapscene.h \
     lipmultipoint.h \
     lipnewlinelayerform.h \
+    lipnewpointlayerform.h \
     lippoint.h \
     lippointgraphicsitem.h \
-    lippointlayer.h \
+    lippointlayer_1.h \
     lippointrenderer.h \
     liptypes.h \
     lipvectorlayer.h \
     lipvectorreader.h \
     lipvectorstyle.h \
     lipvectorstyleform.h \
-    mainwindow.h
+    mainwindow.h \
+
 
 FORMS += \
     lipnewlinelayerform.ui \
+    lipnewpointlayerform.ui \
     lipvectorstyleform.ui \
     mainwindow.ui
 
@@ -68,3 +74,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     icons.qrc
+
+DISTFILES += \
+    treeView/treeView.pri \
+    vector/test.pri

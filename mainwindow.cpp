@@ -56,6 +56,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setAttribute(Qt::WA_NoSystemBackground);
     ui->graphicsView->setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
 
+    layerModel = new LIPObjectTreeModel(this);
+    QStringList cols;
+    cols << "objectName";
+    layerModel->setColumns(cols);
+    QObject* item1 = new QObject();
+    item1->setObjectName("Father");
+//    QObject* item2 = new QObject(item1);
+//    item2->setProperty("objectName", "Son");
+    layerModel->addItem(item1, QModelIndex());
+    ui->treeView->setModel(layerModel);
 }
 
 MainWindow::~MainWindow()
@@ -209,7 +219,7 @@ void MainWindow::on_pushButton_3_clicked()
 
     QRectF rect=reader.ReadBoundingBox();
     QVector<QGraphicsItem*> items;
-    LIPPointLayer *layer = new LIPPointLayer;
+    //LIPPointLayer *layer = new LIPPointLayer;
     QPainter *painter=new QPainter(ui->graphicsView);
     LIPLayerTreeModel *model=new LIPLayerTreeModel();
     ui->treeView->setModel(model);
@@ -223,58 +233,58 @@ void MainWindow::on_pushButton_3_clicked()
     QObject* item2 = new QObject();
     item2->setObjectName("Point Layer");
     item2->setProperty("2","Vector layer 1");
-    for (int i=0;i<l->struct_size();i++)
-    {
-        //layer->addPoint(l->pointAt(i));
-        l->pointAt(i)->draw(painter);
-        QList<QVariant> list;
-        pVect.append(l->pointAt(i));
-        list.append(l->pointAt(i)->x());
-        list.append(l->pointAt(i)->y());
-        LIPLayerTreeItem item(list);
-        //test(QPointF(l->pointAt(i)->x(),l->pointAt(i)->y()));
+//    for (int i=0;i<l->struct_size();i++)
+//    {
+//        //layer->addPoint(l->pointAt(i));
+//        l->pointAt(i)->draw(painter);
+//        QList<QVariant> list;
+//        pVect.append(l->pointAt(i));
+//        list.append(l->pointAt(i)->x());
+//        list.append(l->pointAt(i)->y());
+//        LIPLayerTreeItem item(list);
+//        //test(QPointF(l->pointAt(i)->x(),l->pointAt(i)->y()));
 
-        //break;
-        //        QObject* item1 = new QObject();
-        //        item1->setObjectName("Point Layer");
-        //        item1->setProperty("2", l->pointAt(i)->x());
+//        //break;
+//        //        QObject* item1 = new QObject();
+//        //        item1->setObjectName("Point Layer");
+//        //        item1->setProperty("2", l->pointAt(i)->x());
 
-        //        //Item2 (parent: item1)
-        //        QObject* item2 = new QObject(item1);
-        //        item2->setObjectName("Point");
-        //        item2->setProperty("1", l->pointAt(i)->y());
+//        //        //Item2 (parent: item1)
+//        //        QObject* item2 = new QObject(item1);
+//        //        item2->setObjectName("Point");
+//        //        item2->setProperty("1", l->pointAt(i)->y());
 
-        model->addItem(item1, ui->treeView->currentIndex());
-        model->addItem(item2, ui->treeView->currentIndex());
-
-
-        LIPPointGraphicsItem * itemp = new LIPPointGraphicsItem;
-
-        QGraphicsEllipseItem *el=new QGraphicsEllipseItem;
-        el->setFlag(QGraphicsItem::ItemIsMovable,false);
-        el->setFlag(QGraphicsItem::ItemIsSelectable, false);
-        el->setFlag(QGraphicsItem::ItemIsFocusable, false);
-        el->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-        el->setRect(l->pointAt(i)->x(),l->pointAt(i)->y(),3.77*5,3.77*5);
-        itemp->setPoint(l->pointAt(i));
-        itemp->setBoundingRect(rect);
-        QPen pen;
-
-        //pen.setWidthF(0.05);
-
-        el->setPen(pen);
-        el->setBrush(Qt::blue);
-
-        ui->graphicsView->scene()->addItem(el);
-        //scene->addItem(el);
+//        model->addItem(item1, ui->treeView->currentIndex());
+//        model->addItem(item2, ui->treeView->currentIndex());
 
 
+//        LIPPointGraphicsItem * itemp = new LIPPointGraphicsItem;
 
-        //scene->addItem(item);
-        //item->setPos(l->pointAt(i)->x(),l->pointAt(i)->y());
-        //        qDebug()<<l->pointAt(i);
+//        QGraphicsEllipseItem *el=new QGraphicsEllipseItem;
+////        el->setFlag(QGraphicsItem::ItemIsMovable,false);
+////        el->setFlag(QGraphicsItem::ItemIsSelectable, false);
+////        el->setFlag(QGraphicsItem::ItemIsFocusable, false);
+////        el->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+////        el->setRect(l->pointAt(i)->x(),l->pointAt(i)->y(),3.77*5,3.77*5);
+////        itemp->setPoint(l->pointAt(i));
+////        itemp->setBoundingRect(rect);
+////        QPen pen;
 
-    }
+//        //pen.setWidthF(0.05);
+
+//        //el->setPen(pen);
+//        el->setBrush(Qt::blue);
+
+//        ui->graphicsView->scene()->addItem(el);
+//        //scene->addItem(el);
+
+
+
+//        //scene->addItem(item);
+//        //item->setPos(l->pointAt(i)->x(),l->pointAt(i)->y());
+//        //        qDebug()<<l->pointAt(i);
+
+//    }
     QPixmap rendered(ui->graphicsView->viewport()->rect().width(),ui->graphicsView->viewport()->rect().height());  // Create the image with the exact size of the shrunk scene
     rendered.fill(Qt::transparent);
     QPainter *paintr = new QPainter(&rendered);
@@ -676,13 +686,49 @@ void MainWindow::on_pushButton_4_clicked() //create shp test
 
 void MainWindow::on_actionNew_point_layer_triggered()
 {
+    LIPNewLineLayerForm *layerForm = new LIPNewLineLayerForm(nullptr, LIPGeometryType::LIPPoint);
+    layerForm->exec();
 
+    QString name=layerForm->returnLayer()->returnGISName();
+    QObject* layer = new QObject();
+    layer->setObjectName(name);
+    layerModel->addItem(layer, QModelIndex());
+    projectLayers.append(layerForm->returnLayer());
 }
 
 
 void MainWindow::on_actionNew_line_layer_triggered() //при нажатии на кнопку создания линейного слоя
 {
-    LIPNewLineLayerForm *form = new LIPNewLineLayerForm;
-    form->exec();
+    LIPNewLineLayerForm *layerForm = new LIPNewLineLayerForm(nullptr, LIPGeometryType::LIPLineString);
+    layerForm->exec();
+
+    QString name=layerForm->returnLayer()->returnGISName();
+    QObject* layer = new QObject();
+    layer->setObjectName(name);
+    layerModel->addItem(layer, QModelIndex());
+    projectLayers.append(layerForm->returnLayer());
+
+}
+
+
+void MainWindow::on_actionNew_polygon_layer_triggered()
+{
+    LIPNewLineLayerForm *layerForm = new LIPNewLineLayerForm(nullptr, LIPGeometryType::LIPPolygon);
+    layerForm->exec();
+
+    QString name=layerForm->returnLayer()->returnGISName();
+    QObject* layer = new QObject();
+    layer->setObjectName(name);
+    layerModel->addItem(layer, QModelIndex());
+    projectLayers.append(layerForm->returnLayer());
+}
+
+
+void MainWindow::on_actionLoad_vector_layer_triggered()
+{
+    QString fileName=QFileDialog::getOpenFileName(this,"","");
+    QByteArray bytea=fileName.toLocal8Bit();
+    const char *charname=bytea.data();
+
 }
 

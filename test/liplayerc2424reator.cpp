@@ -1,8 +1,7 @@
 #include "liplayercreator.h"
 
-LIPLayerCreator::LIPLayerCreator(LIPGeometryType type, QString name, QString nameGIS)
+LIPLayerCreator::LIPLayerCreator(LIPGeometryType type, QString name)
 {
-    mainName=nameGIS;
     GDALAllRegister();
     OGRRegisterAll();
     QByteArray ba = name.toLocal8Bit();
@@ -131,7 +130,6 @@ void LIPLayerCreator::createAttribute(LIPAttributeType type, QString name)
         }
 
     }
-    LIPLayer = new LIPPointLayer(layer, mainName);
 }
 
 void LIPLayerCreator::setAttribute(LIPAttributeType type, QVariant attribute, QString name) //TODO переработать/удалить
@@ -181,12 +179,7 @@ void LIPLayerCreator::setAttribute(LIPAttributeType type, QVariant attribute, QS
     //    }
 }
 
-LIPPointLayer *LIPLayerCreator::returnLayer()
-{
-    return LIPLayer;
-}
-
-OGRLayer* LIPLayerCreator::returnOGRLayer()
+OGRLayer* LIPLayerCreator::returnLayer()
 {
     return layer;
 }

@@ -5,19 +5,27 @@
 #include "ogrsf_frmts.h"
 #include "liptypes.h"
 #include "QObject"
+#include <QVariant>
+#include "vector/lippointlayer.h"
+
 
 
 class LIPLayerCreator
 {
 public:
-    LIPLayerCreator(LIPGeometryType type, QString filename);
-    void setAttribute();
+    LIPLayerCreator(LIPGeometryType type, QString filename, QString nameGIS);
+    void createAttribute(LIPAttributeType type, QString name);
+    void setAttribute(LIPAttributeType type, QVariant attribute, QString name);
     void setName(QString f);
     void setCodec();
     void setGeometry();
+    OGRLayer* returnOGRLayer();
+    LIPPointLayer* returnLayer();
 private:
     char fileName;
     OGRLayer *layer;
+    LIPPointLayer* LIPLayer;
+    QString mainName;
 
 
 };

@@ -315,7 +315,7 @@
    </property>
    <widget class="QMenu" name="menuf">
     <property name="title">
-     <string>f</string>
+     <string>File</string>
     </property>
    </widget>
    <widget class="QMenu" name="menuf_2">
@@ -325,6 +325,8 @@
     <addaction name="actionNew_point_layer"/>
     <addaction name="actionNew_line_layer"/>
     <addaction name="actionNew_polygon_layer"/>
+    <addaction name="actionLoad_vector_layer"/>
+    <addaction name="actionOverlay_analysys"/>
    </widget>
    <addaction name="menuf"/>
    <addaction name="menuf_2"/>
@@ -355,6 +357,16 @@
    </property>
    <property name="text">
     <string>New polygon layer</string>
+   </property>
+  </action>
+  <action name="actionOverlay_analysys">
+   <property name="text">
+    <string>Overlay analysis</string>
+   </property>
+  </action>
+  <action name="actionLoad_vector_layer">
+   <property name="text">
+    <string>Load vector layer</string>
    </property>
   </action>
  </widget>

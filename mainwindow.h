@@ -23,6 +23,7 @@
 #include <liplayertreeitem.h>
 #include <liplayertreemodel.h>
 #include <QTime>
+#include "treeView/lipobjecttreemodel.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -63,6 +64,10 @@ private slots:
 
     void on_actionNew_line_layer_triggered();
 
+    void on_actionNew_polygon_layer_triggered();
+
+    void on_actionLoad_vector_layer_triggered();
+
 signals:
     void start_add();
 
@@ -76,6 +81,8 @@ private:
     QPainter pa;
     QImage img2;
     QVector<LIPPoint*> pVect;
+    QVector<LIPPointLayer*> projectLayers;
+    LIPObjectTreeModel* layerModel;
 //    QTime m_time;
 //    int m_frameCount;
 

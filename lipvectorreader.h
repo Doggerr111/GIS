@@ -9,7 +9,8 @@
 #include "liptypes.h"
 #include "QMessageBox"
 #include "lipvectorlayer.h"
-#include "lippointlayer.h"
+#include "lippointlayer_1.h"
+#include "vector/lippointlayer.h"
 
 class LIPVectorReader : public QObject
 {
@@ -34,7 +35,7 @@ private:
     const LIPTypes::LIPDrivers driver;
     const char* fileName;
     LIPGeometryType geomertyType;
-    LIPPointLayer *layer = new LIPPointLayer();
+    LIPPointLayer *layer;
 };
 
 #endif // LIPVECTORREADER_H

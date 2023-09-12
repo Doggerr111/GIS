@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSceneWheelEvent>
+#include "vector/lippointlayer.h"
 
 class LIPMapScene : public QGraphicsScene
 {
@@ -31,6 +32,7 @@ protected:
 private:
     QPointF clickPos;
     bool isDraging;
+    QVector<LIPPointLayer*> layers;
 };
 
 #endif // LIPMAPSCENE_H

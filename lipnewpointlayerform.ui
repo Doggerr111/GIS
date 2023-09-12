@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LIPNewLineLayerForm</class>
- <widget class="QDialog" name="LIPNewLineLayerForm">
+ <class>LIPNewPointLayerForm</class>
+ <widget class="QDialog" name="LIPNewPointLayerForm">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>308</width>
-    <height>269</height>
+    <width>376</width>
+    <height>365</height>
    </rect>
   </property>
   <property name="windowTitle">
