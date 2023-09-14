@@ -77,6 +77,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->scale(1,-1);
 
     //ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+
+    //ui->graphicsView->setRenderHints(QPainter::Antialiasing);
 }
 
 MainWindow::~MainWindow()
@@ -786,6 +788,7 @@ void MainWindow::on_actionLoad_vector_layer_triggered()
             layer->setObjectName(pl->returnGISName());
             layerModel->addItem(layer, QModelIndex());
             projectLayers.append(pl);
+            emit newVectorLayer(pl);
             //projectLayers.append(layerForm->returnLayer());
             break;
         }

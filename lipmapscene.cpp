@@ -63,10 +63,15 @@ void LIPMapScene::drawVectorLayer(LIPVectorLayer* layer)
         else
         {
             LIPLineLayer* new_line_layer=dynamic_cast<LIPLineLayer*>(layer);
-            QVector<LIPPoint*> vect = new_line_layer->returnCords();
-            LIPLineGraphicsITem *el = new LIPLineGraphicsITem;
-            el->setPoints(vect);
-            addItem(el);
+            if(new_line_layer!=nullptr)
+            {
+            QVector<QVector<LIPPoint*>> vect = new_line_layer->returnCords();
+            for (int i=0; i<vect.size(); i++)
+            {
+                LIPLineGraphicsITem *el = new LIPLineGraphicsITem;
+                el->setPoints(vect.at(i));
+                addItem(el);
+            }
 //            for (int i=0; i<vect.size(); i++)
 //            {
 //                //addEllipse(vect.at(i)->x(), vect.at(i)->y(),0.1,0.1);
@@ -78,6 +83,18 @@ void LIPMapScene::drawVectorLayer(LIPVectorLayer* layer)
 //                el->setPoint(point);
 //                addItem(el);
 //        }
+            }
+            else
+            {
+                LIPPolygonLayer* new_poly_layer=dynamic_cast<LIPPolygonLayer*>(layer);
+                QVector<QVector<LIPPoint*>> vect = new_poly_layer->returnCords();
+                for (int i=0; i<vect.size(); i++)
+                {
+                    LIPPolygonGraphicsItem *el = new LIPPolygonGraphicsItem;
+                    el->setPoints(vect.at(i));
+                    addItem(el);
+                }
+            }
 
     }
     }

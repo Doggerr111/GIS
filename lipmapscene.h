@@ -9,6 +9,8 @@
 #include "vector/lippointgraphicsitem.h"
 #include "vector/liplinelayer.h"
 #include "vector/liplinegraphicsitem.h"
+#include "vector/lippolygonlayer.h"
+#include "vector/lippolygongraphicsitem.h"
 
 class LIPMapScene : public QGraphicsScene
 {

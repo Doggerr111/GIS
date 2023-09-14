@@ -12,6 +12,7 @@ SOURCES += \
         $$PWD/liplinegraphicsitem.cpp \
         $$PWD/liplinelayer.cpp \
         $$PWD/lippointgraphicsitem.cpp \
+        $$PWD/lippolygongraphicsitem.cpp \
         $$PWD/lippolygonlayer.cpp \
         $$PWD/lipvectorlayer.cpp \
         vector/lippointlayer.cpp \
@@ -21,6 +22,7 @@ HEADERS += \
         $$PWD/liplinegraphicsitem.h \
         $$PWD/liplinelayer.h \
         $$PWD/lippointgraphicsitem.h \
+        $$PWD/lippolygongraphicsitem.h \
         $$PWD/lippolygonlayer.h \
         $$PWD/lipvectorlayer.h \
         vector/lippointlayer.h \

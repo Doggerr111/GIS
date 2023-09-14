@@ -33,7 +33,7 @@ QString LIPLineLayer::returnGISName()
     return GISName;
 }
 
-QVector<LIPPoint *> LIPLineLayer::returnCords()
+QVector<QVector<LIPPoint*>>  LIPLineLayer::returnCords()
 {
     if (layer!=nullptr)
     {
@@ -71,16 +71,17 @@ QVector<LIPPoint *> LIPLineLayer::returnCords()
                 {
                     OGRwkbGeometryType type=poGeometry->getGeometryType();
 
-
+                    QVector<LIPPoint*> vect;
                     OGRLineString *line = (OGRLineString *)poGeometry;
                     for (int i = 0; i < line->getNumPoints(); i++)
                     {
                         LIPPoint *point = new LIPPoint();
                         point->setX(line->getX(i));
                         point->setY(line->getY(i));
-                        coordinates.append(point);
+                        vect.append(point);
                         qDebug()<<"wkbLineString %d: x=%g y=%g z=%g\n", i, line->getX(i), line->getY(i), line->getZ(i);
                     }
+                    coordinates.append(vect);
 
                 }
             }

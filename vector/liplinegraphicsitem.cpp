@@ -23,7 +23,8 @@ QRectF LIPLineGraphicsITem::boundingRect() const
 void LIPLineGraphicsITem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QPen pen;
-    pen.setWidth(0);
+    pen.setWidthF(0);
+    pen.setStyle(Qt::SolidLine);
     painter->setPen(pen);
-    painter->drawLines(vect);
+    painter->drawPolyline(vect);
 }
