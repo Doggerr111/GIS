@@ -11,6 +11,7 @@
 #include "lipvectorlayer.h"
 #include "lippointlayer_1.h"
 #include "vector/lippointlayer.h"
+#include "vector/lippoint.h"
 
 class LIPVectorReader : public QObject
 {
@@ -29,6 +30,8 @@ public:
      */
     QRectF ReadBoundingBox();
     LIPPointLayer* returnLayer();
+    static OGRLayer *readOGRLayer(QString filename);
+    static LIPGeometryType readGeometryType(OGRLayer* layer);
     //bool ReadGeometry():
 
 private:

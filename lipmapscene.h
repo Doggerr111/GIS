@@ -6,6 +6,9 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSceneWheelEvent>
 #include "vector/lippointlayer.h"
+#include "vector/lippointgraphicsitem.h"
+#include "vector/liplinelayer.h"
+#include "vector/liplinegraphicsitem.h"
 
 class LIPMapScene : public QGraphicsScene
 {
@@ -28,7 +31,8 @@ protected:
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-
+public slots:
+    void drawVectorLayer(LIPVectorLayer*);
 private:
     QPointF clickPos;
     bool isDraging;

@@ -221,3 +221,49 @@ LIPPointLayer* LIPVectorReader::returnLayer()
 {
     return layer;
 }
+
+OGRLayer *LIPVectorReader::readOGRLayer(QString filename)
+{
+    OGRRegisterAll();
+    QByteArray ba = filename.toLocal8Bit();
+    const char *nameChar = ba.data();
+    char** ppszOptions = NULL;
+    ppszOptions = CSLSetNameValue(ppszOptions, "ENCODING", "UTF-8");
+    CPLSetConfigOption("SHAPE_ENCODING","");
+    GDALDataset *shpDS = (GDALDataset *)GDALOpenEx(nameChar, GDAL_OF_VECTOR, NULL, NULL, NULL);
+    if (shpDS == NULL)
+    {
+       // qDebug()<<"Error:cant read this shp file: " + QString(filename);
+       return nullptr;
+    }
+    int c=shpDS->GetLayers().size();
+    qDebug()<<QString::number(c);
+    return shpDS->GetLayer(0);
+}
+
+LIPGeometryType LIPVectorReader::readGeometryType(OGRLayer *layer)
+{
+    switch (layer->GetGeomType())
+    {
+    case wkbPoint:
+    {
+        return LIPGeometryType::LIPPoint;
+        break;
+    }
+
+    case wkbLineString:
+    {
+        return LIPGeometryType::LIPLineString;
+        break;
+    }
+
+    case wkbPolygon:
+    {
+        return LIPGeometryType::LIPPolygon;
+        break;
+    }
+    default:
+        break;
+    }
+
+}

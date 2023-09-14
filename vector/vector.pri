@@ -9,14 +9,22 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        $$PWD/liplinegraphicsitem.cpp \
         $$PWD/liplinelayer.cpp \
+        $$PWD/lippointgraphicsitem.cpp \
         $$PWD/lippolygonlayer.cpp \
-        vector/lippointlayer.cpp
+        $$PWD/lipvectorlayer.cpp \
+        vector/lippointlayer.cpp \
+        vector/lippoint.cpp
 
 HEADERS += \
+        $$PWD/liplinegraphicsitem.h \
         $$PWD/liplinelayer.h \
+        $$PWD/lippointgraphicsitem.h \
         $$PWD/lippolygonlayer.h \
-        vector/lippointlayer.h
+        $$PWD/lipvectorlayer.h \
+        vector/lippointlayer.h \
+        vector/lippoint.h
 
 
 

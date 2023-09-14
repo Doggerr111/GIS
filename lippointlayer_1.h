@@ -2,7 +2,7 @@
 #define LIPPOINTLAYER_1_H
 
 #include "lipvectorlayer.h"
-#include "lippoint.h"
+#include "vector/lippoint.h"
 #include <QPainter>
 #include <QPen>
 //class LIPPointLayer : public LIPVectorLayer, public QGraphicsItem

@@ -6,6 +6,7 @@
 #include <QPointF>
 #include <QPainter>
 
+
 class LIPPoint : public QPointF
 {
 public:
@@ -13,6 +14,7 @@ public:
     void draw(QPainter* painter);
 private:
     QRectF rect;
+
 };
 
 #endif // LIPPOINT_H

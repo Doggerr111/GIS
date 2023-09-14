@@ -2,7 +2,7 @@
 #define LIPPOINTRENDERER_H
 
 #include "lipfeaturerenderer.h"
-#include "lippoint.h"
+#include "vector/lippoint.h"
 
 class LIPPointRenderer : public LIPFeatureRenderer
 {

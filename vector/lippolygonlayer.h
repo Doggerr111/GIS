@@ -4,8 +4,9 @@
 #include "gdal_priv.h"
 #include "ogrsf_frmts.h"
 #include <QString>
+#include "lipvectorlayer.h"
 
-class LIPPolygonLayer
+class LIPPolygonLayer: public LIPVectorLayer
 {
 public:
     LIPPolygonLayer(OGRLayer *l, QString name);

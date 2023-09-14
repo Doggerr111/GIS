@@ -3,7 +3,7 @@
 
 #include <QPointF>
 #include <QObject>
-#include <lippoint.h>
+#include <vector/lippoint.h>
 
 class LIPMultiPoint
 {

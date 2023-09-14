@@ -39,7 +39,9 @@ void LIPMapHolder::mouseMoveEvent(QMouseEvent *event)
     {
         QPointF delta=clickPos-event->pos();
         clickPos=event->pos();
-        centerOn(mapToScene(this->viewport()->rect().center()+delta.toPoint()));
+        QPoint rect=viewport()->rect().center();
+        this->centerOn(mapToScene(this->viewport()->rect().center()+delta.toPoint()));
+        //scene()->setSceneRect(sceneRect().translated(-delta));
 //        QMatrix const matrix = this->matrix().inverted();
 //        QRectF visibleRect = matrix.mapRect(this->viewport()->rect());
 //        visibleRect.moveTopLeft(matrix.map(QPoint(this->horizontalScrollBar()->value(),

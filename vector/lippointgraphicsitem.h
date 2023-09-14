@@ -1,25 +1,24 @@
 #ifndef LIPPOINTGRAPHICSITEM_H
 #define LIPPOINTGRAPHICSITEM_H
-
 #include <QGraphicsItem>
-#include <lippoint.h>
-#include <QPen>
 #include <QPainter>
-
-class LIPPointGraphicsItem : public QGraphicsItem
+#include "vector/lippoint.h"
+class LIPPointGraphicsItem: public QGraphicsItem
 {
 public:
     LIPPointGraphicsItem();
-    void setPoint(LIPPoint *new_point);
-    void setBoundingRect(QRectF);
-private:
-    LIPPoint *point;
-    QRectF bBox;
 
     // QGraphicsItem interface
 public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void setPoint(LIPPoint point);
+private:
+    LIPPoint p;
+
+    // QGraphicsItem interface
+public:
+    //QPainterPath shape() const;
 };
 
 #endif // LIPPOINTGRAPHICSITEM_H

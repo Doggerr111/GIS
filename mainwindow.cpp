@@ -39,22 +39,24 @@ MainWindow::MainWindow(QWidget *parent)
     painter=new QPainter(&pix);
     painter->setPen(pen1);
     LIPMapScene *scene= new LIPMapScene();
-    scene->setItemIndexMethod(QGraphicsScene::NoIndex);
+    connect(this, SIGNAL(newVectorLayer(LIPVectorLayer*)), scene, SLOT(drawVectorLayer(LIPVectorLayer*)));
+    //scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     ui->graphicsView->setViewport(new QOpenGLWidget);
 
-    LIPMapScene *calculationScene = new LIPMapScene();
+    //LIPMapScene *calculationScene = new LIPMapScene();
     connect(scene,SIGNAL(pos_changed(QPointF)),this,SLOT(scenePos(QPointF)));
     connect(scene,SIGNAL(scene_dragging(QPointF,QPointF)),this,SLOT(changeExtent(QPointF,QPointF)));
     ui->graphicsView->setScene(scene);
-    ui->graphicsView->setTransformationAnchor( QGraphicsView::AnchorUnderMouse );
+    ui->graphicsView->setTransformationAnchor( QGraphicsView::AnchorViewCenter );
     //ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
-    ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+
+    //ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     ui->graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
     ui->graphicsView->setAttribute(Qt::WA_OpaquePaintEvent);
     ui->graphicsView->setAttribute(Qt::WA_NoSystemBackground);
-    ui->graphicsView->setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
+    ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 
     layerModel = new LIPObjectTreeModel(this);
     QStringList cols;
@@ -66,6 +68,15 @@ MainWindow::MainWindow(QWidget *parent)
 //    item2->setProperty("objectName", "Son");
     layerModel->addItem(item1, QModelIndex());
     ui->treeView->setModel(layerModel);
+
+    ui->graphicsView->scene()->setSceneRect(-180,90,360,-180);
+
+    //scene->setSceneRect(-98292019,89852960,704459722-98292019, -453620743-89852960);
+    //ui->graphicsView->fitInView(-180,90,360,-180);
+    ui->graphicsView->setScene(ui->graphicsView->scene());
+    ui->graphicsView->scale(1,-1);
+
+    //ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
 }
 
 MainWindow::~MainWindow()
@@ -285,102 +296,102 @@ void MainWindow::on_pushButton_3_clicked()
 //        //        qDebug()<<l->pointAt(i);
 
 //    }
-    QPixmap rendered(ui->graphicsView->viewport()->rect().width(),ui->graphicsView->viewport()->rect().height());  // Create the image with the exact size of the shrunk scene
-    rendered.fill(Qt::transparent);
-    QPainter *paintr = new QPainter(&rendered);
-    //calculationScene->render(paintr);
-    rendered.save("/home/doger/Pictures/abf1.png");
-    ui->graphicsView->scene()->addPixmap(rendered);
+//    QPixmap rendered(ui->graphicsView->viewport()->rect().width(),ui->graphicsView->viewport()->rect().height());  // Create the image with the exact size of the shrunk scene
+//    rendered.fill(Qt::transparent);
+//    QPainter *paintr = new QPainter(&rendered);
+//    //calculationScene->render(paintr);
+//    rendered.save("/home/doger/Pictures/abf1.png");
+//    ui->graphicsView->scene()->addPixmap(rendered);
 
-    //ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(img2));
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pix);
-    //scene->addItem(item);
-    item->setPos(0,0);
-    item->show();
-    ui->graphicsView->scene()->update();
-    //scene->addItem(layer);
-    LIPAddingItems *add=new LIPAddingItems(ui->graphicsView->scene(),items);
-    connect(this, SIGNAL(start_add()),add,SLOT(start()));
-    QThread *thread1 = new QThread();
-    //thread1->start();
-    //add->moveToThread(thread1);
-    //thread1->start(); //getting errors but work ok
-    emit start_add();
+//    //ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(img2));
+//    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pix);
+//    //scene->addItem(item);
+//    item->setPos(0,0);
+//    item->show();
+//    ui->graphicsView->scene()->update();
+//    //scene->addItem(layer);
+//    LIPAddingItems *add=new LIPAddingItems(ui->graphicsView->scene(),items);
+//    connect(this, SIGNAL(start_add()),add,SLOT(start()));
+//    QThread *thread1 = new QThread();
+//    //thread1->start();
+//    //add->moveToThread(thread1);
+//    //thread1->start(); //getting errors but work ok
+//    emit start_add();
 
-    //ui->graphicsView->fitInView(43,56,3,3);
+//    //ui->graphicsView->fitInView(43,56,3,3);
 
-    fileName=QFileDialog::getOpenFileName(this,"","");
-    bytea=fileName.toLocal8Bit();
-    charname=bytea.data();
+//    fileName=QFileDialog::getOpenFileName(this,"","");
+//    bytea=fileName.toLocal8Bit();
+//    charname=bytea.data();
 
-    GDALDataset* dataset = (GDALDataset*) GDALOpen(charname, GA_ReadOnly);
-    if (dataset == NULL) {
-        // Обработка ошибки открытия файла
-    }
+//    GDALDataset* dataset = (GDALDataset*) GDALOpen(charname, GA_ReadOnly);
+//    if (dataset == NULL) {
+//        // Обработка ошибки открытия файла
+//    }
 
-    // Получение информации о размере изображения
-    int width = dataset->GetRasterXSize();
-    int height = dataset->GetRasterYSize();
+//    // Получение информации о размере изображения
+//    int width = dataset->GetRasterXSize();
+//    int height = dataset->GetRasterYSize();
 
-    double geoTransform[6];
-    dataset->GetGeoTransform(geoTransform);
+//    double geoTransform[6];
+//    dataset->GetGeoTransform(geoTransform);
 
-    const char* targetProjection = "EPSG:4326";
-    const char* resamplingMethod = "bilinear";
+//    const char* targetProjection = "EPSG:4326";
+//    const char* resamplingMethod = "bilinear";
 
-    // Создание объекта gdalwarp
+//    // Создание объекта gdalwarp
 
-    GDALWarpOptions* warpOptions = GDALCreateWarpOptions();
-    warpOptions->hSrcDS = dataset;
-    warpOptions->hDstDS = NULL;
-    warpOptions->nBandCount = 1;
-    warpOptions->panSrcBands = (int*) CPLMalloc(sizeof(int));
-    warpOptions->panSrcBands[0] = 1;
-    warpOptions->panDstBands = (int*) CPLMalloc(sizeof(int));
-    warpOptions->panDstBands[0] = 1;
-    warpOptions->papszWarpOptions = CSLDuplicate(NULL);
-    CSLAddString(warpOptions->papszWarpOptions, "-overwrite");
-    warpOptions->papszWarpOptions = CSLSetNameValue(warpOptions->papszWarpOptions,
-                                                    "SRC_SRS", dataset->GetProjectionRef());
-    warpOptions->papszWarpOptions = CSLSetNameValue(warpOptions->papszWarpOptions,
-                                                    "DST_SRS", targetProjection);
-    warpOptions->papszWarpOptions = CSLSetNameValue(warpOptions->papszWarpOptions,
-                                                    "RESAMPLING", resamplingMethod);
+//    GDALWarpOptions* warpOptions = GDALCreateWarpOptions();
+//    warpOptions->hSrcDS = dataset;
+//    warpOptions->hDstDS = NULL;
+//    warpOptions->nBandCount = 1;
+//    warpOptions->panSrcBands = (int*) CPLMalloc(sizeof(int));
+//    warpOptions->panSrcBands[0] = 1;
+//    warpOptions->panDstBands = (int*) CPLMalloc(sizeof(int));
+//    warpOptions->panDstBands[0] = 1;
+//    warpOptions->papszWarpOptions = CSLDuplicate(NULL);
+//    CSLAddString(warpOptions->papszWarpOptions, "-overwrite");
+//    warpOptions->papszWarpOptions = CSLSetNameValue(warpOptions->papszWarpOptions,
+//                                                    "SRC_SRS", dataset->GetProjectionRef());
+//    warpOptions->papszWarpOptions = CSLSetNameValue(warpOptions->papszWarpOptions,
+//                                                    "DST_SRS", targetProjection);
+//    warpOptions->papszWarpOptions = CSLSetNameValue(warpOptions->papszWarpOptions,
+//                                                    "RESAMPLING", resamplingMethod);
 
-    // Создание нового GeoTIFF-файла с перепроектированным растровым изображением
-    dataset= (GDALDataset*) GDALAutoCreateWarpedVRT(dataset, dataset->GetProjectionRef(),
-                                                    targetProjection, GRA_Bilinear, 0.0, NULL);
-    // Установка координатных системы
+//    // Создание нового GeoTIFF-файла с перепроектированным растровым изображением
+//    dataset= (GDALDataset*) GDALAutoCreateWarpedVRT(dataset, dataset->GetProjectionRef(),
+//                                                    targetProjection, GRA_Bilinear, 0.0, NULL);
+//    // Установка координатных системы
 
-    //ui->graphicsView->setTransform(transform);
+//    //ui->graphicsView->setTransform(transform);
 
-    // Чтение данных изображения
-    GDALRasterBand* rasterBand = dataset->GetRasterBand(1);
-    std::vector<uint16_t> data(width * height);
-    rasterBand->RasterIO(GF_Read, 0, 0, width, height, &data[0], width, height, GDT_UInt16, 0, 0);
-
-
-    // Создание графической сцены и добавление элементов
-
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            uint16_t pixelValue = data[y * width + x];
-            // Создание элемента QGraphicsRectItem с цветом, соответствующим значению пикселя
-            QColor color(pixelValue >> 8, pixelValue & 0xFF, 0);
-            QGraphicsRectItem* item = new QGraphicsRectItem(x, y, 1, 1);
-            item->setBrush(QBrush(color));
-            //ui->graphicsView->scene()->addItem(item);
-        }
-    }
-
-    // Создание и настройка виджета QGraphicsView
+//    // Чтение данных изображения
+//    GDALRasterBand* rasterBand = dataset->GetRasterBand(1);
+//    std::vector<uint16_t> data(width * height);
+//    rasterBand->RasterIO(GF_Read, 0, 0, width, height, &data[0], width, height, GDT_UInt16, 0, 0);
 
 
-    // Отображение виджета
-    //view.show();
+//    // Создание графической сцены и добавление элементов
 
-    // Освобождение памяти
-    GDALClose(dataset);
+//    for (int y = 0; y < height; y++) {
+//        for (int x = 0; x < width; x++) {
+//            uint16_t pixelValue = data[y * width + x];
+//            // Создание элемента QGraphicsRectItem с цветом, соответствующим значению пикселя
+//            QColor color(pixelValue >> 8, pixelValue & 0xFF, 0);
+//            QGraphicsRectItem* item = new QGraphicsRectItem(x, y, 1, 1);
+//            item->setBrush(QBrush(color));
+//            //ui->graphicsView->scene()->addItem(item);
+//        }
+//    }
+
+//    // Создание и настройка виджета QGraphicsView
+
+
+//    // Отображение виджета
+//    //view.show();
+
+//    // Освобождение памяти
+//    GDALClose(dataset);
 
 
 }
@@ -430,7 +441,7 @@ void MainWindow::changeExtent(QPointF clickPos, QPointF curPos)
     //ui->graphicsView->fitInView(rect);
     //ui->graphicsView->setSceneRect(rect);
     //ui->graphicsView->setSceneRect(rect);
-    //ui->graphicsView->centerOn(ui->graphicsView->mapFromScene(pos.toPoint()));
+    //ui->graphicsView->centerOn(ui->graphicsView->mapFromScene(curPos.toPoint()));
 }
 
 QRectF MainWindow::getSceneRect()
@@ -555,7 +566,9 @@ void MainWindow::wheelEvent(QWheelEvent *event)
     //ui->graphicsView->setFocusPolicy( Qt::NoFocus );
     //        ui->graphicsView->scene()->clear();
     //        pa.end();
-    ui->graphicsView->scene()->clear();
+
+
+    //ui->graphicsView->scene()->clear();
 
     for (int i=0; i<pVect.size(); i++)
     {
@@ -721,14 +734,65 @@ void MainWindow::on_actionNew_polygon_layer_triggered()
     layer->setObjectName(name);
     layerModel->addItem(layer, QModelIndex());
     projectLayers.append(layerForm->returnLayer());
+
 }
 
 
 void MainWindow::on_actionLoad_vector_layer_triggered()
 {
     QString fileName=QFileDialog::getOpenFileName(this,"","");
-    QByteArray bytea=fileName.toLocal8Bit();
-    const char *charname=bytea.data();
+    OGRLayer* newLayer = LIPVectorReader::readOGRLayer(fileName);
+    int startIndex = fileName.lastIndexOf('/') + 1; // Находим индекс символа '/' и добавляем 1, чтобы пропустить его
+    int endIndex = fileName.indexOf(".shp");
+
+    QString name = fileName.mid(startIndex, endIndex - startIndex);
+    if (newLayer!=nullptr)
+    {
+        LIPGeometryType type = LIPVectorReader::readGeometryType(newLayer);
+        switch (type)
+        {
+        case LIPGeometryType::LIPPoint:
+        {
+
+            //LIPLayerCreator *newLayer = new LIPLayerCreator(type, fileName, name);
+            LIPPointLayer *pl = new LIPPointLayer(newLayer,name);
+            QObject* layer = new QObject();
+            layer->setObjectName(pl->returnGISName());
+            layerModel->addItem(layer, QModelIndex());
+            projectLayers.append(pl);
+            emit newVectorLayer(pl);
+
+
+
+            break;
+        }
+        case LIPGeometryType::LIPLineString:
+        {
+            LIPLineLayer *pl = new LIPLineLayer(newLayer,name);
+            QObject* layer = new QObject();
+            layer->setObjectName(pl->returnGISName());
+            layerModel->addItem(layer, QModelIndex());
+            //projectLayers.append(layerForm->returnLayer());
+            projectLayers.append(pl);
+            emit newVectorLayer(pl);
+            break;
+
+
+        }
+        case LIPGeometryType::LIPPolygon:
+        {
+            LIPPolygonLayer *pl = new LIPPolygonLayer(newLayer,name);
+            QObject* layer = new QObject();
+            layer->setObjectName(pl->returnGISName());
+            layerModel->addItem(layer, QModelIndex());
+            projectLayers.append(pl);
+            //projectLayers.append(layerForm->returnLayer());
+            break;
+        }
+        }
+    }
+//    QByteArray bytea=fileName.toLocal8Bit();
+//    const char *charname=bytea.data();
 
 }
 

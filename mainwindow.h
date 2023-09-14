@@ -6,7 +6,7 @@
 #include <QFileDialog>
 #include <lipmapscene.h>
 #include <qgraphicsitem.h>
-#include <lippointgraphicsitem.h>
+//#include <lippointgraphicsitem.h>
 #include <qgraphicsscene.h>
 #include <QWheelEvent>
 #include <QThread>
@@ -24,6 +24,9 @@
 #include <liplayertreemodel.h>
 #include <QTime>
 #include "treeView/lipobjecttreemodel.h"
+#include "vector/lippoint.h"
+#include "vector/liplinelayer.h"
+#include "vector/lippolygonlayer.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -70,6 +73,7 @@ private slots:
 
 signals:
     void start_add();
+    void newVectorLayer(LIPVectorLayer*);
 
 
 private:
@@ -81,7 +85,7 @@ private:
     QPainter pa;
     QImage img2;
     QVector<LIPPoint*> pVect;
-    QVector<LIPPointLayer*> projectLayers;
+    QVector<LIPVectorLayer*> projectLayers;
     LIPObjectTreeModel* layerModel;
 //    QTime m_time;
 //    int m_frameCount;
@@ -89,6 +93,7 @@ private:
     // QWidget interface
 protected:
     void wheelEvent(QWheelEvent *event);
+
 
 
 };
