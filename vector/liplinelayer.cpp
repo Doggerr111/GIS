@@ -1,7 +1,8 @@
 #include "liplinelayer.h"
 #include <QDebug>
 LIPLineLayer::LIPLineLayer(OGRLayer *l, QString name)
-    : layer{l},
+    : LIPVectorLayer(l),
+      layer{l},
       GISName(name)
 {
     if (l==nullptr)
@@ -11,6 +12,7 @@ LIPLineLayer::LIPLineLayer(OGRLayer *l, QString name)
 }
 
 LIPLineLayer::LIPLineLayer(QString fileName)
+    : LIPVectorLayer(nullptr)
 {
     QByteArray ba = fileName.toLocal8Bit();
     const char *nameChar = ba.data();
@@ -32,6 +34,7 @@ QString LIPLineLayer::returnGISName()
 {
     return GISName;
 }
+
 
 QVector<QVector<LIPPoint*>>  LIPLineLayer::returnCords()
 {

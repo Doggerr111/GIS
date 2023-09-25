@@ -1,7 +1,8 @@
 #include "lippointlayer.h"
 
 LIPPointLayer::LIPPointLayer(OGRLayer *l, QString name)
-    : layer{l},
+    : LIPVectorLayer(l),
+      layer{l},
       GISName(name)
 {
 
@@ -55,6 +56,7 @@ QVector<LIPPoint *> LIPPointLayer::returnCords()
                     LIPPoint *point = new LIPPoint();
                     point->setX(pointOGR->getX());
                     point->setY(pointOGR->getY());
+
                     coordinates.append(point);
 
 
@@ -65,3 +67,35 @@ QVector<LIPPoint *> LIPPointLayer::returnCords()
         return coordinates;
     }
 }
+
+void LIPPointLayer::setMapFeatures()
+{
+    returnCords();
+    for (int i=0; i<coordinates.size(); i++)
+    {
+        LIPPointGraphicsItem* item = new LIPPointGraphicsItem;
+        LIPPoint *point = new LIPPoint();
+        point->setX(coordinates.at(i)->x());
+        point->setY(coordinates.at(i)->y());
+        item->setPoint(point);
+        mapFeatures.append(item);
+    }
+}
+
+QVector<LIPPointGraphicsItem *> LIPPointLayer::returnMapFeatures()
+{
+    return mapFeatures;
+}
+
+void LIPPointLayer::setFileName(QString path)
+{
+    fileName=path;
+}
+
+QString LIPPointLayer::getFileName()
+{
+    return fileName;
+}
+
+
+

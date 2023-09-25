@@ -15,7 +15,7 @@ public:
     QVector<QVector<LIPPoint*>>  returnCords();
 private:
     QVector<QVector<LIPPoint*>> coordinates;
-    OGRLayer *layer;
+
     QString GISName;
 };
 

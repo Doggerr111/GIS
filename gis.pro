@@ -23,6 +23,7 @@ SOURCES += \
     lipnewpointlayerform.cpp \
     lippointlayer_1.cpp \
     lippointrenderer.cpp \
+    lipproject.cpp \
     liptypes.cpp \
     lipvectorreader.cpp \
     lipvectorstyle.cpp \
@@ -45,6 +46,7 @@ HEADERS += \
     lipnewpointlayerform.h \
     lippointlayer_1.h \
     lippointrenderer.h \
+    lipproject.h \
     liptypes.h \
     lipvectorreader.h \
     lipvectorstyle.h \

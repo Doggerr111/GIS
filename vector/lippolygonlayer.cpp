@@ -1,7 +1,7 @@
 #include "lippolygonlayer.h"
 
 LIPPolygonLayer::LIPPolygonLayer(OGRLayer *l, QString name)
-    : layer{l},
+    : LIPVectorLayer(l),
       GISName(name)
 {
 
@@ -10,6 +10,7 @@ LIPPolygonLayer::LIPPolygonLayer(OGRLayer *l, QString name)
 QString LIPPolygonLayer::returnGISName()
 {
     return GISName;
+
 }
 
 QVector<QVector<LIPPoint *> > LIPPolygonLayer::returnCords()

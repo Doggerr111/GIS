@@ -169,6 +169,9 @@ bool LIPVectorReader::ReadGeometry()
             lipp->setX(point->getX());
             lipp->setY(point->getY());
             qDebug()<<"Coordinates: " + QString::number(point->getX()) + " " + QString::number(point->getY());
+
+            //обьекты карты
+
             //layer->addPoint(lipp);
             //sleep(10);
 

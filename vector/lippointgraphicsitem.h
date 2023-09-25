@@ -12,9 +12,9 @@ public:
 public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    void setPoint(LIPPoint point);
+    void setPoint(LIPPoint *point);
 private:
-    LIPPoint p;
+    LIPPoint *p;
 
     // QGraphicsItem interface
 public:

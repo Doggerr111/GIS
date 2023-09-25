@@ -27,6 +27,9 @@
 #include "vector/lippoint.h"
 #include "vector/liplinelayer.h"
 #include "vector/lippolygonlayer.h"
+#include "lipproject.h"
+#include <QTreeWidgetItem>
+#include "treeView/liptreewidgetitem.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -71,6 +74,10 @@ private slots:
 
     void on_actionLoad_vector_layer_triggered();
 
+    void on_pushButton_addPointFeature_clicked();
+
+    void layersOrderChanged(); //когда срабатывает дроп евент в виджете дерева
+
 signals:
     void start_add();
     void newVectorLayer(LIPVectorLayer*);
@@ -87,6 +94,7 @@ private:
     QVector<LIPPoint*> pVect;
     QVector<LIPVectorLayer*> projectLayers;
     LIPObjectTreeModel* layerModel;
+    LIPProject* project;
 //    QTime m_time;
 //    int m_frameCount;
 

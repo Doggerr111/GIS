@@ -19,12 +19,15 @@ public:
      */
     LIPLineLayer(QString fileName);
     QString returnGISName();
+
     QVector<QVector<LIPPoint*>>  returnCords();
 private:
     OGRLayer *layer = nullptr;
     QString GISName;
     QVector<QVector<LIPPoint*>> coordinates;
     QRectF boundingRect;
+
+
 
 
 };

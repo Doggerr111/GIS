@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-
+    setWindowTitle("LIP GIS");
     img2 = QImage(QSize(ui->graphicsView->viewport()->width(),ui->graphicsView->viewport()->height()), QImage::Format_ARGB32_Premultiplied);
 
     //    img2.setDotsPerMeterX(300);
@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
     item1->setObjectName("Father");
 //    QObject* item2 = new QObject(item1);
 //    item2->setProperty("objectName", "Son");
-    layerModel->addItem(item1, QModelIndex());
+    //layerModel->addItem(item1, QModelIndex());
     ui->treeView->setModel(layerModel);
 
     ui->graphicsView->scene()->setSceneRect(-180,90,360,-180);
@@ -79,6 +79,39 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
 
     //ui->graphicsView->setRenderHints(QPainter::Antialiasing);
+
+    connect(ui->pushButton_addPointFeature, SIGNAL(clicked()),scene, SLOT(addPointFeature()));
+    project = new LIPProject();
+
+
+    ui->treeView->setDragEnabled (true);              // Enable drag
+    ui->treeView->viewport ()->setAcceptDrops (true); // ViewPort accepts the action, the default is copy operation
+    ui->treeView->showDropIndicator ();               // Setting up the indication
+    ui->treeView->setDragDropMode (QTreeWidget::InternalMove);// internal movement
+
+
+    connect(ui->treeView, SIGNAL(itemDropped()), this, SLOT(layersOrderChanged()));
+    LIPTreeWidgetItem *item = new LIPTreeWidgetItem();
+    item->setText(0, "123");
+    item->setCheckState(0,Qt::Unchecked);
+    item->setIcon(0,QIcon(":/ui/icons/pointLayer.png"));
+    //item->setFileName(layerForm->returnLayer().)
+    ui->LayerTree->addTopLevelItem(item);
+    ui->LayerTree->setDragEnabled(true);
+    ui->LayerTree->setDropIndicatorShown(true);
+    item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
+    item->setFlags(item->flags() & ~Qt::ItemIsDropEnabled );
+    item->setToolTip(0, "asfSFs");
+
+    LIPTreeWidgetItem *item123 = new LIPTreeWidgetItem();
+    item123->setText(0, "`13`13`13`");
+    item123->setCheckState(0,Qt::Unchecked);
+    item123->setIcon(0,QIcon(":/ui/icons/pointLayer.png"));
+    //item->setFileName(layerForm->returnLayer().)
+    ui->LayerTree->addTopLevelItem(item123);
+    ui->LayerTree->setDragEnabled(true);
+    ui->LayerTree->setDropIndicatorShown(true);
+    item123->setFlags(item->flags() | Qt::ItemIsDragEnabled );
 }
 
 MainWindow::~MainWindow()
@@ -630,16 +663,51 @@ void MainWindow::wheelEvent(QWheelEvent *event)
 
 void MainWindow::on_treeView_clicked(const QModelIndex &index)
 {
-    QMessageBox::information(this,"",QString::number(index.row()));
+    //QMessageBox::information(this,"",QString::number(index.row()));
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeView, SIGNAL(customContextMenuRequested(QPoint)),
             this, SLOT(showContextMenu(QPoint)));
+
+
+    QMessageBox::information(this,"",layerModel->data(ui->treeView->selectionModel()->selectedIndexes().at(0), 0).toString());
 }
 
 
 void MainWindow::on_pushButton_GeoTiff_clicked()
 {
+    GDALAllRegister();
+    QString fileName=QFileDialog::getOpenFileName(this,"","");
+    QByteArray bytea=fileName.toLocal8Bit();
+    const char *charname=bytea.data();
+    GDALDataset* dataset = (GDALDataset*) GDALOpen(charname, GA_ReadOnly);
+    GDALRasterBand  *poBand;
+    int             nBlockXSize, nBlockYSize;
+    int             bGotMin, bGotMax;
+    double          adfMinMax[2];
+    poBand = dataset->GetRasterBand( 1 );
+    poBand->GetBlockSize( &nBlockXSize, &nBlockYSize );
+    adfMinMax[0] = poBand->GetMinimum( &bGotMin );
+    adfMinMax[1] = poBand->GetMaximum( &bGotMax );
+    if( ! (bGotMin && bGotMax) )
+    GDALComputeRasterMinMax((GDALRasterBandH)poBand, TRUE, adfMinMax);float *pafScanline;
+    int   nXSize = poBand->GetXSize();
+    int   nYSize = poBand->GetYSize();
+    pafScanline = (float *) CPLMalloc(sizeof(float)*nXSize * nYSize);
+    poBand->RasterIO( GF_Read, 0, 0, nXSize, nYSize,
+    pafScanline, nXSize, nYSize, GDT_Float32, 0, 0 );
 
+    QImage image((unsigned char*)pafScanline, nXSize, nYSize, QImage::Format_RGB32);
+
+    image.save("blaa.jpg");
+
+    // Создание QGraphicsScene и QGraphicsView
+
+
+    // Создание QGraphicsPixmapItem и добавление его на сцену
+    QPixmap pixmap = QPixmap::fromImage(image);
+    QGraphicsPixmapItem *pixmapItem = new QGraphicsPixmapItem(pixmap);
+    pixmapItem->setPos(0,0);
+    ui->graphicsView->scene()->addItem(pixmapItem);
 
 }
 
@@ -703,12 +771,25 @@ void MainWindow::on_actionNew_point_layer_triggered()
 {
     LIPNewLineLayerForm *layerForm = new LIPNewLineLayerForm(nullptr, LIPGeometryType::LIPPoint);
     layerForm->exec();
-
-    QString name=layerForm->returnLayer()->returnGISName();
+    LIPPointLayer *l=layerForm->returnLayer();
+    QString name=l->returnGISName();
+    QString fileName = l->getFileName();
     QObject* layer = new QObject();
     layer->setObjectName(name);
     layerModel->addItem(layer, QModelIndex());
-    projectLayers.append(layerForm->returnLayer());
+    projectLayers.append(l);
+
+
+    LIPTreeWidgetItem *item = new LIPTreeWidgetItem();
+    item->setText(0,name);
+    item->setCheckState(0,Qt::Unchecked);
+    item->setIcon(0,QIcon(":/ui/icons/pointLayer.png"));
+    item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
+    item->setToolTip(0,fileName);
+    ui->LayerTree->addTopLevelItem(item);
+    project->addVectorLayer(layerForm->returnLayer());
+
+
 }
 
 
@@ -763,6 +844,7 @@ void MainWindow::on_actionLoad_vector_layer_triggered()
             layerModel->addItem(layer, QModelIndex());
             projectLayers.append(pl);
             emit newVectorLayer(pl);
+            //pl->setMapFeatures(); //для создания графических айтемов
 
 
 
@@ -797,5 +879,21 @@ void MainWindow::on_actionLoad_vector_layer_triggered()
 //    QByteArray bytea=fileName.toLocal8Bit();
 //    const char *charname=bytea.data();
 
+}
+
+
+void MainWindow::on_pushButton_addPointFeature_clicked()
+{
+    ui->graphicsView->setCursor(Qt::CrossCursor);
+}
+
+void MainWindow::layersOrderChanged()
+{
+    for (int i=0; i<ui->LayerTree->topLevelItemCount(); i++)
+    {
+        QTreeWidgetItem *item = ui->LayerTree->topLevelItem(i);
+
+
+    }
 }
 

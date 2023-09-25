@@ -64,5 +64,19 @@ QVariant LIPObjectTreeModel::data(const QModelIndex &index, int role) const
     {
         return objByIndex(index)->property(columns.at(index.column()).toUtf8());
     }
-    return QVariant();
+
+
+}
+
+Qt::ItemFlags LIPObjectTreeModel::flags(const QModelIndex &index) const
+{
+    if (!index.isValid())
+            return 0;
+
+        Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+
+        if ( index.column() == 0 )
+            flags |= Qt::ItemIsUserCheckable;
+
+        return flags;
 }

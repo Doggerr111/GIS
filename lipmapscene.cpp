@@ -46,19 +46,24 @@ void LIPMapScene::drawVectorLayer(LIPVectorLayer* layer)
         LIPPointLayer* new_layer=dynamic_cast<LIPPointLayer*>(layer);
         if (new_layer!=nullptr)
         {
-            QVector<LIPPoint*> vect = new_layer->returnCords();
-            for (int i=0; i<vect.size(); i++)
+            new_layer->setMapFeatures(); //для создания графических айтемов
+            for (int i=0; i<new_layer->returnMapFeatures().size(); i++)
             {
-                //addEllipse(vect.at(i)->x(), vect.at(i)->y(),0.1,0.1);
-
-                LIPPointGraphicsItem *el = new LIPPointGraphicsItem;
-                LIPPoint point;
-                point.setX(vect.at(i)->x());
-                point.setY(vect.at(i)->y());
-                el->setPoint(point);
-                addItem(el);
-                    //addItem(el);
+                addItem(new_layer->returnMapFeatures().at(i));
             }
+//            QVector<LIPPoint*> vect = new_layer->returnCords();
+//            for (int i=0; i<vect.size(); i++)
+//            {
+//                //addEllipse(vect.at(i)->x(), vect.at(i)->y(),0.1,0.1);
+
+//                LIPPointGraphicsItem *el = new LIPPointGraphicsItem;
+//                LIPPoint point;
+//                point.setX(vect.at(i)->x());
+//                point.setY(vect.at(i)->y());
+//                el->setPoint(point);
+//                addItem(el);
+//                    //addItem(el);
+//            }
         }
         else
         {
@@ -98,4 +103,9 @@ void LIPMapScene::drawVectorLayer(LIPVectorLayer* layer)
 
     }
     }
+}
+
+void LIPMapScene::addPointFeature()
+{
+    delete this;
 }

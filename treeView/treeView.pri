@@ -9,10 +9,14 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    $$PWD/liptreewidget.cpp \
+    $$PWD/liptreewidgetitem.cpp \
         treeView/lipobjecttreemodel.cpp \
 
 
 HEADERS += \
+    $$PWD/liptreewidget.h \
+    $$PWD/liptreewidgetitem.h \
         treeView/lipobjecttreemodel.h \
 
 

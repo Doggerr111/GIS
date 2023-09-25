@@ -3,5 +3,8 @@
         <file>ui/icons/lineLayer.png</file>
         <file>ui/icons/pointLayer.png</file>
         <file>ui/icons/polygonLayer.png</file>
+        <file>ui/icons/addLineFeature.png</file>
+        <file>ui/icons/addPointFeature.png</file>
+        <file>ui/icons/addPolygonFeature.png</file>
     </qresource>
 </RCC>

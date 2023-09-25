@@ -63,6 +63,7 @@ void LIPNewLineLayerForm::on_pushButton_ok_clicked()
         }
         layer = newLayer->returnOGRLayer();
         LIPLayer = newLayer->returnLayer();
+        LIPLayer->setFileName(fileName);
         delete newLayer;
 //    }
 //        break;

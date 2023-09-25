@@ -24,7 +24,7 @@ void LIPPolygonGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphics
     QPen pen;
     pen.setWidthF(0);
     QBrush brush;
-    brush.setColor(Qt::blue);
+    brush.setColor(Qt::gray);
     brush.setStyle(Qt::SolidPattern);
     painter->setPen(pen);
     painter->setBrush(brush);

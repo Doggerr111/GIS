@@ -35,6 +35,7 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 public slots:
     void drawVectorLayer(LIPVectorLayer*);
+    void addPointFeature();
 private:
     QPointF clickPos;
     bool isDraging;
