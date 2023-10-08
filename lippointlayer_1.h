@@ -1,7 +1,7 @@
 #ifndef LIPPOINTLAYER_1_H
 #define LIPPOINTLAYER_1_H
 
-#include "lipvectorlayer.h"
+
 #include "vector/lippoint.h"
 #include <QPainter>
 #include <QPen>

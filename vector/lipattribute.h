@@ -5,10 +5,17 @@
 class LIPAttribute
 {
 public:
-    LIPAttribute();
+    LIPAttribute(QString n, LIPAttributeType t, QVariant v);
+    QString getName() const;
+    LIPAttributeType getType() const;
+    QVariant getValue() const;
 private:
+    QString name;
     LIPAttributeType type;
     QVariant value;
+
+
+
 };
 
 #endif // LIPATTRIBUTE_H

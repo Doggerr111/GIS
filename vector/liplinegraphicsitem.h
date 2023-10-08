@@ -3,10 +3,10 @@
 
 #include <QGraphicsItem>
 #include <vector/lippoint.h>
-class LIPLineGraphicsITem : public QGraphicsItem
+class LIPLineGraphicsItem : public QGraphicsItem
 {
 public:
-    LIPLineGraphicsITem();
+    LIPLineGraphicsItem();
     void setPoints(QVector<LIPPoint*> points);
 private:
     QVector<QPointF> vect;

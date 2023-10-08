@@ -6,6 +6,7 @@
 #include <QString>
 #include "lippoint.h"
 #include <vector/lipvectorlayer.h>
+#include <vector/liplinegraphicsitem.h>
 
 class LIPLineLayer: public LIPVectorLayer
 {
@@ -13,23 +14,34 @@ public:
     /**
      * \brief Данный конструктор применяется, если мы создаем новый слой
      */
-    LIPLineLayer(OGRLayer *l, QString name);
+    LIPLineLayer(OGRLayer *l, QString name, QString fileName, GDALDataset* ds);
     /**
      * \brief Данный конструктор применяется, если мы загружаем слой
      */
     LIPLineLayer(QString fileName);
     QString returnGISName();
+    void setFileName(QString path);
+    QString getFileName();
+    void setMapFeatures();
+    QVector<LIPLineGraphicsItem*> returnMapFeatures();
 
     QVector<QVector<LIPPoint*>>  returnCords();
 private:
-    OGRLayer *layer = nullptr;
+    //OGRLayer *layer = nullptr;
     QString GISName;
     QVector<QVector<LIPPoint*>> coordinates;
     QRectF boundingRect;
+    QString fileName;
+
+    QVector<LIPLineGraphicsItem*> mapFeatures;
 
 
 
 
+
+    // LIPVectorLayer interface
+public:
+    void addFeature(QVector<QPointF> coords, QVector<LIPAttribute> attrs);
 };
 
 #endif // LIPLINELAYER_H

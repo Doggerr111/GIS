@@ -2,7 +2,7 @@
 #define LIPVECTORSTYLEFORM_H
 
 #include <QWidget>
-#include <lipvectorstyle.h>
+
 
 namespace Ui {
 class LIPVectorStyleForm;

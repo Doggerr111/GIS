@@ -19,14 +19,15 @@ SOURCES += \
     lipmapholder.cpp \
     lipmapscene.cpp \
     lipmultipoint.cpp \
+    lipnewattrfeatureform.cpp \
     lipnewlinelayerform.cpp \
     lipnewpointlayerform.cpp \
     lippointlayer_1.cpp \
     lippointrenderer.cpp \
     lipproject.cpp \
+    liptreewidget.cpp \
     liptypes.cpp \
     lipvectorreader.cpp \
-    lipvectorstyle.cpp \
     lipvectorstyleform.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -42,19 +43,21 @@ HEADERS += \
     lipmapholder.h \
     lipmapscene.h \
     lipmultipoint.h \
+    lipnewattrfeatureform.h \
     lipnewlinelayerform.h \
     lipnewpointlayerform.h \
     lippointlayer_1.h \
     lippointrenderer.h \
     lipproject.h \
+    liptreewidget.h \
     liptypes.h \
     lipvectorreader.h \
-    lipvectorstyle.h \
     lipvectorstyleform.h \
     mainwindow.h \
 
 
 FORMS += \
+    lipnewattrfeatureform.ui \
     lipnewlinelayerform.ui \
     lipnewpointlayerform.ui \
     lipvectorstyleform.ui \

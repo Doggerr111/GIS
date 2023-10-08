@@ -16,13 +16,24 @@ void LIPMapHolder::resizeEvent(QResizeEvent *event)
 
 void LIPMapHolder::wheelEvent(QWheelEvent *event)
 {
+    if (event->angleDelta().y()<0 )
+    {
+        scaleFactor=0.3;
 
+       scale(scaleFactor, scaleFactor);
+    }
+    else if (event->angleDelta().y()>0) {
+        scaleFactor=2;
+        scale(scaleFactor, scaleFactor);
+    }
+    emit MapHolderZoomed(scaleFactor);
 }
 
 void LIPMapHolder::mousePressEvent(QMouseEvent *event)
 {
     QGraphicsView::mousePressEvent(event);
-    isDraging=true;
+    if (event->button()==Qt::LeftButton)
+        isDraging=true;
     clickPos=event->pos();
 }
 

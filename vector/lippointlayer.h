@@ -10,7 +10,7 @@
 class LIPPointLayer: public LIPVectorLayer
 {
 public:
-    LIPPointLayer(OGRLayer *l, QString name);
+    LIPPointLayer(OGRLayer *l, QString name, QString fileName, GDALDataset* dataset);
     QString returnGISName();
     QVector<LIPPoint*> returnCords();
     void setMapFeatures();
@@ -18,16 +18,18 @@ public:
     void addFeature(LIPPoint* p);
     void setFileName(QString path);
     QString getFileName();
+    void addFeature(QVector<QPointF> coords, QVector<LIPAttribute> attrs) override;
 
 
 
 private:
     //void createMapFeatures();
-    OGRLayer *layer;
+    //OGRLayer *layer;
     QString GISName;
     QVector<LIPPoint*> coordinates;
     QString fileName;
     QVector<LIPPointGraphicsItem*> mapFeatures;
+    GDALDataset* dS;
 
 
 

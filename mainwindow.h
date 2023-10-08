@@ -24,9 +24,10 @@
 #include <liplayertreemodel.h>
 #include <QTime>
 #include "treeView/lipobjecttreemodel.h"
-#include "vector/lippoint.h"
+#include "vector/lippointlayer.h"
 #include "vector/liplinelayer.h"
 #include "vector/lippolygonlayer.h"
+#include <QObject>
 #include "lipproject.h"
 #include <QTreeWidgetItem>
 #include "treeView/liptreewidgetitem.h"
@@ -78,9 +79,16 @@ private slots:
 
     void layersOrderChanged(); //когда срабатывает дроп евент в виджете дерева
 
+    void on_LayerTree_itemActivated(QTreeWidgetItem *item, int column);
+
+    void on_pushButton_addPointFeature_clicked(bool checked);
+
 signals:
     void start_add();
     void newVectorLayer(LIPVectorLayer*);
+    void zoomed();
+public slots:
+    void redrawNeeded(double);
 
 
 private:
@@ -95,6 +103,7 @@ private:
     QVector<LIPVectorLayer*> projectLayers;
     LIPObjectTreeModel* layerModel;
     LIPProject* project;
+    LIPMapScene *scene;
 //    QTime m_time;
 //    int m_frameCount;
 

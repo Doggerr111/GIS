@@ -142,7 +142,7 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::redrawNeeded(double f)
 {
-    qDebug()<<f;
+    for (int i)
 }
 
 void MainWindow::on_pushButton_2_clicked()

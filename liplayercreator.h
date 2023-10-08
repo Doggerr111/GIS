@@ -7,6 +7,8 @@
 #include "QObject"
 #include <QVariant>
 #include "vector/lippointlayer.h"
+#include "vector/liplinelayer.h"
+#include "vector/lippolygonlayer.h"
 
 
 
@@ -20,13 +22,17 @@ public:
     void setCodec();
     void setGeometry();
     OGRLayer* returnOGRLayer();
-    LIPPointLayer* returnLayer();
+    LIPVectorLayer* returnLayer();
 private:
     char fileName;
+    QString fileNameAsString;
     OGRLayer *layer;
-    LIPPointLayer* LIPLayer;
+    LIPPointLayer* pointLayer;
+    LIPLineLayer* lineLayer;
+    LIPPolygonLayer* polyLayer;
+    LIPGeometryType geomType;
     QString mainName;
-
+    GDALDataset *ds;
 
 };
 

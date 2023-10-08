@@ -8,7 +8,6 @@
 #include "QDebug"
 #include "liptypes.h"
 #include "QMessageBox"
-#include "lipvectorlayer.h"
 #include "lippointlayer_1.h"
 #include "vector/lippointlayer.h"
 #include "vector/lippoint.h"
@@ -30,7 +29,7 @@ public:
      */
     QRectF ReadBoundingBox();
     LIPPointLayer* returnLayer();
-    static OGRLayer *readOGRLayer(QString filename);
+    static QPair<OGRLayer*, GDALDataset*> readOGRLayer(QString filename);
     static LIPGeometryType readGeometryType(OGRLayer* layer);
     //bool ReadGeometry():
 

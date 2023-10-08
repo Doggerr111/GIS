@@ -1,9 +1,10 @@
 #include "liplinelayer.h"
 #include <QDebug>
-LIPLineLayer::LIPLineLayer(OGRLayer *l, QString name)
-    : LIPVectorLayer(l),
-      layer{l},
-      GISName(name)
+LIPLineLayer::LIPLineLayer(OGRLayer *l, QString name, QString fileName, GDALDataset *ds)
+    : LIPVectorLayer(l, fileName, ds),
+      //layer{l},
+      GISName{name},
+      fileName{fileName}
 {
     if (l==nullptr)
     {
@@ -12,7 +13,7 @@ LIPLineLayer::LIPLineLayer(OGRLayer *l, QString name)
 }
 
 LIPLineLayer::LIPLineLayer(QString fileName)
-    : LIPVectorLayer(nullptr)
+    : LIPVectorLayer(nullptr, fileName, nullptr)
 {
     QByteArray ba = fileName.toLocal8Bit();
     const char *nameChar = ba.data();
@@ -93,4 +94,37 @@ QVector<QVector<LIPPoint*>>  LIPLineLayer::returnCords()
         return coordinates;
     }
 
+}
+
+void LIPLineLayer::setFileName(QString path)
+{
+    fileName=path;
+}
+
+QString LIPLineLayer::getFileName()
+{
+    return fileName;
+}
+
+void LIPLineLayer::setMapFeatures()
+{
+    QVector<QVector<LIPPoint*>> vect = returnCords();
+    for (int i=0; i<vect.size(); i++)
+    {
+        LIPLineGraphicsItem *el = new LIPLineGraphicsItem;
+        el->setPoints(vect.at(i));
+        mapFeatures.append(el);
+
+    }
+
+}
+
+QVector<LIPLineGraphicsItem *> LIPLineLayer::returnMapFeatures()
+{
+    return mapFeatures;
+}
+
+
+void LIPLineLayer::addFeature(QVector<QPointF> coords, QVector<LIPAttribute> attrs)
+{
 }

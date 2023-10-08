@@ -21,8 +21,10 @@ public:
 private:
     QPoint clickPos;
     bool isDraging;
+    double scaleFactor;
 signals:
     void MapHolderResized();
+    void MapHolderZoomed(double);
 
     // QWidget interface
 protected:

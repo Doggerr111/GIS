@@ -101,7 +101,7 @@
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">border:none</string>
+             <string notr="true"/>
             </property>
             <property name="text">
              <string/>
@@ -115,6 +115,9 @@
               <width>30</width>
               <height>30</height>
              </size>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
             </property>
             <property name="autoRepeatDelay">
              <number>300</number>
@@ -265,6 +268,12 @@
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <widget class="LIPTreeWidget" name="LayerTree">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="dragEnabled">
              <bool>true</bool>
             </property>

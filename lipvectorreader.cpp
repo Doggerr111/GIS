@@ -19,6 +19,7 @@ bool LIPVectorReader::Read()
             ppszOptions = CSLSetNameValue(ppszOptions, "ENCODING", "UTF-8");
             CPLSetConfigOption("SHAPE_ENCODING","");
             GDALDataset *shpDS = (GDALDataset *)GDALOpenEx(fileName, GDAL_OF_VECTOR, NULL, NULL, NULL);
+            //shpDS = (GDALDataset *)GDALOpen(fileName, GA_Update);
             if (shpDS == NULL)
             {
                 qDebug()<<"Error:cant read this shp file: " + QString(fileName);
@@ -141,13 +142,16 @@ bool LIPVectorReader::Read()
 
 bool LIPVectorReader::ReadGeometry()
 {
-    GDALDataset *shpDS = (GDALDataset *)GDALOpenEx(fileName, GDAL_OF_VECTOR, NULL, NULL, NULL);
+    GDALDataset *shpDS = (GDALDataset *)GDALOpenEx(fileName,GDAL_OF_VECTOR, NULL, NULL, NULL);
+    //shpDS = (GDALDataset *)GDALOpen(fileName, GA_Update);
     if (shpDS == NULL)
     {
         qDebug()<<"Error:cant read this shp file: " + QString(fileName);
         return false;
     }
+
     OGRLayer *shpLayer = shpDS->GetLayer(0);
+
 
     if (shpLayer==nullptr)
         qDebug()<<"nullptr layer";
@@ -225,7 +229,7 @@ LIPPointLayer* LIPVectorReader::returnLayer()
     return layer;
 }
 
-OGRLayer *LIPVectorReader::readOGRLayer(QString filename)
+QPair<OGRLayer*, GDALDataset*> LIPVectorReader::readOGRLayer(QString filename)
 {
     OGRRegisterAll();
     QByteArray ba = filename.toLocal8Bit();
@@ -233,15 +237,23 @@ OGRLayer *LIPVectorReader::readOGRLayer(QString filename)
     char** ppszOptions = NULL;
     ppszOptions = CSLSetNameValue(ppszOptions, "ENCODING", "UTF-8");
     CPLSetConfigOption("SHAPE_ENCODING","");
-    GDALDataset *shpDS = (GDALDataset *)GDALOpenEx(nameChar, GDAL_OF_VECTOR, NULL, NULL, NULL);
+    GDALDataset *shpDS = (GDALDataset *)GDALOpenEx(nameChar, GDAL_OF_VECTOR |  GDAL_OF_UPDATE, NULL, NULL, NULL);
+
+
+    //shpDS = (GDALDataset *)GDALOpen(nameChar, GA_Update);
     if (shpDS == NULL)
     {
        // qDebug()<<"Error:cant read this shp file: " + QString(filename);
-       return nullptr;
+
+
     }
     int c=shpDS->GetLayers().size();
     qDebug()<<QString::number(c);
-    return shpDS->GetLayer(0);
+    OGRLayer *l = shpDS->GetLayer(0);
+    QPair<OGRLayer*, GDALDataset*> f;
+    f.first=l;
+    f.second=shpDS;
+    return f;
 }
 
 LIPGeometryType LIPVectorReader::readGeometryType(OGRLayer *layer)

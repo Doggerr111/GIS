@@ -17,6 +17,7 @@ SOURCES += \
         $$PWD/lippolygonlayer.cpp \
         $$PWD/liptemporarygraphicsitem.cpp \
         $$PWD/lipvectorlayer.cpp \
+        $$PWD/lipvectorstyle.cpp \
         vector/lippointlayer.cpp \
         vector/lippoint.cpp
 
@@ -29,6 +30,7 @@ HEADERS += \
         $$PWD/lippolygonlayer.h \
         $$PWD/liptemporarygraphicsitem.h \
         $$PWD/lipvectorlayer.h \
+        $$PWD/lipvectorstyle.h \
         vector/lippointlayer.h \
         vector/lippoint.h
 

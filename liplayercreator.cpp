@@ -1,20 +1,27 @@
 #include "liplayercreator.h"
 
 LIPLayerCreator::LIPLayerCreator(LIPGeometryType type, QString name, QString nameGIS)
+    :
+      fileNameAsString{name},
+      pointLayer{nullptr},
+      lineLayer{nullptr},
+      polyLayer{nullptr}
+
 {
     mainName=nameGIS;
     GDALAllRegister();
     OGRRegisterAll();
     QByteArray ba = name.toLocal8Bit();
     const char *nameChar = ba.data();
-    switch (type)
+    geomType=type;
+    switch (geomType)
     {
     case LIPGeometryType::LIPPoint: //если создаем точечный слой
     {
         const char *pszDriverName = "ESRI Shapefile"; //toDO выбор драйвера пользователем
         GDALDriver *poDriver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(pszDriverName);
-        GDALDataset *poDs = poDriver->Create(nameChar, 0, 0, 0, GDT_Unknown, NULL);
-        layer = poDs->CreateLayer(nameChar, NULL, wkbPoint, NULL);
+        ds = poDriver->Create(nameChar, 0, 0, 0, GDT_Unknown, NULL);
+        layer = ds->CreateLayer(nameChar, NULL, wkbPoint, NULL);
         if (layer == NULL)
         {
             //cout << "Layer creation failed!" << endl;
@@ -29,8 +36,8 @@ LIPLayerCreator::LIPLayerCreator(LIPGeometryType type, QString name, QString nam
     {
         const char *pszDriverName = "ESRI Shapefile"; //toDO выбор драйвера пользователем
         GDALDriver *poDriver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(pszDriverName);
-        GDALDataset *poDs = poDriver->Create(nameChar, 0, 0, 0, GDT_Unknown, NULL);
-        layer = poDs->CreateLayer(nameChar, NULL, wkbLineString, NULL);
+        ds = poDriver->Create(nameChar, 0, 0, 0, GDT_Unknown, NULL);
+        layer = ds->CreateLayer(nameChar, NULL, wkbLineString, NULL);
         if (layer == NULL)
         {
             //cout << "Layer creation failed!" << endl;
@@ -45,8 +52,8 @@ LIPLayerCreator::LIPLayerCreator(LIPGeometryType type, QString name, QString nam
     {
         const char *pszDriverName = "ESRI Shapefile"; //toDO выбор драйвера пользователем
         GDALDriver *poDriver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(pszDriverName);
-        GDALDataset *poDs = poDriver->Create(nameChar, 0, 0, 0, GDT_Unknown, NULL);
-        layer = poDs->CreateLayer(nameChar, NULL, wkbPolygon, NULL);
+        ds = poDriver->Create(nameChar, 0, 0, 0, GDT_Unknown, NULL);
+        layer = ds->CreateLayer(nameChar, NULL, wkbPolygon, NULL);
         if (layer == NULL)
         {
             //cout << "Layer creation failed!" << endl;
@@ -58,34 +65,7 @@ LIPLayerCreator::LIPLayerCreator(LIPGeometryType type, QString name, QString nam
     }
 
 
-//OGRFieldDefn poFieldID("ID", OFTInteger);
-//poFieldID.SetWidth(40);
-//OGRFieldDefn poFieldType("Type", OFTInteger);
-//poFieldType.SetWidth(40);
-//if (layer->CreateField(&poFieldID) != OGRERR_NONE) {
-//    //cout << "ID field creation failed" << endl;
-//}
-//if (layer->CreateField(&poFieldType) != OGRERR_NONE) {
-//    //cout << "Type field creation failed" << endl;
-//}
 
-
-//OGRMultiPoint point;
-//for (int i = 0; i < line_N; i++) {
-//    OGRFeature *poFeature = OGRFeature::CreateFeature(poLayer->GetLayerDefn());
-//    poFeature->SetField("ID", i);
-//    poFeature->SetField("Type", i);
-
-//    OGRPoint p(i,i);
-//    point.addGeometry(&p);
-//    poFeature->SetGeometry(&p);
-
-//    if (layer->CreateFeature(poFeature) != OGRERR_NONE) {
-//        //cout << "Failed to create feature in shapefile" << endl;
-//    }
-//    OGRFeature::DestroyFeature(poFeature);
-//}
-//GDALClose(poDs);
 
 
 }
@@ -131,7 +111,26 @@ void LIPLayerCreator::createAttribute(LIPAttributeType type, QString name)
         }
 
     }
-    LIPLayer = new LIPPointLayer(layer, mainName);
+    switch (geomType)
+    {
+    case LIPGeometryType::LIPPoint: //если создаем точечный слой
+    {
+        pointLayer = new LIPPointLayer(layer, mainName, fileNameAsString, ds);
+    }
+        break;
+    case LIPGeometryType::LIPLineString: //если создаем линейный слой
+    {
+        lineLayer = new LIPLineLayer(layer, mainName, fileNameAsString, ds);
+    }
+        break;
+    case LIPGeometryType::LIPPolygon: //если создаем полигональный слой
+    {
+
+    }
+        polyLayer = new LIPPolygonLayer(layer, mainName, fileNameAsString, ds);
+    }
+
+
 }
 
 void LIPLayerCreator::setAttribute(LIPAttributeType type, QVariant attribute, QString name) //TODO переработать/удалить
@@ -181,9 +180,26 @@ void LIPLayerCreator::setAttribute(LIPAttributeType type, QVariant attribute, QS
     //    }
 }
 
-LIPPointLayer *LIPLayerCreator::returnLayer()
+LIPVectorLayer *LIPLayerCreator::returnLayer()
 {
-    return LIPLayer;
+    switch (geomType)
+    {
+    case LIPGeometryType::LIPPoint: //если создаем точечный слой
+    {
+        return pointLayer;
+    }
+        break;
+    case LIPGeometryType::LIPLineString: //если создаем линейный слой
+    {
+        return lineLayer;
+    }
+        break;
+    case LIPGeometryType::LIPPolygon: //если создаем полигональный слой
+    {
+
+    }
+        return polyLayer;
+    }
 }
 
 OGRLayer* LIPLayerCreator::returnOGRLayer()

@@ -1,8 +1,8 @@
 #include "lippointlayer.h"
 
-LIPPointLayer::LIPPointLayer(OGRLayer *l, QString name)
-    : LIPVectorLayer(l),
-      layer{l},
+LIPPointLayer::LIPPointLayer(OGRLayer *l, QString name, QString fileName, GDALDataset *dataset)
+    : LIPVectorLayer(l, fileName, dataset),
+      //layer{l},
       GISName(name)
 {
 
@@ -99,3 +99,59 @@ QString LIPPointLayer::getFileName()
 
 
 
+
+
+void LIPPointLayer::addFeature(QVector<QPointF> coords, QVector<LIPAttribute> attrs)
+{
+    OGRFeature *newFeature = OGRFeature::CreateFeature(layer->GetLayerDefn());
+    OGRwkbGeometryType t= layer->GetLayerDefn()->GetGeomType();
+    OGRPoint featurePoint;
+
+    //for (int i=0; i<coords.size(); i++)
+    //{
+    //не проходим по всему вектроу, так как точка только 1 (мультиточки не поддерживаются)
+    featurePoint.setX(coords.at(0).x());
+    featurePoint.setY(coords.at(0).y());
+
+    LIPPointGraphicsItem* item = new LIPPointGraphicsItem;
+    LIPPoint *point = new LIPPoint();
+    point->setX(coords.at(0).x());
+    point->setY(coords.at(0).y());
+    item->setPoint(point);
+    mapFeatures.append(item);
+
+    //}
+    newFeature->SetGeometry(&featurePoint);
+    for (int i=0; i<attrs.size(); i++)
+    {
+    QString fieldName = attrs.at(i).getName();
+    QByteArray fieldNameBa = fieldName.toLocal8Bit();
+    const char *fieldNameChar = fieldNameBa.data();
+    switch (attrs.at(i).getType())
+    {
+    case LIPAttributeType::INT32:
+        newFeature->SetField(fieldNameChar, attrs.at(i).getValue().toInt());
+        break;
+    case LIPAttributeType::Real:
+        newFeature->SetField(fieldNameChar, attrs.at(i).getValue().toDouble());
+        break;
+    case LIPAttributeType::String:
+        const char *fieldValueChar=attrs.at(i).getValue().toString().toLocal8Bit().data();
+        newFeature->SetField(fieldNameChar, fieldValueChar);
+        break;
+    }
+    }
+
+    newFeature->SetFID(layer->GetFeatureCount());
+
+    // Добавление объекта к слою
+    OGRErr er1 = layer->StartTransaction();
+    OGRErr er = layer->CreateFeature(newFeature);
+    layer->GetLayerDefn()->SetGeomType(wkbPolygon);
+    layer->SetSpatialFilter(nullptr);
+    er1= layer->CommitTransaction();
+    layer->SyncToDisk();
+    //GDALClose(layer);
+    setMapFeatures();
+    OGRFeature::DestroyFeature(newFeature);
+}

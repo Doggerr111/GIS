@@ -1,5 +1,5 @@
 #include "lipproject.h"
-
+#include "QDebug"
 LIPProject::LIPProject()
 {
 
@@ -24,9 +24,19 @@ void LIPProject::setVectorLayers(QVector<LIPVectorLayer *> vects)
     vectorLayers=vects;
 }
 
-void LIPProject::setActiveLayer(LIPVectorLayer *vect)
+bool LIPProject::setActiveLayer(LIPVectorLayer *vect)
 {
-    activeLayer=vect;
+    for (int i=0; i<vectorLayers.size(); i++)
+    {
+        if (vectorLayers.at(i)==vect)
+        {
+            activeLayer=vect;
+            return true;
+        }
+
+    }
+    return false;
+
 }
 
 void LIPProject::setActiveLayer(int index)
@@ -72,6 +82,19 @@ LIPVectorLayer* LIPProject::getVectorLayerByName(QString name)
     return nullptr;
 }
 
+LIPVectorLayer *LIPProject::getVectorLayerByPath(QString path)
+{
+    for (int i=0; i<vectorLayers.size(); i++)
+    {
+        if (vectorLayers.at(i)->returnFileName()==path)
+        {
+            return vectorLayers.at(i);
+        }
+        qDebug()<< "VECT:" + QString::number(i);
+    }
+    return nullptr;
+}
+
 LIPVectorLayer* LIPProject::getActiveLayer()
 {
     if (activeLayer!=nullptr)
@@ -80,4 +103,9 @@ LIPVectorLayer* LIPProject::getActiveLayer()
     {
         return nullptr;
     }
+}
+
+void LIPProject::redrawNeeded(double f)
+{
+
 }

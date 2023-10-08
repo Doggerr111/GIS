@@ -19,9 +19,10 @@ LIPNewLineLayerForm::~LIPNewLineLayerForm()
     delete ui;
 }
 
-LIPPointLayer *LIPNewLineLayerForm::returnLayer()
+LIPVectorLayer *LIPNewLineLayerForm::returnLayer()
 {
     return LIPLayer;
+
 }
 
 OGRLayer *LIPNewLineLayerForm::returnOGRLayer()
@@ -61,10 +62,22 @@ void LIPNewLineLayerForm::on_pushButton_ok_clicked()
             else if (box->currentIndex()==2)
                 newLayer->createAttribute(LIPAttributeType::String, ui->tableWidget->item(i,0)->text());
         }
+
         layer = newLayer->returnOGRLayer();
+
+
         LIPLayer = newLayer->returnLayer();
-        LIPLayer->setFileName(fileName);
+//        switch (geometryType)
+//        {
+
+//            LIPLineLayer *l=dynamic_cast<LIPLineLayer*>(LIPLayer);
+//        }
+
+
+        //LIPLayer->setFileName(fileName);
+
         delete newLayer;
+
 //    }
 //        break;
 //    case LIPGeometryType::LIPLineString:

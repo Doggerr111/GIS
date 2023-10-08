@@ -1,11 +1,11 @@
 #include "liplinegraphicsitem.h"
 
-LIPLineGraphicsITem::LIPLineGraphicsITem()
+LIPLineGraphicsItem::LIPLineGraphicsItem()
 {
 
 }
 
-void LIPLineGraphicsITem::setPoints(QVector<LIPPoint *> points)
+void LIPLineGraphicsItem::setPoints(QVector<LIPPoint *> points)
 {
     for (int i=0; i<points.size(); i++)
     {
@@ -15,12 +15,12 @@ void LIPLineGraphicsITem::setPoints(QVector<LIPPoint *> points)
     //vect=points;
 }
 
-QRectF LIPLineGraphicsITem::boundingRect() const
+QRectF LIPLineGraphicsItem::boundingRect() const
 {
     return(QRectF(0,0,180,180));
 }
 
-void LIPLineGraphicsITem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void LIPLineGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QPen pen;
     pen.setColor(Qt::blue);

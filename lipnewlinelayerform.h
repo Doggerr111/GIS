@@ -4,7 +4,7 @@
 #include <QDialog>
 #include "liplayercreator.h"
 #include <QFileDialog>
-#include "vector/lippointlayer.h"
+#include "vector/lipvectorlayer.h"
 namespace Ui {
 class LIPNewLineLayerForm;
 }
@@ -18,7 +18,7 @@ public:
     ~LIPNewLineLayerForm();
 
     OGRLayer* returnOGRLayer();
-    LIPPointLayer *returnLayer();
+    LIPVectorLayer *returnLayer();
 
 
 private slots:
@@ -32,7 +32,7 @@ private:
     Ui::LIPNewLineLayerForm *ui;
     QString fileName;
     OGRLayer *layer;
-    LIPPointLayer *LIPLayer;
+    LIPVectorLayer *LIPLayer;
     LIPGeometryType geometryType;
 };
 
