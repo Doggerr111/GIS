@@ -27,6 +27,7 @@ private:
     LIPStyleUnit mStyleUnit;
     QPen mPen;
     QBrush mBrush;
+    double mSceneScaleFact;
 
 
 

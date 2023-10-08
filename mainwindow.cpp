@@ -91,7 +91,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     //LIPTreeWidget *widg=ui->treeView;
     connect(ui->LayerTree, SIGNAL(itemDropped()), this, SLOT(layersOrderChanged()));
-
+    LIPVectorStyleForm *form = new LIPVectorStyleForm;
+    form->show();
 
 //    LIPTreeWidgetItem *item = new LIPTreeWidgetItem();
 //    item->setText(0, "123");
@@ -142,7 +143,10 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::redrawNeeded(double f)
 {
-    qDebug()<<f;
+    foreach (LIPVectorLayer *vect, project->getVectorLayers())
+    {
+        vect->setSceneScaleFactor(f);
+    }
 }
 
 void MainWindow::on_pushButton_2_clicked()

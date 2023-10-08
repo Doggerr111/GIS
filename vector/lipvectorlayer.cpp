@@ -119,6 +119,6 @@ QVector<LIPAttribute> LIPVectorLayer::stringValToAttrs(QVector<QString> names, Q
 
 void LIPVectorLayer::setSceneScaleFactor(double factor)
 {
-
+    mScaleFactor=factor;
 }
 

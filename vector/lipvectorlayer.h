@@ -18,12 +18,14 @@ public:
     QVector<LIPAttributeType> getAttributeTypes();
     QVector<QString> getAttributeNames();
     static QVector<LIPAttribute> stringValToAttrs(QVector<QString> names, QVector<QString> values, QVector<LIPAttributeType> types);
+    void setSceneScaleFactor(double factor);
 protected:
     OGRLayer *layer;
     GDALDataset *dS;
     QString fileName;
     QVector<LIPAttributeType> attributeTypes;
     QVector<QString> attributeNames;
+    double mScaleFactor;
 
 signals:
     void needRepaint();
