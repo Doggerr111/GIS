@@ -3,7 +3,8 @@
 
 #include <QGraphicsItem>
 #include <vector/lippoint.h>
-class LIPLineGraphicsItem : public QGraphicsItem
+#include <vector/lipgraphicsitem.h>
+class LIPLineGraphicsItem : public LIPGraphicsItem
 {
 public:
     LIPLineGraphicsItem();

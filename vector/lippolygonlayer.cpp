@@ -73,11 +73,11 @@ QString LIPPolygonLayer::getFileName()
 void LIPPolygonLayer::setMapFeatures()
 {
     QVector<QVector<LIPPoint*>> vect = returnCords();
-    qDebug()<<"КОЛИЧЕСТВО ОБЪЕКТОВ:" + QString::number(vect.size());
+    mStyle=LIPVectorStyle::createDefaultVectorStyle(LIPGeometryType::LIPPolygon);
     for (int i=0; i<vect.size(); i++)
     {
         LIPPolygonGraphicsItem *el = new LIPPolygonGraphicsItem();
-
+        el->setVectorStyle(mStyle);
         el->setPoints(vect.at(i));
 
         mapFeatures.append(el);
@@ -151,4 +151,23 @@ void LIPPolygonLayer::addFeature(QVector<QPointF> coords, QVector<LIPAttribute> 
     //GDALClose(layer);
 
     OGRFeature::DestroyFeature(newFeature);
+}
+
+void LIPPolygonLayer::setStyle(LIPVectorStyle *style)
+{
+    mStyle=style; //field of vectorLayer
+    mStyle->setGeomType(LIPGeometryType::LIPPolygon);
+    foreach(LIPPolygonGraphicsItem *item, mapFeatures)
+    {
+        item->setVectorStyle(style); //задаем стиль для каждого обьекта слоя
+    }
+}
+
+void LIPPolygonLayer::setSceneScaleFactor(double factor)
+{
+    mScaleFactor=factor;
+    foreach(LIPPolygonGraphicsItem* item, mapFeatures)
+    {
+        item->setScaleFactor(mScaleFactor);
+    }
 }

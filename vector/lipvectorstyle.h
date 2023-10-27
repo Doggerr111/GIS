@@ -6,6 +6,7 @@
 #include "liptypes.h"
 #include <QApplication>
 #include <QScreen>
+#include <QRandomGenerator>
 class LIPVectorStyle
 {
 public:
@@ -15,19 +16,28 @@ public:
     void setWidthMM(double width);
     void setWidth(double width);
     void setPenColor(QColor penCol);
-
+    void setPointSize(double sizeF);
     void setBrush(QBrush brush);
     void setBrushColor(QColor brCol);
+    void setGeomType(LIPGeometryType type);
     QPen getPen();
     QBrush getBrush();
+    double getPointSize();
+    LIPGeometryType GetGeomType();
+public:
     static double pixelToMM(double pix);
     static double MMToPixel(double mm);
+    /** Формирует стандатрный стиль для векторного слоя в
+     *  зависсимости от типа геометрии*/
+    static LIPVectorStyle* createDefaultVectorStyle(LIPGeometryType type);
 private:
 
     LIPStyleUnit mStyleUnit;
+    LIPGeometryType mGeomType;
     QPen mPen;
     QBrush mBrush;
     double mSceneScaleFact;
+    double mPointSize;
 
 
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>566</width>
-    <height>462</height>
+    <width>338</width>
+    <height>431</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,20 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QGraphicsView" name="graphicsView"/>
+       <widget class="QGraphicsView" name="graphicsView">
+        <property name="minimumSize">
+         <size>
+          <width>300</width>
+          <height>200</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>200</height>
+         </size>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -46,7 +59,7 @@
 }</string>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="page">
          <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -70,7 +83,13 @@
               <widget class="QLineEdit" name="lineEditPointSize"/>
              </item>
              <item>
-              <widget class="QComboBox" name="comboBoxPointSizeUnit"/>
+              <widget class="QComboBox" name="comboBoxPointSizeUnit">
+               <item>
+                <property name="text">
+                 <string>MM</string>
+                </property>
+               </item>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -109,7 +128,73 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="page_2"/>
+        <widget class="QWidget" name="page_2">
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QFrame" name="frame_6">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>Point SIze</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEditPointSize_2"/>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboBoxPointSizeUnit_2">
+               <item>
+                <property name="text">
+                 <string>MM</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_7">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Point color</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButtonPointColor_2">
+               <property name="text">
+                <string>Choose color</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -132,7 +217,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="pushButtonOk">
         <property name="text">
          <string>Ок</string>
         </property>

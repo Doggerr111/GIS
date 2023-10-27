@@ -71,9 +71,14 @@ QVector<LIPPoint *> LIPPointLayer::returnCords()
 void LIPPointLayer::setMapFeatures()
 {
     returnCords();
+    mStyle=LIPVectorStyle::createDefaultVectorStyle(LIPGeometryType::LIPPoint);
+
+
+
     for (int i=0; i<coordinates.size(); i++)
     {
         LIPPointGraphicsItem* item = new LIPPointGraphicsItem;
+        item->setVectorStyle(mStyle);
         LIPPoint *point = new LIPPoint();
         point->setX(coordinates.at(i)->x());
         point->setY(coordinates.at(i)->y());
@@ -154,4 +159,25 @@ void LIPPointLayer::addFeature(QVector<QPointF> coords, QVector<LIPAttribute> at
     //GDALClose(layer);
     setMapFeatures();
     OGRFeature::DestroyFeature(newFeature);
+}
+
+void LIPPointLayer::setStyle(LIPVectorStyle *style)
+{
+    mStyle=style; //field of vectorLayer
+    mStyle->setGeomType(LIPGeometryType::LIPPoint);
+    foreach(LIPPointGraphicsItem *item, mapFeatures)
+    {
+        item->setVectorStyle(style); //задаем стиль для каждого обьекта слоя
+    }
+}
+
+
+
+void LIPPointLayer::setSceneScaleFactor(double factor)
+{
+    mScaleFactor=factor;
+    foreach(LIPPointGraphicsItem* item, mapFeatures)
+    {
+        item->setScaleFactor(mScaleFactor);
+    }
 }

@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
         $$PWD/lipattribute.cpp \
+        $$PWD/lipgraphicsitem.cpp \
         $$PWD/liplinegraphicsitem.cpp \
         $$PWD/liplinelayer.cpp \
         $$PWD/lippointgraphicsitem.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 
 HEADERS += \
         $$PWD/lipattribute.h \
+        $$PWD/lipgraphicsitem.h \
         $$PWD/liplinegraphicsitem.h \
         $$PWD/liplinelayer.h \
         $$PWD/lippointgraphicsitem.h \

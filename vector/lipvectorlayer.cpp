@@ -117,8 +117,20 @@ QVector<LIPAttribute> LIPVectorLayer::stringValToAttrs(QVector<QString> names, Q
     return attributes;
 }
 
+LIPVectorStyle *LIPVectorLayer::getStyle()
+{
+    return mStyle;
+}
+
+void LIPVectorLayer::setMapFeatures()
+{
+
+}
+
 void LIPVectorLayer::setSceneScaleFactor(double factor)
 {
-    mScaleFactor=factor;
+
 }
+
+
 

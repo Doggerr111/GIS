@@ -1,6 +1,7 @@
 #include "lippolygongraphicsitem.h"
 
 LIPPolygonGraphicsItem::LIPPolygonGraphicsItem()
+    :   LIPGraphicsItem()
 {
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 }
@@ -21,12 +22,9 @@ QRectF LIPPolygonGraphicsItem::boundingRect() const
 
 void LIPPolygonGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QPen pen;
-    pen.setWidthF(0);
-    QBrush brush;
-    brush.setColor(Qt::gray);
-    brush.setStyle(Qt::SolidPattern);
+    QPen pen = mPen;
+    pen.setWidthF(mPen.widthF()/mSceneScale);
     painter->setPen(pen);
-    painter->setBrush(brush);
+    painter->setBrush(mBrush);
     painter->drawPolygon(vect);
 }

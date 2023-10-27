@@ -19,13 +19,17 @@ public:
      * \brief Данный конструктор применяется, если мы загружаем слой
      */
     LIPLineLayer(QString fileName);
-    QString returnGISName();
+    QString returnGISName() override;
     void setFileName(QString path);
     QString getFileName();
-    void setMapFeatures();
+    void setMapFeatures() override;
     QVector<LIPLineGraphicsItem*> returnMapFeatures();
 
     QVector<QVector<LIPPoint*>>  returnCords();
+
+    void setStyle(LIPVectorStyle *style);
+public slots:
+    void setSceneScaleFactor(double factor) override;
 private:
     //OGRLayer *layer = nullptr;
     QString GISName;

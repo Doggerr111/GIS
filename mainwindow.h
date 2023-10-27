@@ -88,8 +88,10 @@ signals:
     void start_add();
     void newVectorLayer(LIPVectorLayer*);
     void zoomed();
+    void scaleFactorChanged(double);
 public slots:
     void redrawNeeded(double);
+    void showLayerContextMenu(const QPoint&);
 
 
 private:
@@ -114,5 +116,9 @@ protected:
 
 
 
+
+    // QObject interface
+public:
+    bool eventFilter(QObject *watched, QEvent *event);
 };
 #endif // MAINWINDOW_H

@@ -96,6 +96,25 @@ QVector<QVector<LIPPoint*>>  LIPLineLayer::returnCords()
 
 }
 
+void LIPLineLayer::setStyle(LIPVectorStyle *style)
+{
+    mStyle=style; //field of vectorLayer
+    mStyle->setGeomType(LIPGeometryType::LIPLineString);
+    foreach(LIPLineGraphicsItem *item, mapFeatures)
+    {
+        item->setVectorStyle(style); //задаем стиль для каждого обьекта слоя
+    }
+}
+
+void LIPLineLayer::setSceneScaleFactor(double factor)
+{
+    mScaleFactor=factor;
+    foreach(LIPLineGraphicsItem* item, mapFeatures)
+    {
+        item->setScaleFactor(mScaleFactor);
+    }
+}
+
 void LIPLineLayer::setFileName(QString path)
 {
     fileName=path;
@@ -109,9 +128,11 @@ QString LIPLineLayer::getFileName()
 void LIPLineLayer::setMapFeatures()
 {
     QVector<QVector<LIPPoint*>> vect = returnCords();
+    mStyle=LIPVectorStyle::createDefaultVectorStyle(LIPGeometryType::LIPLineString);
     for (int i=0; i<vect.size(); i++)
     {
         LIPLineGraphicsItem *el = new LIPLineGraphicsItem;
+        el->setVectorStyle(mStyle);
         el->setPoints(vect.at(i));
         mapFeatures.append(el);
 

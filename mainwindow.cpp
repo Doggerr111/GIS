@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     img2.fill( 0 );
     if (pa.begin( &img2 ))
     {
-        QMessageBox::warning(this,"all good","all good");
+        //QMessageBox::warning(this,"all good","all good");
     }
     pa.setRenderHint( QPainter::Antialiasing, true );
 
@@ -91,8 +91,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     //LIPTreeWidget *widg=ui->treeView;
     connect(ui->LayerTree, SIGNAL(itemDropped()), this, SLOT(layersOrderChanged()));
-    LIPVectorStyleForm *form = new LIPVectorStyleForm;
-    form->show();
+
+
+    ui->LayerTree->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->LayerTree, SIGNAL(customContextMenuRequested(const QPoint&)),
+        this, SLOT(showLayerContextMenu(const QPoint&)));
+
+
+
+
 
 //    LIPTreeWidgetItem *item = new LIPTreeWidgetItem();
 //    item->setText(0, "123");
@@ -115,7 +122,7 @@ MainWindow::MainWindow(QWidget *parent)
 //    ui->LayerTree->setDragEnabled(true);
 //    ui->LayerTree->setDropIndicatorShown(true);
 //    item123->setFlags(item->flags() | Qt::ItemIsDragEnabled );
-
+    //ui->LayerTree->installEventFilter(this);
 
 
 }
@@ -143,10 +150,40 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::redrawNeeded(double f)
 {
-    foreach (LIPVectorLayer *vect, project->getVectorLayers())
-    {
-        vect->setSceneScaleFactor(f);
-    }
+
+}
+
+void MainWindow::showLayerContextMenu(const QPoint &f)
+{
+    QTreeWidgetItem *clickedItem=ui->LayerTree->itemAt(f);
+    if (clickedItem==nullptr)
+        return;
+    QString path=clickedItem->toolTip(0);
+    if (path.isEmpty())
+        return;
+    LIPVectorLayer* selectedLayer=project->getVectorLayerByPath(path);
+    if (selectedLayer==nullptr)
+        return;
+    QMenu menu;
+    // Создаем пункт меню
+    QAction* actionProperties = new QAction(QString::fromUtf8("Свойства"), this);
+    // добавляем пункт в меню
+    menu.addAction(actionProperties);
+    // добавляем разделитель
+    menu.addSeparator();
+    // добавляем еще один пункт меню
+    QAction* actionStyle = new QAction(QString::fromUtf8("Стиль"), this);
+    menu.addAction(actionStyle);
+    connect(actionStyle, &QAction::triggered, this, [selectedLayer]() {
+        LIPVectorStyleForm* form = new LIPVectorStyleForm(nullptr,selectedLayer);
+        form->exec();
+    });
+    menu.show();
+    menu.exec(ui->LayerTree->mapToGlobal(f));
+    delete actionProperties;
+    delete actionStyle;
+
+
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -646,6 +683,9 @@ void MainWindow::wheelEvent(QWheelEvent *event)
     QTransform tr(1, 0, 0, 1, 50.0, 50.0);
     QMatrix const matrix = ui->graphicsView->matrix().inverted();
     QRect visibleRect = matrix.mapRect(ui->graphicsView->viewport()->rect());
+    //передача масштабы сцены для отрисовки
+    emit scaleFactorChanged(ui->graphicsView->transform().m11());
+
 
     //        img2 = QImage(QSize(visibleRect.width(),visibleRect.height()), QImage::Format_ARGB32_Premultiplied);
     //        pa.begin(&img2);
@@ -772,6 +812,7 @@ void MainWindow::on_actionNew_point_layer_triggered()
     LIPNewLineLayerForm *layerForm = new LIPNewLineLayerForm(nullptr, LIPGeometryType::LIPPoint);
     layerForm->exec();
     LIPPointLayer* new_layer= dynamic_cast<LIPPointLayer*>(layerForm->returnLayer());
+    connect(this, SIGNAL(scaleFactorChanged(double)), new_layer, SLOT(setSceneScaleFactor(double)));
     QString name=new_layer->returnGISName();
     QString fileName = new_layer->getFileName();
 
@@ -796,6 +837,7 @@ void MainWindow::on_actionNew_line_layer_triggered() //при нажатии н�
     layerForm->exec();
     //LIPVectorLayer *vect = layerForm->returnLayer();
     LIPLineLayer* new_layer= dynamic_cast<LIPLineLayer*>(layerForm->returnLayer());
+    connect(this, SIGNAL(scaleFactorChanged(double)), new_layer, SLOT(setSceneScaleFactor(double)));
     QString name=new_layer->returnGISName();
     QString fileName = new_layer->getFileName();
 
@@ -820,6 +862,7 @@ void MainWindow::on_actionNew_polygon_layer_triggered()
     layerForm->exec();
 
     LIPPolygonLayer* new_layer= dynamic_cast<LIPPolygonLayer*>(layerForm->returnLayer());
+    connect(this, SIGNAL(scaleFactorChanged(double)), new_layer, SLOT(setSceneScaleFactor(double)));
     QString name=new_layer->returnGISName();
     QString fileName = new_layer->getFileName();
 
@@ -854,8 +897,11 @@ void MainWindow::on_actionLoad_vector_layer_triggered()
         {
 
             //LIPLayerCreator *newLayer = new LIPLayerCreator(type, fileName, name);
+
             LIPPointLayer *pl = new LIPPointLayer(newLayer,name, fileName, dS);
+
             emit newVectorLayer(pl);
+            connect(this, SIGNAL(scaleFactorChanged(double)), pl, SLOT(setSceneScaleFactor(double)));
             LIPTreeWidgetItem *item = new LIPTreeWidgetItem();
             item->setText(0,name);
             item->setCheckState(0,Qt::Unchecked);
@@ -874,6 +920,7 @@ void MainWindow::on_actionLoad_vector_layer_triggered()
         {
             LIPLineLayer *pl = new LIPLineLayer(newLayer,name, fileName, dS);
             emit newVectorLayer(pl);
+            connect(this, SIGNAL(scaleFactorChanged(double)), pl, SLOT(setSceneScaleFactor(double)));
             LIPTreeWidgetItem *item = new LIPTreeWidgetItem();
             item->setText(0,name);
             item->setCheckState(0,Qt::Unchecked);
@@ -959,3 +1006,9 @@ void MainWindow::on_pushButton_addPointFeature_clicked(bool checked)
     }
 }
 
+
+
+bool MainWindow::eventFilter(QObject *watched, QEvent *event)
+{
+
+}

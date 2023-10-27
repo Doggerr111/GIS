@@ -7,8 +7,11 @@
 #include "ogrsf_frmts.h"
 #include "liptypes.h"
 #include "lipattribute.h"
-class LIPVectorLayer
+#include "lipvectorstyle.h"
+
+class LIPVectorLayer: public QObject
 {
+    Q_OBJECT
 public:
     LIPVectorLayer(OGRLayer *l, QString path, GDALDataset *dataset);
     virtual QString returnGISName();
@@ -18,7 +21,9 @@ public:
     QVector<LIPAttributeType> getAttributeTypes();
     QVector<QString> getAttributeNames();
     static QVector<LIPAttribute> stringValToAttrs(QVector<QString> names, QVector<QString> values, QVector<LIPAttributeType> types);
-    void setSceneScaleFactor(double factor);
+    LIPVectorStyle *getStyle();
+    virtual void setMapFeatures();
+
 protected:
     OGRLayer *layer;
     GDALDataset *dS;
@@ -26,9 +31,13 @@ protected:
     QVector<LIPAttributeType> attributeTypes;
     QVector<QString> attributeNames;
     double mScaleFactor;
+    LIPVectorStyle *mStyle;
 
 signals:
     void needRepaint();
+
+public slots:
+    virtual void setSceneScaleFactor(double factor);
 
 
 

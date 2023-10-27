@@ -5,7 +5,8 @@
 #include <QPen>
 #include <QPainter>
 #include <vector/lippoint.h>
-class LIPPolygonGraphicsItem : public QGraphicsItem
+#include <vector/lipgraphicsitem.h>
+class LIPPolygonGraphicsItem : public LIPGraphicsItem
 {
 public:
     LIPPolygonGraphicsItem();

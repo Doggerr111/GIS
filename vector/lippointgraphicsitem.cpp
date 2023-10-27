@@ -1,26 +1,25 @@
 #include "lippointgraphicsitem.h"
 
 LIPPointGraphicsItem::LIPPointGraphicsItem()
+    : LIPGraphicsItem()
 {
 
 }
 
 QRectF LIPPointGraphicsItem::boundingRect() const
 {
-    return QRectF(p->x(),p->y(),0.03,0.03);
+    return QRectF(p->x()-(mPointSize/2)/mSceneScale, p->y()-(mPointSize/2)/mSceneScale,(mPointSize/2)/mSceneScale,(mPointSize/2)/mSceneScale);
 }
 
 void LIPPointGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QPen pen;
-    pen.setWidthF(0);
-    QBrush brush;
-    brush.setColor(Qt::blue);
-    brush.setStyle(Qt::SolidPattern);
+    QPen pen = mPen;
+    pen.setWidthF(mPen.widthF()/mSceneScale);
     painter->setPen(pen);
-    painter->setBrush(brush);
-    painter->drawEllipse(QRectF(p->x(),p->y(),0.03,0.03));
-    //painter->drawEllipse(p.x(),p.y(),3,3);
+    painter->setBrush(mBrush);
+    double pointSize=LIPVectorStyle::MMToPixel(mStyle->getPointSize());
+    mPointSize=pointSize;
+    painter->drawEllipse(QPointF(p->x(), p->y()), (pointSize/2)/mSceneScale, (pointSize/2)/mSceneScale);
 }
 
 void LIPPointGraphicsItem::setPoint(LIPPoint *point)
@@ -28,8 +27,27 @@ void LIPPointGraphicsItem::setPoint(LIPPoint *point)
     p=point;
 }
 
-//QPainterPath LIPPointGraphicsItem::shape() const
+//void LIPPointGraphicsItem::setPen(QPen pen)
 //{
-//    return QPainterPath();
+//    mPen=pen;
 //}
+
+//void LIPPointGraphicsItem::setBrush(QBrush brush)
+//{
+//    mBrush=brush;
+//}
+
+//void LIPPointGraphicsItem::setVectorStyle(LIPVectorStyle *style)
+//{
+//    mStyle=style;
+//    setPen(mStyle->getPen());
+//    setBrush(mStyle->getBrush());
+//    double pointSize=mStyle->getPointSize();
+//    bRect.setRect(p->x()-LIPVectorStyle::MMToPixel(pointSize/2),
+//                  p->y()-LIPVectorStyle::MMToPixel(pointSize/2),
+//                  LIPVectorStyle::MMToPixel(pointSize),
+//                  LIPVectorStyle::MMToPixel(pointSize));
+//}
+
+
 

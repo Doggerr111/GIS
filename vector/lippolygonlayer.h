@@ -12,13 +12,16 @@ class LIPPolygonLayer: public LIPVectorLayer
 {
 public:
     LIPPolygonLayer(OGRLayer *l, QString name, QString fileName, GDALDataset* ds);
-    QString returnGISName();
+    QString returnGISName() override;
     QVector<QVector<LIPPoint*>>  returnCords();
     void setFileName(QString path);
     QString getFileName();
-    void setMapFeatures();
+    void setMapFeatures() override;
     QVector<LIPPolygonGraphicsItem*> returnMapFeatures();
     void addFeature(QVector<QPointF> coords, QVector<LIPAttribute> attrs) override;
+    void setStyle(LIPVectorStyle *style);
+public slots:
+    void setSceneScaleFactor(double factor) override;
 
 private:
     QVector<QVector<LIPPoint*>> coordinates;
