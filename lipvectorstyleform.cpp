@@ -49,10 +49,11 @@ void LIPVectorStyleForm::startRenderFeature()
     {
     case LIPGeometryType::LIPPoint:
     {
+        ui->stackedWidget->setCurrentIndex(0);
         pointItem = new LIPPointGraphicsItem;
         LIPPoint* pointCenter = new LIPPoint;
-        pointCenter->setX(25);
-        pointCenter->setY(25);
+        pointCenter->setX(0);
+        pointCenter->setY(0);
         pointItem->setPoint(pointCenter);
         pointItem->setVectorStyle(mStyle);
         pointItem->setPos(mScene->sceneRect().center());
@@ -62,8 +63,8 @@ void LIPVectorStyleForm::startRenderFeature()
     }
     case LIPGeometryType::LIPLineString:
     {
+        ui->stackedWidget->setCurrentIndex(1);
         lineItem = new LIPLineGraphicsItem;
-
         QVector<LIPPoint*> vec;
         LIPPoint* point1 = new LIPPoint;
         point1->setX(129);
@@ -81,6 +82,7 @@ void LIPVectorStyleForm::startRenderFeature()
     }
     case LIPGeometryType::LIPPolygon:
     {
+        ui->stackedWidget->setCurrentIndex(2);
         polyItem = new LIPPolygonGraphicsItem;
         QVector<LIPPoint*> vec;
         LIPPoint* point1 = new LIPPoint;
@@ -104,11 +106,23 @@ void LIPVectorStyleForm::startRenderFeature()
         polyItem->setPos(0,0);
         mScene->addItem(polyItem);
         break;
-        break;
     }
 
     }
 }
+
+void LIPVectorStyleForm::on_pushButtonCancel_clicked()
+{
+
+}
+
+void LIPVectorStyleForm::on_pushButtonOk_clicked()
+{
+
+
+}
+
+//point styling interface
 
 void LIPVectorStyleForm::on_pushButtonPointColor_clicked()
 {
@@ -117,10 +131,11 @@ void LIPVectorStyleForm::on_pushButtonPointColor_clicked()
     QColor pointColor = pointColorDialog.getColor();
     if (pointColor.isValid())
     {
+        QPen pen = mStyle->getPen();
         pen.setColor(pointColor);
+        mStyle->setPen(pen);
         ui->pushButtonPointColor->setStyleSheet("background-color: " + pointColor.name() + ";");
     }
-    mStyle->setPen(pen);
     pointItem->setVectorStyle(mStyle);
     pointItem->update();
     //item->setPen(pen);
@@ -129,17 +144,6 @@ void LIPVectorStyleForm::on_pushButtonPointColor_clicked()
 
 
 }
-
-
-void LIPVectorStyleForm::on_pushButtonOk_clicked()
-{
-    if (ui->stackedWidget->currentIndex()==0) //если настраиваем стиль для точки
-    {
-        mStyle->setPen(pen);
-        mStyle->setBrush(brush);
-    }
-}
-
 
 void LIPVectorStyleForm::on_lineEditPointSize_textChanged(const QString &arg1)
 {
@@ -158,9 +162,51 @@ void LIPVectorStyleForm::on_lineEditPointSize_textChanged(const QString &arg1)
     }
 }
 
-
 void LIPVectorStyleForm::on_lineEditPointSize_textEdited(const QString &arg1)
 {
 
+}
+
+
+
+
+// line styling interface
+
+void LIPVectorStyleForm::on_lineEditLineWidth_textChanged(const QString &arg1)
+{
+    bool typeFlag=false;
+    double width=arg1.toDouble(&typeFlag);
+    if (typeFlag)
+    {
+        if (mStyle!=nullptr)
+        {
+            QPen pen=mStyle->getPen();
+            pen.setWidthF(width);
+            mStyle->setPen(pen);
+            lineItem->setVectorStyle(mStyle);
+        }
+        lineItem->update();
+        ui->graphicsView->scene()->update();
+        //ui->graphicsView->scene()->addItem(pointItem);
+    }
+}
+
+
+void LIPVectorStyleForm::on_pushButtonLineColor_clicked()
+{
+    QColorDialog pointColorDialog; //= new QColorDialog(this);
+    //pointColorDialog->exec();
+    QColor pointColor = pointColorDialog.getColor();
+    if (pointColor.isValid())
+    {
+        QPen pen;
+        pen=mStyle->getPen();
+        pen.setColor(pointColor);
+        mStyle->setPen(pen);
+        ui->pushButtonLineColor->setStyleSheet("background-color: " + pointColor.name() + ";");
+    }
+
+    lineItem->setVectorStyle(mStyle);
+    lineItem->update();
 }
 

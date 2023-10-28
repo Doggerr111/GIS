@@ -42,6 +42,12 @@ private slots:
 
     void on_lineEditPointSize_textEdited(const QString &arg1);
 
+    void on_pushButtonCancel_clicked();
+
+    void on_lineEditLineWidth_textChanged(const QString &arg1);
+
+    void on_pushButtonLineColor_clicked();
+
 private:
     QPen pen;
     QBrush brush;

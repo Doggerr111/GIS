@@ -7,6 +7,7 @@
 #include <gdalwarper.h>
 #include "lipnewlinelayerform.h"
 #include <QOpenGLWidget>
+#include <QSqlDatabase>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -14,89 +15,93 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
     setWindowTitle("LIP GIS");
-    img2 = QImage(QSize(ui->graphicsView->viewport()->width(),ui->graphicsView->viewport()->height()), QImage::Format_ARGB32_Premultiplied);
-
-    //    img2.setDotsPerMeterX(300);
-    //    img2.setDotsPerMeterY(300);
-    img2.fill( 0 );
-    if (pa.begin( &img2 ))
-    {
-        //QMessageBox::warning(this,"all good","all good");
-    }
-    pa.setRenderHint( QPainter::Antialiasing, true );
-
-    connect(ui->graphicsView,SIGNAL(MapHolderResized()),this,SLOT(recalculateScale()));
-    //    img.setDotsPerMeterX(200);
-    //    img.setDotsPerMeterY(200);
-    pix=QPixmap(300,300);
-    img=QImage(QSize(40000,30000),QImage::Format_RGB32);
-    QPen pen1;
-    pen1.setWidth(1);
-    pen1.setColor(Qt::yellow);
-
-    painter=new QPainter(&pix);
-    painter->setPen(pen1);
-    scene= new LIPMapScene();
-    connect(this, SIGNAL(newVectorLayer(LIPVectorLayer*)), scene, SLOT(drawVectorLayer(LIPVectorLayer*)));
-    //scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    ui->graphicsView->setViewport(new QOpenGLWidget);
-
-    //LIPMapScene *calculationScene = new LIPMapScene();
-    connect(scene,SIGNAL(pos_changed(QPointF)),this,SLOT(scenePos(QPointF)));
-    connect(scene,SIGNAL(scene_dragging(QPointF,QPointF)),this,SLOT(changeExtent(QPointF,QPointF)));
-    ui->graphicsView->setScene(scene);
-    ui->graphicsView->setTransformationAnchor( QGraphicsView::AnchorViewCenter );
-    //ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
-
-    //ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
-    ui->graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
-    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-
-    ui->graphicsView->setAttribute(Qt::WA_OpaquePaintEvent);
-    ui->graphicsView->setAttribute(Qt::WA_NoSystemBackground);
-    ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
-
-    layerModel = new LIPObjectTreeModel(this);
-    QStringList cols;
-    cols << "objectName";
-    layerModel->setColumns(cols);
-    QObject* item1 = new QObject();
-    item1->setObjectName("Father");
-//    QObject* item2 = new QObject(item1);
-//    item2->setProperty("objectName", "Son");
-    //layerModel->addItem(item1, QModelIndex());
-    ui->treeView->setModel(layerModel);
-
-    ui->graphicsView->scene()->setSceneRect(-180,90,360,-180);
-
-    //scene->setSceneRect(-98292019,89852960,704459722-98292019, -453620743-89852960);
-    //ui->graphicsView->fitInView(-180,90,360,-180);
-    ui->graphicsView->setScene(ui->graphicsView->scene());
-    ui->graphicsView->scale(1,-1);
-
-    //ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
-
-    //ui->graphicsView->setRenderHints(QPainter::Antialiasing);
-
-    //connect(ui->pushButton_addPointFeature, SIGNAL(clicked()),scene, SLOT(addPointFeature()));
     project = new LIPProject();
-    connect(ui->graphicsView, SIGNAL(MapHolderZoomed(double)), this, SLOT(redrawNeeded(double)));
-
-    ui->treeView->setDragEnabled (true);              // Enable drag
-    ui->treeView->viewport ()->setAcceptDrops (true); // ViewPort accepts the action, the default is copy operation
-    ui->treeView->showDropIndicator ();               // Setting up the indication
-    ui->treeView->setDragDropMode (QTreeWidget::InternalMove);// internal movement
-
-    //LIPTreeWidget *widg=ui->treeView;
     connect(ui->LayerTree, SIGNAL(itemDropped()), this, SLOT(layersOrderChanged()));
-
-
     ui->LayerTree->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->LayerTree, SIGNAL(customContextMenuRequested(const QPoint&)),
         this, SLOT(showLayerContextMenu(const QPoint&)));
+    sceneInitialization();
 
+//    img2 = QImage(QSize(ui->graphicsView->viewport()->width(),ui->graphicsView->viewport()->height()), QImage::Format_ARGB32_Premultiplied);
+//    //img2.fill( 0 );
+//    scene= new LIPMapScene();
+//    if (pa.begin( &img2 ))
+//    {
+//        //scene->update();
+//        QMessageBox::warning(this,"all good","all good");
+//    }
+//    pa.setRenderHint( QPainter::Antialiasing, true );
+
+//    connect(ui->graphicsView,SIGNAL(MapHolderResized()),this,SLOT(recalculateScale()));
+//    //    img.setDotsPerMeterX(200);
+//    //    img.setDotsPerMeterY(200);
+//    pix=QPixmap(300,300);
+//    img=QImage(QSize(40000,30000),QImage::Format_RGB32);
+//    QPen pen1;
+//    pen1.setWidth(1);
+//    pen1.setColor(Qt::yellow);
+
+//    painter=new QPainter(&pix);
+//    painter->setPen(pen1);
+
+//    connect(this, SIGNAL(newVectorLayer(LIPVectorLayer*)), scene, SLOT(drawVectorLayer(LIPVectorLayer*)));
+//    //scene->setItemIndexMethod(QGraphicsScene::NoIndex);
+//    ui->graphicsView->setViewport(new QOpenGLWidget);
+
+//    //LIPMapScene *calculationScene = new LIPMapScene();
+//    connect(scene,SIGNAL(pos_changed(QPointF)),this,SLOT(scenePos(QPointF)));
+//    connect(scene,SIGNAL(scene_dragging(QPointF,QPointF)),this,SLOT(changeExtent(QPointF,QPointF)));
+//    ui->graphicsView->setScene(scene);
+//    ui->graphicsView->setTransformationAnchor( QGraphicsView::AnchorViewCenter );
+//    //ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
+
+//    //ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+//    ui->graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
+//    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+
+//    ui->graphicsView->setAttribute(Qt::WA_OpaquePaintEvent);
+//    ui->graphicsView->setAttribute(Qt::WA_NoSystemBackground);
+//    ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+
+//    layerModel = new LIPObjectTreeModel(this);
+//    QStringList cols;
+//    cols << "objectName";
+//    layerModel->setColumns(cols);
+//    QObject* item1 = new QObject();
+//    item1->setObjectName("Father");
+////    QObject* item2 = new QObject(item1);
+////    item2->setProperty("objectName", "Son");
+//    //layerModel->addItem(item1, QModelIndex());
+//    ui->treeView->setModel(layerModel);
+
+//    ui->graphicsView->scene()->setSceneRect(-180,90,360,-180);
+
+//    //scene->setSceneRect(-98292019,89852960,704459722-98292019, -453620743-89852960);
+//    //ui->graphicsView->fitInView(-180,90,360,-180);
+//    //ui->graphicsView->setScene(ui->graphicsView->scene());
+//    ui->graphicsView->scale(1,-1);
+
+//    //ui->graphicsView->setDragMode(QGraphicsView::NoDrag);
+
+//    //ui->graphicsView->setRenderHints(QPainter::Antialiasing);
+
+//    //connect(ui->pushButton_addPointFeature, SIGNAL(clicked()),scene, SLOT(addPointFeature()));
+//    project = new LIPProject();
+//    connect(ui->graphicsView, SIGNAL(MapHolderZoomed(double)), this, SLOT(redrawNeeded(double)));
+
+//    ui->treeView->setDragEnabled (true);              // Enable drag
+//    ui->treeView->viewport ()->setAcceptDrops (true); // ViewPort accepts the action, the default is copy operation
+//    ui->treeView->showDropIndicator ();               // Setting up the indication
+//    ui->treeView->setDragDropMode (QTreeWidget::InternalMove);// internal movement
+
+//    //LIPTreeWidget *widg=ui->treeView;
+//    connect(ui->LayerTree, SIGNAL(itemDropped()), this, SLOT(layersOrderChanged()));
+
+
+//    ui->LayerTree->setContextMenuPolicy(Qt::CustomContextMenu);
+//    connect(ui->LayerTree, SIGNAL(customContextMenuRequested(const QPoint&)),
+//        this, SLOT(showLayerContextMenu(const QPoint&)));
 
 
 
@@ -125,11 +130,35 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->LayerTree->installEventFilter(this);
 
 
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::sceneInitialization()
+{
+    scene= new LIPMapScene();
+    //ui->graphicsView->setViewport(new QOpenGLWidget);
+    ui->graphicsView->setScene(scene);
+    connect(ui->graphicsView,SIGNAL(MapHolderResized()),this,SLOT(recalculateScale()));
+    connect(this, SIGNAL(newVectorLayer(LIPVectorLayer*)), scene, SLOT(drawVectorLayer(LIPVectorLayer*)));
+    connect(scene,SIGNAL(pos_changed(QPointF)),this,SLOT(scenePos(QPointF)));
+    connect(scene,SIGNAL(scene_dragging(QPointF,QPointF)),this,SLOT(changeExtent(QPointF,QPointF)));
+    connect(ui->graphicsView, SIGNAL(MapHolderZoomed(double)), this, SLOT(redrawNeeded(double)));
+    ui->graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
+    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    //ui->graphicsView->setAttribute(Qt::WA_OpaquePaintEvent);
+    //ui->graphicsView->setAttribute(Qt::WA_NoSystemBackground);
+    ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    ui->graphicsView->scene()->setSceneRect(-180,90,360,-180);
+    ui->graphicsView->scale(1,-1);
+
+
+    //ui->graphicsView->setRenderHints(QPainter::Antialiasing);
+
 }
 
 
@@ -1012,3 +1041,10 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
 
 }
+
+void MainWindow::on_actionConnect_to_PostGIS_triggered()
+{
+    LIPPostGisConnectionForm* form = new LIPPostGisConnectionForm;
+    form->exec();
+}
+

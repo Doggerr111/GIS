@@ -22,9 +22,9 @@ QRectF LIPPolygonGraphicsItem::boundingRect() const
 
 void LIPPolygonGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QPen pen = mPen;
-    pen.setWidthF(mPen.widthF()/mSceneScale);
+    QPen pen = mStyle->getPen();
+    pen.setWidthF(pen.widthF()/mSceneScale);
     painter->setPen(pen);
-    painter->setBrush(mBrush);
+    painter->setBrush(mStyle->getBrush());
     painter->drawPolygon(vect);
 }

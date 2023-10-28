@@ -1,7 +1,8 @@
-QT       += core gui
+QT       += core gui sql
 include(vector/vector.pri)
 include(treeView/treeView.pri)
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 
 CONFIG += c++11
 
@@ -12,6 +13,7 @@ CONFIG += c++11
 SOURCES += \
     lipaddingitems.cpp \
     lipfeaturerenderer.cpp \
+    lipframe.cpp \
     liplayercreator.cpp \
     liplayertreeitem.cpp \
     liplayertreemodel.cpp \
@@ -24,6 +26,8 @@ SOURCES += \
     lipnewpointlayerform.cpp \
     lippointlayer_1.cpp \
     lippointrenderer.cpp \
+    lippostgisconnectionform.cpp \
+    lippostgisprovider.cpp \
     lipproject.cpp \
     liptreewidget.cpp \
     liptypes.cpp \
@@ -36,6 +40,7 @@ SOURCES += \
 HEADERS += \
     lipaddingitems.h \
     lipfeaturerenderer.h \
+    lipframe.h \
     liplayercreator.h \
     liplayertreeitem.h \
     liplayertreemodel.h \
@@ -48,6 +53,8 @@ HEADERS += \
     lipnewpointlayerform.h \
     lippointlayer_1.h \
     lippointrenderer.h \
+    lippostgisconnectionform.h \
+    lippostgisprovider.h \
     lipproject.h \
     liptreewidget.h \
     liptypes.h \
@@ -60,6 +67,7 @@ FORMS += \
     lipnewattrfeatureform.ui \
     lipnewlinelayerform.ui \
     lipnewpointlayerform.ui \
+    lippostgisconnectionform.ui \
     lipvectorstyleform.ui \
     mainwindow.ui
 

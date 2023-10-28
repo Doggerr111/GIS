@@ -32,6 +32,7 @@
 #include <QTreeWidgetItem>
 #include "treeView/liptreewidgetitem.h"
 #include "lipvectorstyleform.h"
+#include <lippostgisconnectionform.h>`
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -43,6 +44,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void sceneInitialization();
 
 private slots:
     void on_pushButton_clicked();
@@ -83,6 +85,8 @@ private slots:
     void on_LayerTree_itemActivated(QTreeWidgetItem *item, int column);
 
     void on_pushButton_addPointFeature_clicked(bool checked);
+
+    void on_actionConnect_to_PostGIS_triggered();
 
 signals:
     void start_add();

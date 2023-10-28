@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1003</width>
+    <width>920</width>
     <height>634</height>
    </rect>
   </property>
@@ -211,6 +211,12 @@
     </item>
     <item>
      <widget class="QFrame" name="central_frame">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="maximumSize">
        <size>
         <width>1677215</width>
@@ -319,7 +325,7 @@
        <item>
         <widget class="QFrame" name="frame">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -349,7 +355,7 @@
           <item>
            <widget class="LIPMapHolder" name="graphicsView">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -372,7 +378,13 @@
         </widget>
        </item>
        <item alignment="Qt::AlignRight">
-        <widget class="QFrame" name="frame_2">
+        <widget class="LIPFrame" name="frame_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize">
           <size>
            <width>175</width>
@@ -385,29 +397,7 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_5">
-          <item>
-           <widget class="QPushButton" name="pushButton_2">
-            <property name="text">
-             <string>read</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton">
-            <property name="text">
-             <string>write</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_4">
-            <property name="text">
-             <string>create shp test</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <layout class="QVBoxLayout" name="verticalLayout_5"/>
         </widget>
        </item>
       </layout>
@@ -505,6 +495,45 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
+         <widget class="QPushButton" name="pushButton_4">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>20</y>
+            <width>155</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>create shp test</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="geometry">
+           <rect>
+            <x>100</x>
+            <y>0</y>
+            <width>155</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>read</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="pushButton">
+          <property name="geometry">
+           <rect>
+            <x>-40</x>
+            <y>0</y>
+            <width>155</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>write</string>
+          </property>
+         </widget>
         </widget>
        </item>
       </layout>
@@ -517,7 +546,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1003</width>
+     <width>920</width>
      <height>22</height>
     </rect>
    </property>
@@ -536,8 +565,15 @@
     <addaction name="actionLoad_vector_layer"/>
     <addaction name="actionOverlay_analysys"/>
    </widget>
+   <widget class="QMenu" name="menuDatabase">
+    <property name="title">
+     <string>Database</string>
+    </property>
+    <addaction name="actionConnect_to_PostGIS"/>
+   </widget>
    <addaction name="menuf"/>
    <addaction name="menuf_2"/>
+   <addaction name="menuDatabase"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew_point_layer">
@@ -577,6 +613,15 @@
     <string>Load vector layer</string>
    </property>
   </action>
+  <action name="actionConnect_to_PostGIS">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/ui/icons/postgis.png</normaloff>:/ui/icons/postgis.png</iconset>
+   </property>
+   <property name="text">
+    <string>Connect to PostGIS</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -588,6 +633,12 @@
    <class>LIPTreeWidget</class>
    <extends>QTreeWidget</extends>
    <header location="global">liptreewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LIPFrame</class>
+   <extends>QFrame</extends>
+   <header location="global">lipframe.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

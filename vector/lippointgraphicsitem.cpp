@@ -13,10 +13,10 @@ QRectF LIPPointGraphicsItem::boundingRect() const
 
 void LIPPointGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QPen pen = mPen;
-    pen.setWidthF(mPen.widthF()/mSceneScale);
+    QPen pen = mStyle->getPen();
+    pen.setWidthF(pen.widthF()/mSceneScale);
     painter->setPen(pen);
-    painter->setBrush(mBrush);
+    painter->setBrush(mStyle->getBrush());
     double pointSize=LIPVectorStyle::MMToPixel(mStyle->getPointSize());
     mPointSize=pointSize;
     painter->drawEllipse(QPointF(p->x(), p->y()), (pointSize/2)/mSceneScale, (pointSize/2)/mSceneScale);

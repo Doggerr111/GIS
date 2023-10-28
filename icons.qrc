@@ -6,5 +6,6 @@
         <file>ui/icons/addLineFeature.png</file>
         <file>ui/icons/addPointFeature.png</file>
         <file>ui/icons/addPolygonFeature.png</file>
+        <file>ui/icons/postgis.png</file>
     </qresource>
 </RCC>

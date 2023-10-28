@@ -3,6 +3,7 @@
 LIPLineGraphicsItem::LIPLineGraphicsItem()
 {
     mPen.setWidthF(LIPVectorStyle::MMToPixel(1)/mSceneScale);
+
 }
 
 void LIPLineGraphicsItem::setPoints(QVector<LIPPoint *> points)
@@ -22,8 +23,8 @@ QRectF LIPLineGraphicsItem::boundingRect() const
 
 void LIPLineGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QPen pen = mPen;
-    pen.setWidthF(mPen.widthF()/mSceneScale);
+    QPen pen = mStyle->getPen();
+    pen.setWidthF(LIPVectorStyle::MMToPixel(pen.widthF())/mSceneScale);
     painter->setPen(pen);
     //mPen.setWidthF((mPen.widthF())/mSceneScale);
     //painter->setBrush(mBrush);

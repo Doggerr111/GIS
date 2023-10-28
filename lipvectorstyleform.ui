@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>338</width>
-    <height>431</height>
+    <height>533</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -59,9 +59,9 @@
 }</string>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
-        <widget class="QWidget" name="page">
+        <widget class="QWidget" name="pagePointStyle">
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
            <widget class="QFrame" name="frame_3">
@@ -112,7 +112,7 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Point color</string>
+                <string>Border Color</string>
                </property>
               </widget>
              </item>
@@ -128,7 +128,7 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="page_2">
+        <widget class="QWidget" name="pageLIneStyle">
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <widget class="QFrame" name="frame_6">
@@ -140,14 +140,14 @@
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <item>
-              <widget class="QLabel" name="label_3">
+              <widget class="QLabel" name="labelLineWidth">
                <property name="text">
-                <string>Point SIze</string>
+                <string>Line WIdth</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEditPointSize_2"/>
+              <widget class="QLineEdit" name="lineEditLineWidth"/>
              </item>
              <item>
               <widget class="QComboBox" name="comboBoxPointSizeUnit_2">
@@ -171,7 +171,7 @@
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <item>
-              <widget class="QLabel" name="label_4">
+              <widget class="QLabel" name="labelLineColor">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -179,14 +179,159 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Point color</string>
+                <string>Line Color</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButtonPointColor_2">
+              <widget class="QPushButton" name="pushButtonLineColor">
                <property name="text">
                 <string>Choose color</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_8">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <item>
+              <widget class="QLabel" name="labelLineStyle">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Line Color</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButtonLineType">
+               <property name="text">
+                <string>Line Type</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="pagePolyStyle">
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QFrame" name="frame_10">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_9">
+             <item>
+              <widget class="QLabel" name="labelBorderWidth">
+               <property name="text">
+                <string>Border Width</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEditBorderWidth"/>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboBoxPointSizeUnit_3">
+               <item>
+                <property name="text">
+                 <string>MM</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_9">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_8">
+             <item>
+              <widget class="QLabel" name="labelBorderColor">
+               <property name="text">
+                <string>Border Color</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButtonBorderColor">
+               <property name="text">
+                <string>Choose Color</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_11">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <item>
+              <widget class="QLabel" name="labelPolyColor">
+               <property name="text">
+                <string>Polygon Color</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButtonPolyColor">
+               <property name="text">
+                <string>Choose Color</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_12">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_11">
+             <item>
+              <widget class="QLabel" name="labelPolyType">
+               <property name="text">
+                <string>Polygon Type</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButtonPolygonType">
+               <property name="text">
+                <string>Choose Type</string>
                </property>
               </widget>
              </item>
@@ -210,7 +355,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="pushButtonCancel">
         <property name="text">
          <string>Отмена</string>
         </property>
