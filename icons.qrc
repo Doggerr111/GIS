@@ -7,5 +7,6 @@
         <file>ui/icons/addPointFeature.png</file>
         <file>ui/icons/addPolygonFeature.png</file>
         <file>ui/icons/postgis.png</file>
+        <file>ui/icons/close.png</file>
     </qresource>
 </RCC>

@@ -22,7 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->LayerTree, SIGNAL(customContextMenuRequested(const QPoint&)),
         this, SLOT(showLayerContextMenu(const QPoint&)));
     sceneInitialization();
-
+    LIPMessage::getInstance().setMainWindow(this);
+    LIPMessage::getInstance().showMessage("ffsa", 2000, messageStatus::Error);
 //    img2 = QImage(QSize(ui->graphicsView->viewport()->width(),ui->graphicsView->viewport()->height()), QImage::Format_ARGB32_Premultiplied);
 //    //img2.fill( 0 );
 //    scene= new LIPMapScene();
@@ -1044,7 +1045,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 
 void MainWindow::on_actionConnect_to_PostGIS_triggered()
 {
-    LIPPostGisConnectionForm* form = new LIPPostGisConnectionForm;
+    LIPPostGisConnectionForm* form = new LIPPostGisConnectionForm();
     form->exec();
+    form->returnDataSet();
 }
 

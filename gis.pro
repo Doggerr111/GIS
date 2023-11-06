@@ -20,6 +20,7 @@ SOURCES += \
     lipmapcalculations.cpp \
     lipmapholder.cpp \
     lipmapscene.cpp \
+    lipmessage.cpp \
     lipmultipoint.cpp \
     lipnewattrfeatureform.cpp \
     lipnewlinelayerform.cpp \
@@ -47,6 +48,7 @@ HEADERS += \
     lipmapcalculations.h \
     lipmapholder.h \
     lipmapscene.h \
+    lipmessage.h \
     lipmultipoint.h \
     lipnewattrfeatureform.h \
     lipnewlinelayerform.h \

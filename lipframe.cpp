@@ -56,7 +56,7 @@ void LIPFrame::mouseMoveEvent(QMouseEvent *event)
         QPoint newPos = mapToParent(event->pos());
         int deltaX = newPos.x() - mapToParent(mStartPoint).x();
         int deltaY = newPos.y() - mapToParent(mStartPoint).y();
-        setGeometry(geometry().x(),geometry().y(), size().width() + deltaX, size().height() + deltaY);
+        resize(size().width() + deltaX, size().height() + deltaY);
         mStartPoint = event->pos();
     }
 }

@@ -21,6 +21,16 @@ LIPPostGisConnectionForm::~LIPPostGisConnectionForm()
     delete ui;
 }
 
+GDALDataset *LIPPostGisConnectionForm::returnDataSet()
+{
+    if (mPGProvider->isConnected() && mPGProvider->isPostGIS())
+        return mPGProvider->readData();
+    else
+    {
+        return nullptr;
+    }
+}
+
 void LIPPostGisConnectionForm::on_pushButtonConnect_clicked()
 {
     mPGProvider->connectionName=ui->lineEditName->text();
@@ -35,7 +45,11 @@ void LIPPostGisConnectionForm::on_pushButtonConnect_clicked()
     {
         if (mPGProvider->isPostGIS())
         {
-            QMessageBox::information(this,tr("Information"),tr("Connection successful"));
+            LIPMessage::getInstance().showMessage(tr("Успешно подключились к ")+mPGProvider->databaseName, 5000, messageStatus::Success);
+        }
+        else
+        {
+            LIPMessage::getInstance().showMessage(tr("Успешно подключились к ")+mPGProvider->databaseName, 5000, messageStatus::Success);
         }
     }
 }

@@ -256,6 +256,11 @@ QPair<OGRLayer*, GDALDataset*> LIPVectorReader::readOGRLayer(QString filename)
     return f;
 }
 
+QVector<OGRLayer *> LIPVectorReader::readLayersFromDataset(GDALDataset *ds)
+{
+
+}
+
 LIPGeometryType LIPVectorReader::readGeometryType(OGRLayer *layer)
 {
     switch (layer->GetGeomType())

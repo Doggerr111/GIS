@@ -1,5 +1,5 @@
 #include "lippostgisprovider.h"
-#include <QMessageBox>
+
 LIPPostGisProvider::LIPPostGisProvider()
     : mConnectionFlag{false}
 {
@@ -25,6 +25,7 @@ bool LIPPostGisProvider::isPostGIS()
 
 void LIPPostGisProvider::connect()
 {
+    readData();
     mDb->setDatabaseName(databaseName);
     mDb->setHostName(host);
     mDb->setUserName(userName);
@@ -41,6 +42,27 @@ void LIPPostGisProvider::connect()
         mConnectionFlag=false;
 
 
+
+}
+
+void LIPPostGisProvider::getLayerNames()
+{
+
+}
+
+GDALDataset* LIPPostGisProvider::readData()
+{
+
+    QString tempStr="PG:dbname="+databaseName+" host="+host+
+                     " port="+port+" user="+userName+" password="+password;
+    QByteArray tempBA = tempStr.toLocal8Bit();
+    const char* dbInfo=tempBA.data();
+    //qDebug()<< dbInfo;
+    //const char* path ="PG:dbname=test host=localhost port=5432 user=postgres password=1234";
+    //qDebug()<< path;
+    GDALDataset *ds;
+    ds = (GDALDataset *)GDALOpenEx(dbInfo,GDAL_OF_VECTOR | GDAL_OF_UPDATE,nullptr,nullptr,nullptr);
+    return ds;
 
 }
 

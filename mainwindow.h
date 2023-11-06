@@ -32,7 +32,8 @@
 #include <QTreeWidgetItem>
 #include "treeView/liptreewidgetitem.h"
 #include "lipvectorstyleform.h"
-#include <lippostgisconnectionform.h>`
+#include <lippostgisconnectionform.h>
+#include <lipmessage.h>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE

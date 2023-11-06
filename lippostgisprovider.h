@@ -4,6 +4,12 @@
 #include <QtSql/QSqlDatabase> //бд
 #include <QtSql/QSqlError> //ошибки
 #include <QtSql/QSqlQuery> //запросы
+#include <QMessageBox>
+#include <gdal/gdal.h>
+#include <gdal/ogrsf_frmts.h>
+#include <QDebug>
+#include "lipmessage.h"
+
 class LIPPostGisProvider
 {
 public:
@@ -14,6 +20,9 @@ public:
     bool isPostGIS();
 
     void connect();
+
+    void getLayerNames();
+    GDALDataset* readData();
 public:
 
     QString connectionName;

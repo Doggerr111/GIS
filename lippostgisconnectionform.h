@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "lippostgisprovider.h"
+#include "lipmessage.h"
 
 namespace Ui {
 class LIPPostGisConnectionForm;
@@ -15,6 +16,7 @@ class LIPPostGisConnectionForm : public QDialog
 public:
     explicit LIPPostGisConnectionForm(QWidget *parent = nullptr);
     ~LIPPostGisConnectionForm();
+    GDALDataset* returnDataSet();
 
 private slots:
     void on_pushButtonConnect_clicked();
