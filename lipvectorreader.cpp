@@ -258,6 +258,16 @@ QPair<OGRLayer*, GDALDataset*> LIPVectorReader::readOGRLayer(QString filename)
 
 QVector<OGRLayer *> LIPVectorReader::readLayersFromDataset(GDALDataset *ds)
 {
+    QVector<OGRLayer*> layerVector;
+    if (ds==nullptr)
+        return layerVector;
+        //return QVector<OGRLayer*>();
+
+    for(int i=0; i<static_cast<int>(ds->GetLayers().size()); i++)
+    {
+        layerVector.append(ds->GetLayer(i));
+    }
+    return layerVector;
 
 }
 

@@ -62,6 +62,7 @@ GDALDataset* LIPPostGisProvider::readData()
     //qDebug()<< path;
     GDALDataset *ds;
     ds = (GDALDataset *)GDALOpenEx(dbInfo,GDAL_OF_VECTOR | GDAL_OF_UPDATE,nullptr,nullptr,nullptr);
+
     return ds;
 
 }

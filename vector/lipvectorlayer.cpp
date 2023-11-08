@@ -69,6 +69,17 @@ QVector<QString> LIPVectorLayer::getAttributeNames()
 
 }
 
+QRectF LIPVectorLayer::getBoundingBox()
+{
+    OGREnvelope envelope;
+    layer->GetExtent(&envelope, true);
+    qreal minX = envelope.MinX;
+    qreal minY = envelope.MinY;
+    qreal maxX = envelope.MaxX;
+    qreal maxY = envelope.MaxY;
+    return QRectF(minX, minY, maxX - minX, maxY - minY);
+}
+
 QVector<LIPAttribute> LIPVectorLayer::stringValToAttrs(QVector<QString> names, QVector<QString> values, QVector<LIPAttributeType> types)
 {
     QVector<LIPAttribute> attributes;

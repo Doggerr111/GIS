@@ -30,6 +30,7 @@ public:
     QRectF ReadBoundingBox();
     LIPPointLayer* returnLayer();
     static QPair<OGRLayer*, GDALDataset*> readOGRLayer(QString filename);
+    static QVector<OGRLayer*> readLayersFromDataset(GDALDataset *ds);
     static LIPGeometryType readGeometryType(OGRLayer* layer);
     //bool ReadGeometry():
 

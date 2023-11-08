@@ -20,6 +20,7 @@ public:
     virtual void addFeature(QVector<QPointF> coords, QVector<LIPAttribute> attrs);
     QVector<LIPAttributeType> getAttributeTypes();
     QVector<QString> getAttributeNames();
+    QRectF getBoundingBox();
     static QVector<LIPAttribute> stringValToAttrs(QVector<QString> names, QVector<QString> values, QVector<LIPAttributeType> types);
     LIPVectorStyle *getStyle();
     virtual void setMapFeatures();

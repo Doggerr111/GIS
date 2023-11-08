@@ -89,6 +89,8 @@ private slots:
 
     void on_actionConnect_to_PostGIS_triggered();
 
+    void on_pushButtonTriangulationTest_clicked();
+
 signals:
     void start_add();
     void newVectorLayer(LIPVectorLayer*);

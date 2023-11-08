@@ -8,7 +8,7 @@
 #include "lipnewlinelayerform.h"
 #include <QOpenGLWidget>
 #include <QSqlDatabase>
-
+#include <liptriangulation.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -1047,6 +1047,94 @@ void MainWindow::on_actionConnect_to_PostGIS_triggered()
 {
     LIPPostGisConnectionForm* form = new LIPPostGisConnectionForm();
     form->exec();
-    form->returnDataSet();
+    GDALDataset* dS = form->returnDataSet();
+    if (dS==nullptr)
+        return;
+    QVector<OGRLayer*> vect = LIPVectorReader::readLayersFromDataset(dS);
+    for (int i=0; i<vect.count(); i++)
+    {
+        OGRLayer *newLayer=vect.at(i);
+        if (newLayer==nullptr)
+            LIPMessage::getInstance().showMessage(tr("Ошибка чтения слоя"), 1000, messageStatus::Error);
+        LIPGeometryType type = LIPVectorReader::readGeometryType(newLayer);
+        switch (type)
+        {
+        case LIPGeometryType::LIPPoint:
+        {
+            LIPMessage::getInstance().showMessage(tr("Читаем точечный слой"), 1000, messageStatus::Error);
+            //LIPLayerCreator *newLayer = new LIPLayerCreator(type, fileName, name);
+
+            LIPPointLayer *pl = new LIPPointLayer(newLayer,"3", "3", dS);
+
+            emit newVectorLayer(pl);
+            connect(this, SIGNAL(scaleFactorChanged(double)), pl, SLOT(setSceneScaleFactor(double)));
+            LIPTreeWidgetItem *item = new LIPTreeWidgetItem();
+            item->setText(0,"name");
+            item->setCheckState(0,Qt::Unchecked);
+            item->setIcon(0,QIcon(":/ui/icons/pointLayer.png"));
+            item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
+            item->setToolTip(0,"fileName");
+            ui->LayerTree->addTopLevelItem(item);
+            project->addVectorLayer(pl);
+            break;
+       }
+        default:
+        {
+            break;
+        }
+//        case LIPGeometryType::LIPLineString:
+//        {
+////            LIPLineLayer *pl = new LIPLineLayer(newLayer,name, fileName, dS);
+////            emit newVectorLayer(pl);
+////            connect(this, SIGNAL(scaleFactorChanged(double)), pl, SLOT(setSceneScaleFactor(double)));
+////            LIPTreeWidgetItem *item = new LIPTreeWidgetItem();
+////            item->setText(0,name);
+////            item->setCheckState(0,Qt::Unchecked);
+////            item->setIcon(0,QIcon(":/ui/icons/lineLayer.png"));
+////            item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
+////            item->setToolTip(0,fileName);
+////            ui->LayerTree->addTopLevelItem(item);
+////            project->addVectorLayer(pl);
+
+//            break;
+
+
+//        }
+//        case LIPGeometryType::LIPPolygon:
+//        {
+////            LIPPolygonLayer *pl = new LIPPolygonLayer(newLayer,name, fileName, dS);
+////            emit newVectorLayer(pl);
+////            LIPTreeWidgetItem *item = new LIPTreeWidgetItem();
+////            item->setText(0,name);
+////            item->setCheckState(0,Qt::Unchecked);
+////            item->setIcon(0,QIcon(":/ui/icons/polygonLayer.png"));
+////            item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
+////            item->setToolTip(0,fileName);
+////            ui->LayerTree->addTopLevelItem(item);
+////            project->addVectorLayer(pl);
+////            //projectLayers.append(layerForm->returnLayer());
+////            break;
+        }
+        }
+    //}
+}
+
+
+void MainWindow::on_pushButtonTriangulationTest_clicked()
+{
+    //triangulation test
+
+    LIPPointLayer* new_layer= dynamic_cast<LIPPointLayer*>(project->getActiveLayer());
+    QVector<QPointF> pl;
+    pl = triangulate(new_layer);
+    ui->graphicsView->scene()->addPolygon(pl);
+//    QVector<QPointF> p;
+//    for (int i=0; i<new_layer->returnCords().size(); i++)
+//    {
+//        p.append(QPointF(new_layer->returnCords().at(i)->x(),
+//                         new_layer->returnCords().at(i)->y()));
+//    }
+    //LIPTriangulation tr(new_layer);
+
 }
 

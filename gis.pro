@@ -1,6 +1,7 @@
 QT       += core gui sql
 include(vector/vector.pri)
 include(treeView/treeView.pri)
+include(geoprocessing/geoprocessing.pri)
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 
@@ -73,6 +74,8 @@ FORMS += \
     lipvectorstyleform.ui \
     mainwindow.ui
 
+INCLUDEPATH += geoprocessing/
+INCLUDEPATH += vector/
 INCLUDEPATH += /usr/include/gdal
 LIBS += /usr/lib/libgdal.so
 
@@ -85,5 +88,6 @@ RESOURCES += \
     icons.qrc
 
 DISTFILES += \
+    geoprocessing/geoprocessing.pri \
     treeView/treeView.pri \
     vector/test.pri
