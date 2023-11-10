@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowTitle("LIP GIS");
-    project = new LIPProject();
+    LIPProject::getInstance();
     connect(ui->LayerTree, SIGNAL(itemDropped()), this, SLOT(layersOrderChanged()));
     ui->LayerTree->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->LayerTree, SIGNAL(customContextMenuRequested(const QPoint&)),
@@ -191,7 +191,7 @@ void MainWindow::showLayerContextMenu(const QPoint &f)
     QString path=clickedItem->toolTip(0);
     if (path.isEmpty())
         return;
-    LIPVectorLayer* selectedLayer=project->getVectorLayerByPath(path);
+    LIPVectorLayer* selectedLayer=LIPProject::getInstance().getVectorLayerByPath(path);
     if (selectedLayer==nullptr)
         return;
     QMenu menu;
@@ -749,35 +749,86 @@ void MainWindow::on_pushButton_GeoTiff_clicked()
     QString fileName=QFileDialog::getOpenFileName(this,"","");
     QByteArray bytea=fileName.toLocal8Bit();
     const char *charname=bytea.data();
-    GDALDataset* dataset = (GDALDataset*) GDALOpen(charname, GA_ReadOnly);
-    GDALRasterBand  *poBand;
-    int             nBlockXSize, nBlockYSize;
-    int             bGotMin, bGotMax;
-    double          adfMinMax[2];
-    poBand = dataset->GetRasterBand( 1 );
-    poBand->GetBlockSize( &nBlockXSize, &nBlockYSize );
-    adfMinMax[0] = poBand->GetMinimum( &bGotMin );
-    adfMinMax[1] = poBand->GetMaximum( &bGotMax );
-    if( ! (bGotMin && bGotMax) )
-    GDALComputeRasterMinMax((GDALRasterBandH)poBand, TRUE, adfMinMax);float *pafScanline;
-    int   nXSize = poBand->GetXSize();
-    int   nYSize = poBand->GetYSize();
-    pafScanline = (float *) CPLMalloc(sizeof(float)*nXSize * nYSize);
-    poBand->RasterIO( GF_Read, 0, 0, nXSize, nYSize,
-    pafScanline, nXSize, nYSize, GDT_Float32, 0, 0 );
+    GDALAllRegister();
+    GDALDataset* dataset = static_cast<GDALDataset*>(GDALOpen(charname, GA_ReadOnly));
 
-    QImage image((unsigned char*)pafScanline, nXSize, nYSize, QImage::Format_RGB32);
+    // Проверка успешной загрузки файла
+    if (dataset == nullptr) {
+        // Обработка ошибки
+        return;
+    }
 
-    image.save("blaa.jpg");
+    // Получение ширины и высоты изображения
+    int width = dataset->GetRasterXSize();
+    int height = dataset->GetRasterYSize();
 
-    // Создание QGraphicsScene и QGraphicsView
+    // Получение преобразования геопривязки
+    double geoTransform[6];
+    if (dataset->GetGeoTransform(geoTransform) != CE_None) {
+        // Обработка ошибки
+        GDALClose(dataset);
+        return;
+    }
 
 
-    // Создание QGraphicsPixmapItem и добавление его на сцену
+    // Чтение данных растрового изображения
+    GDALRasterBand* band = dataset->GetRasterBand(1);
+    float* buffer = new float[width * height];
+    band->RasterIO(GF_Read, 0, 0, width, height, buffer, width, height, GDT_Float32, 0, 0);
+
+    // Преобразование данных растрового изображения в QPixmap
+    QImage image(reinterpret_cast<unsigned char*>(buffer), width, height, QImage::Format_RGB32);
     QPixmap pixmap = QPixmap::fromImage(image);
-    QGraphicsPixmapItem *pixmapItem = new QGraphicsPixmapItem(pixmap);
-    pixmapItem->setPos(0,0);
-    ui->graphicsView->scene()->addItem(pixmapItem);
+
+    // Создание QGraphicsPixmapItem с преобразованием геопривязки
+    QGraphicsPixmapItem* pixmapItem = scene->addPixmap(pixmap);
+    pixmapItem->setOffset(geoTransform[0], geoTransform[3]);
+    QTransform transform;
+    transform.translate(geoTransform[0], geoTransform[3]);
+    transform.scale(geoTransform[1], geoTransform[5]);
+    pixmapItem->setTransform(transform);
+
+    // Создание QGraphicsView для отображения QGraphicsScene
+
+
+
+
+
+
+
+
+
+
+
+//    GDALDataset* dataset = (GDALDataset*) GDALOpen(charname, GA_ReadOnly);
+//    GDALRasterBand  *poBand;
+//    int             nBlockXSize, nBlockYSize;
+//    int             bGotMin, bGotMax;
+//    double          adfMinMax[2];
+//    poBand = dataset->GetRasterBand( 1 );
+//    poBand->GetBlockSize( &nBlockXSize, &nBlockYSize );
+//    adfMinMax[0] = poBand->GetMinimum( &bGotMin );
+//    adfMinMax[1] = poBand->GetMaximum( &bGotMax );
+//    if( ! (bGotMin && bGotMax) )
+//    GDALComputeRasterMinMax((GDALRasterBandH)poBand, TRUE, adfMinMax);float *pafScanline;
+//    int   nXSize = poBand->GetXSize();
+//    int   nYSize = poBand->GetYSize();
+//    pafScanline = (float *) CPLMalloc(sizeof(float)*nXSize * nYSize);
+//    poBand->RasterIO( GF_Read, 0, 0, nXSize, nYSize,
+//    pafScanline, nXSize, nYSize, GDT_Float32, 0, 0 );
+
+//    QImage image((unsigned char*)pafScanline, nXSize, nYSize, QImage::Format_RGB32);
+
+//    image.save("blaa.jpg");
+
+//    // Создание QGraphicsScene и QGraphicsView
+
+
+//    // Создание QGraphicsPixmapItem и добавление его на сцену
+//    QPixmap pixmap = QPixmap::fromImage(image);
+//    QGraphicsPixmapItem *pixmapItem = new QGraphicsPixmapItem(pixmap);
+//    pixmapItem->setPos(0,0);
+//    ui->graphicsView->scene()->addItem(pixmapItem);
 
 }
 
@@ -855,7 +906,7 @@ void MainWindow::on_actionNew_point_layer_triggered()
     item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
     item->setToolTip(0,fileName);
     ui->LayerTree->addTopLevelItem(item);
-    project->addVectorLayer(new_layer);
+    LIPProject::getInstance().addVectorLayer(new_layer);
 
 
 }
@@ -879,7 +930,7 @@ void MainWindow::on_actionNew_line_layer_triggered() //при нажатии н�
     item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
     item->setToolTip(0,fileName);
     ui->LayerTree->addTopLevelItem(item);
-    project->addVectorLayer(new_layer);
+    LIPProject::getInstance().addVectorLayer(new_layer);
 
 
 
@@ -904,7 +955,7 @@ void MainWindow::on_actionNew_polygon_layer_triggered()
     item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
     item->setToolTip(0,fileName);
     ui->LayerTree->addTopLevelItem(item);
-    project->addVectorLayer(new_layer);
+    LIPProject::getInstance().addVectorLayer(new_layer);
 
 }
 
@@ -939,7 +990,7 @@ void MainWindow::on_actionLoad_vector_layer_triggered()
             item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
             item->setToolTip(0,fileName);
             ui->LayerTree->addTopLevelItem(item);
-            project->addVectorLayer(pl);
+            LIPProject::getInstance().addVectorLayer(pl);
             //pl->setMapFeatures(); //для создания графических айтемов
 
 
@@ -958,7 +1009,7 @@ void MainWindow::on_actionLoad_vector_layer_triggered()
             item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
             item->setToolTip(0,fileName);
             ui->LayerTree->addTopLevelItem(item);
-            project->addVectorLayer(pl);
+            LIPProject::getInstance().addVectorLayer(pl);
 
             break;
 
@@ -975,7 +1026,7 @@ void MainWindow::on_actionLoad_vector_layer_triggered()
             item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
             item->setToolTip(0,fileName);
             ui->LayerTree->addTopLevelItem(item);
-            project->addVectorLayer(pl);
+            LIPProject::getInstance().addVectorLayer(pl);
             //projectLayers.append(layerForm->returnLayer());
             break;
         }
@@ -999,7 +1050,7 @@ void MainWindow::layersOrderChanged()
     {
         QTreeWidgetItem *item = ui->LayerTree->topLevelItem(i);
         QString path = item->toolTip(0); //получаем имя файла
-        LIPVectorLayer *layer = project->getVectorLayerByPath(path);
+        LIPVectorLayer *layer = LIPProject::getInstance().getVectorLayerByPath(path);
         if (layer!=nullptr)
         {
             QMessageBox::information(this,"","");
@@ -1013,8 +1064,8 @@ void MainWindow::layersOrderChanged()
 
 void MainWindow::on_LayerTree_itemActivated(QTreeWidgetItem *item, int column) //выбор пользователем активного слоя
 {
-    //LIPVectorLayer *layer = project->getVectorLayerByPath(item->toolTip(0)); //получаем элемент по пути к файлу
-    if (project->setActiveLayer(project->getVectorLayerByPath(item->toolTip(0))))
+    //LIPVectorLayer *layer = LIPProject::getInstance().getVectorLayerByPath(item->toolTip(0)); //получаем элемент по пути к файлу
+    if (LIPProject::getInstance().setActiveLayer(LIPProject::getInstance().getVectorLayerByPath(item->toolTip(0))))
     {
         QMessageBox::information(this,"","");
     }
@@ -1026,7 +1077,7 @@ void MainWindow::on_pushButton_addPointFeature_clicked(bool checked)
     if (checked)
     {
         ui->graphicsView->setCursor(Qt::CrossCursor);
-        LIPVectorLayer *tL = project->getActiveLayer();
+        LIPVectorLayer *tL = LIPProject::getInstance().getActiveLayer();
         if (tL!=nullptr)
             scene->startAddFeatures(tL);
         else
@@ -1075,7 +1126,7 @@ void MainWindow::on_actionConnect_to_PostGIS_triggered()
             item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
             item->setToolTip(0,"fileName");
             ui->LayerTree->addTopLevelItem(item);
-            project->addVectorLayer(pl);
+            LIPProject::getInstance().addVectorLayer(pl);
             break;
        }
         default:
@@ -1094,7 +1145,7 @@ void MainWindow::on_actionConnect_to_PostGIS_triggered()
 ////            item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
 ////            item->setToolTip(0,fileName);
 ////            ui->LayerTree->addTopLevelItem(item);
-////            project->addVectorLayer(pl);
+////            LIPProject::getInstance().addVectorLayer(pl);
 
 //            break;
 
@@ -1111,7 +1162,7 @@ void MainWindow::on_actionConnect_to_PostGIS_triggered()
 ////            item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
 ////            item->setToolTip(0,fileName);
 ////            ui->LayerTree->addTopLevelItem(item);
-////            project->addVectorLayer(pl);
+////            LIPProject::getInstance().addVectorLayer(pl);
 ////            //projectLayers.append(layerForm->returnLayer());
 ////            break;
         }
@@ -1124,17 +1175,114 @@ void MainWindow::on_pushButtonTriangulationTest_clicked()
 {
     //triangulation test
 
-    LIPPointLayer* new_layer= dynamic_cast<LIPPointLayer*>(project->getActiveLayer());
+    LIPPointLayer* new_layer= dynamic_cast<LIPPointLayer*>(LIPProject::getInstance().getActiveLayer());
     QVector<QPointF> pl;
     pl = triangulate(new_layer);
-    ui->graphicsView->scene()->addPolygon(pl);
-//    QVector<QPointF> p;
-//    for (int i=0; i<new_layer->returnCords().size(); i++)
-//    {
-//        p.append(QPointF(new_layer->returnCords().at(i)->x(),
-//                         new_layer->returnCords().at(i)->y()));
-//    }
-    //LIPTriangulation tr(new_layer);
+    //    QString name = QFileDialog::getSaveFileName(this,"","");
+    //    LIPLayerCreator *polyCreator = new LIPLayerCreator(LIPGeometryType::LIPPolygon, name,"triangulatiuons");
+    //    LIPPolygonLayer *l = dynamic_cast<LIPPolygonLayer*>(polyCreator->returnLayer());
+
+
+    LIPNewLineLayerForm *layerForm = new LIPNewLineLayerForm(nullptr, LIPGeometryType::LIPPolygon);
+    layerForm->exec();
+
+    LIPPolygonLayer* poly= dynamic_cast<LIPPolygonLayer*>(layerForm->returnLayer());
+    connect(this, SIGNAL(scaleFactorChanged(double)), poly, SLOT(setSceneScaleFactor(double)));
+    QString name=poly->returnGISName();
+    QString fileName = poly->getFileName();
+
+
+    LIPTreeWidgetItem *item = new LIPTreeWidgetItem();
+    item->setText(0,name);
+    item->setCheckState(0,Qt::Unchecked);
+    item->setIcon(0,QIcon(":/ui/icons/polygonLayer.png"));
+    item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
+    item->setToolTip(0,fileName);
+    ui->LayerTree->addTopLevelItem(item);
+    LIPProject::getInstance().addVectorLayer(poly);
+
+
+
+//    LIPNewLineLayerForm *form = new LIPNewLineLayerForm();
+//    form->exec();
+//    LIPPolygonLayer *l = dynamic_cast<LIPPolygonLayer*>(form->returnLayer());
+//    if (!l)
+//        QMessageBox::warning(this,"","nullprt layer program crash!");
+
+//    emit newVectorLayer(l);
+//    connect(this, SIGNAL(scaleFactorChanged(double)), l, SLOT(setSceneScaleFactor(double)));
+//    LIPTreeWidgetItem *item = new LIPTreeWidgetItem();
+//    item->setText(0,"");
+//    item->setCheckState(0,Qt::Unchecked);
+//    item->setIcon(0,QIcon(":/ui/icons/pointLayer.png"));
+//    item->setFlags(item->flags() | Qt::ItemIsDragEnabled );
+//    item->setToolTip(0,"");
+//    ui->LayerTree->addTopLevelItem(item);
+//    LIPProject::getInstance().addVectorLayer(l);
+
+
+        int i =0;
+        while(i<pl.size()-2)
+        {
+            QVector<QPointF> vec;
+            vec.append( QPointF(pl[i]));
+            vec.append( QPointF(pl[i+1]));
+            vec.append( QPointF(pl[i+2]));
+            qDebug()<<pl[i];
+            poly->addFeature(vec, QVector<LIPAttribute>());
+            i=i+3;
+        }
+        poly->setMapFeatures();
+        scene->drawVectorLayer(poly);
+        QVector<LIPTriangle> ti;
+
+
+}
+
+
+void MainWindow::on_pushButton_7_clicked()
+{
+//    LIPTriangle tr;
+//    QVector<QPointF> vect;
+//    vect.append(QPointF(10,10));
+//    vect.append(QPointF(20,20));
+//    vect.append(QPointF(10,30));
+//    tr.setVertex(QPointF(10,10), QPointF(20,20), QPointF(10,30));
+
+//    scene->addPolygon(QPolygonF(vect));
+
+//    LIPCircle c= tr.getCircumcircle();
+//    qreal left = c.getCenter().x() - c.getRadis();
+//    qreal top = c.getCenter().y() - c.getRadis();
+//    QRectF ellipseRect(left, top, 2*c.getRadis(), 2*c.getRadis());
+//    scene->addEllipse(ellipseRect);
+//    //находим середины сторон
+//    QPointF AB_center=QPointF((tr.getA().x() + tr.getB().x()) / 2, (tr.getA().y() + tr.getB().y()) / 2);
+//    QPointF ВС_center=QPointF((tr.getB().x() + tr.getC().x()) / 2, (tr.getB().y() + tr.getC().y()) / 2);
+//    QPointF AC_center=QPointF((tr.getA().x() + tr.getC().x()) / 2, (tr.getA().y() + tr.getC().y()) / 2);
+
+//    //находим уравнения прямых
+//    // Находим угловой коэффициент прямой, перпендикулярной AB
+//    double slopeAB = (tr.getB().x() - tr.getA().x()) / (tr.getA().y() - tr.getB().y());
+//    // Находим угловой коэффициент прямой, перпендикулярной BC
+//    double slopeBC = (tr.getC().x() - tr.getB().x()) / (tr.getB().y() - tr.getC().y());
+
+//    // Находим x-координату центра пересечения перпендикуляров
+//    QPointF centroid;
+//    centroid.setX((slopeAB * AB_center.x() - slopeBC * ВС_center.x() + ВС_center.y() - AB_center.y())/ (slopeAB - slopeBC));
+//    // Находим y-координату центра пересечения перпендикуляров
+//    centroid.setY(slopeAB * (centroid.x() - AB_center.x()) + AB_center.y());
+
+
+
+
+//    centroid.setX((tr.getA().x()+tr.getB().x()+tr.getC().x())/3);
+//    centroid.setY((tr.getA().y()+tr.getB().y()+tr.getC().y())/3);
+//    scene->addPolygon(QRectF(centroid.x(), centroid.y(), 0.1, 0.1));
+
+    QPointF f(123,1);
+    //LIPVectorConvertor::QPointFtoGeosPoint(f);
+
 
 }
 

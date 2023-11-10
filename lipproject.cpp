@@ -1,8 +1,10 @@
 #include "lipproject.h"
 #include "QDebug"
-LIPProject::LIPProject()
-{
 
+LIPProject &LIPProject::getInstance()
+{
+    static LIPProject instance;
+    return instance;
 }
 
 void LIPProject::addVectorLayer(LIPVectorLayer *vect)
@@ -104,6 +106,8 @@ LIPVectorLayer* LIPProject::getActiveLayer()
         return nullptr;
     }
 }
+
+
 
 void LIPProject::redrawNeeded(double f)
 {

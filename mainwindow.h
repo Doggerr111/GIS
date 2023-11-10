@@ -1,6 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+#include "lipvectorconvertor.h"
 #include <QMainWindow>
 #include <lipvectorreader.h>
 #include <QFileDialog>
@@ -34,6 +34,7 @@
 #include "lipvectorstyleform.h"
 #include <lippostgisconnectionform.h>
 #include <lipmessage.h>
+#include <algorithm>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -91,6 +92,8 @@ private slots:
 
     void on_pushButtonTriangulationTest_clicked();
 
+    void on_pushButton_7_clicked();
+
 signals:
     void start_add();
     void newVectorLayer(LIPVectorLayer*);
@@ -112,7 +115,7 @@ private:
     QVector<LIPPoint*> pVect;
     QVector<LIPVectorLayer*> projectLayers;
     LIPObjectTreeModel* layerModel;
-    LIPProject* project;
+    //LIPProject* project;
     LIPMapScene *scene;
 //    QTime m_time;
 //    int m_frameCount;

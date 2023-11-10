@@ -6,7 +6,7 @@ class LIPProject : public QObject
 {
     Q_OBJECT
 public:
-    LIPProject();
+    static LIPProject &getInstance();
     void addVectorLayer(LIPVectorLayer* vect);
     void addVectorLayers(QVector<LIPVectorLayer*> vects);
     void setVectorLayers(QVector<LIPVectorLayer*> vects);
@@ -25,6 +25,12 @@ public slots:
 private:
     LIPVectorLayer* activeLayer; //
     QVector<LIPVectorLayer*> vectorLayers;
+
+private:
+    LIPProject() = default;
+    ~LIPProject() = default;
+    LIPProject(const LIPProject&) = delete;
+    LIPProject& operator=(const LIPProject&) = delete;
 
 };
 
