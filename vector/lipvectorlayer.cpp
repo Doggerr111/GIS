@@ -30,6 +30,11 @@ void LIPVectorLayer::addFeature(QVector<QPointF> coords, QVector<LIPAttribute> a
 
 }
 
+void LIPVectorLayer::setVisible(bool)
+{
+
+}
+
 QVector<LIPAttributeType> LIPVectorLayer::getAttributeTypes()
 {
     OGRFeatureDefn* featureDefn = layer->GetLayerDefn();
@@ -136,6 +141,11 @@ LIPVectorStyle *LIPVectorLayer::getStyle()
 void LIPVectorLayer::setMapFeatures()
 {
 
+}
+
+OGRLayer *LIPVectorLayer::getOGRLayer()
+{
+    return layer;
 }
 
 void LIPVectorLayer::setSceneScaleFactor(double factor)

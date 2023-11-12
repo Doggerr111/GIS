@@ -17,6 +17,7 @@ public:
     void setFileName(QString path);
     QString getFileName();
     void setMapFeatures() override;
+    void setVisible(bool = true) override;
     QVector<LIPPolygonGraphicsItem*> returnMapFeatures();
     void addFeature(QVector<QPointF> coords, QVector<LIPAttribute> attrs) override;
     void setStyle(LIPVectorStyle *style);

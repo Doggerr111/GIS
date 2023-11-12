@@ -46,6 +46,10 @@ private:
     // LIPVectorLayer interface
 public:
     void addFeature(QVector<QPointF> coords, QVector<LIPAttribute> attrs);
+
+    // LIPVectorLayer interface
+public:
+    void setVisible(bool=true) override;
 };
 
 #endif // LIPLINELAYER_H

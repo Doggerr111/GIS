@@ -35,6 +35,7 @@
 #include <lippostgisconnectionform.h>
 #include <lipmessage.h>
 #include <algorithm>
+#include <lipcutlayerform.h>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -47,8 +48,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void sceneInitialization();
+    void addLayer(LIPVectorLayer* l);
 
 private slots:
+    void layerTreeDataChanged(QTreeWidgetItem *item, int column);
     void on_pushButton_clicked();
 
     void on_pushButton_2_clicked();

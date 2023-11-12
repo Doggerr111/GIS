@@ -181,3 +181,18 @@ void LIPPointLayer::setSceneScaleFactor(double factor)
         item->setScaleFactor(mScaleFactor);
     }
 }
+
+
+void LIPPointLayer::setVisible(bool isVisible)
+{
+    if (isVisible)
+    {
+        foreach(LIPPointGraphicsItem *item, mapFeatures)
+            item->setVisible(true);
+    }
+    else
+    {
+        foreach(LIPPointGraphicsItem *item, mapFeatures)
+            item->setVisible(false);
+    }
+}

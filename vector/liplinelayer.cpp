@@ -149,3 +149,18 @@ QVector<LIPLineGraphicsItem *> LIPLineLayer::returnMapFeatures()
 void LIPLineLayer::addFeature(QVector<QPointF> coords, QVector<LIPAttribute> attrs)
 {
 }
+
+
+void LIPLineLayer::setVisible(bool isVisible)
+{
+    if (isVisible)
+    {
+        foreach(LIPLineGraphicsItem *item, mapFeatures)
+            item->setVisible(true);
+    }
+    else
+    {
+        foreach(LIPLineGraphicsItem *item, mapFeatures)
+            item->setVisible(false);
+    }
+}

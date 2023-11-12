@@ -42,6 +42,10 @@ private:
 
 
 
+
+    // LIPVectorLayer interface
+public:
+    void setVisible(bool=true) override;
 };
 
 #endif // LIPPOINTLAYER_H

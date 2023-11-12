@@ -72,6 +72,7 @@ QString LIPPolygonLayer::getFileName()
 
 void LIPPolygonLayer::setMapFeatures()
 {
+    mapFeatures.clear();
     QVector<QVector<LIPPoint*>> vect = returnCords();
     mStyle=LIPVectorStyle::createDefaultVectorStyle(LIPGeometryType::LIPPolygon);
     for (int i=0; i<vect.size(); i++)
@@ -84,6 +85,20 @@ void LIPPolygonLayer::setMapFeatures()
         qDebug()<<mapFeatures.at(i);
     }
 
+}
+
+void LIPPolygonLayer::setVisible(bool isVisible)
+{
+    if (isVisible)
+    {
+        foreach(LIPPolygonGraphicsItem *item, mapFeatures)
+            item->setVisible(true);
+    }
+    else
+    {
+        foreach(LIPPolygonGraphicsItem *item, mapFeatures)
+            item->setVisible(false);
+    }
 }
 
 QVector<LIPPolygonGraphicsItem*> LIPPolygonLayer::returnMapFeatures()
@@ -147,7 +162,7 @@ void LIPPolygonLayer::addFeature(QVector<QPointF> coords, QVector<LIPAttribute> 
     layer->SetSpatialFilter(nullptr);
     er1= layer->CommitTransaction();
     layer->SyncToDisk();
-    setMapFeatures();
+    //setMapFeatures();
     //GDALClose(layer);
 
     OGRFeature::DestroyFeature(newFeature);
