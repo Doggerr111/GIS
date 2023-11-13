@@ -9,10 +9,14 @@ public:
     QString getName() const;
     LIPAttributeType getType() const;
     QVariant getValue() const;
+
+    void setName(QString name);
+    void setType(LIPAttributeType type);
+    void setValue(QVariant value);
 private:
-    QString name;
-    LIPAttributeType type;
-    QVariant value;
+    QString mName;
+    LIPAttributeType mType;
+    QVariant mValue;
 
 
 
