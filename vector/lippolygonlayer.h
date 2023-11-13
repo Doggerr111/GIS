@@ -12,6 +12,7 @@ class LIPPolygonLayer: public LIPVectorLayer
 {
 public:
     LIPPolygonLayer(OGRLayer *l, QString name, QString fileName, GDALDataset* ds);
+    ~LIPPolygonLayer();
     QString returnGISName() override;
     QVector<QVector<LIPPoint*>>  returnCords();
     void setFileName(QString path);

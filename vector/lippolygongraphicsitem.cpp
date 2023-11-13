@@ -17,7 +17,7 @@ void LIPPolygonGraphicsItem::setPoints(QVector<LIPPoint *> points)
 
 QRectF LIPPolygonGraphicsItem::boundingRect() const
 {
-    return(QRectF(0,0,180,180));
+    return(QPolygonF(vect).boundingRect());
 }
 
 void LIPPolygonGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

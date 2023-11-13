@@ -10,6 +10,7 @@ class LIPPolygonGraphicsItem : public LIPGraphicsItem
 {
 public:
     LIPPolygonGraphicsItem();
+    ~LIPPolygonGraphicsItem() = default;
     void setPoints(QVector<LIPPoint*> points);
 private:
     QVector<QPointF> vect;

@@ -9,7 +9,7 @@ class LIPPointGraphicsItem: public LIPGraphicsItem
 {
 public:
     LIPPointGraphicsItem();
-
+    ~LIPPointGraphicsItem();
     // QGraphicsItem interface
 public:
     QRectF boundingRect() const;

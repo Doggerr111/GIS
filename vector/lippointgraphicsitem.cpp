@@ -6,6 +6,11 @@ LIPPointGraphicsItem::LIPPointGraphicsItem()
 
 }
 
+LIPPointGraphicsItem::~LIPPointGraphicsItem()
+{
+    delete p;
+}
+
 QRectF LIPPointGraphicsItem::boundingRect() const
 {
     return QRectF(p->x()-(mPointSize/2)/mSceneScale, p->y()-(mPointSize/2)/mSceneScale,(mPointSize/2)/mSceneScale,(mPointSize/2)/mSceneScale);

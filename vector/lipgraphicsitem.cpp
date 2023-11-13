@@ -12,6 +12,11 @@ LIPGraphicsItem::LIPGraphicsItem()
     mStyle->setPointSize(1);
 }
 
+LIPGraphicsItem::~LIPGraphicsItem()
+{
+
+}
+
 void LIPGraphicsItem::setPen(QPen pen)
 {
     mPen=pen;

@@ -15,6 +15,7 @@ public:
      * \brief Данный конструктор применяется, если мы создаем новый слой
      */
     LIPLineLayer(OGRLayer *l, QString name, QString fileName, GDALDataset* ds);
+    ~LIPLineLayer();
     /**
      * \brief Данный конструктор применяется, если мы загружаем слой
      */

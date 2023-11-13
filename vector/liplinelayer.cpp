@@ -12,6 +12,23 @@ LIPLineLayer::LIPLineLayer(OGRLayer *l, QString name, QString fileName, GDALData
     }
 }
 
+LIPLineLayer::~LIPLineLayer()
+{
+    for(int i=0; i<mapFeatures.size(); i++)
+    {
+        delete mapFeatures.at(i);
+    }
+    foreach(QVector<LIPPoint*> vec, coordinates)
+    {
+        foreach(LIPPoint* point, vec)
+        {
+            delete point;
+        }
+    }
+    mapFeatures.clear();
+    coordinates.clear();
+}
+
 LIPLineLayer::LIPLineLayer(QString fileName)
     : LIPVectorLayer(nullptr, fileName, nullptr)
 {

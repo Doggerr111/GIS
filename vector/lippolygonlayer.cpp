@@ -9,8 +9,26 @@ LIPPolygonLayer::LIPPolygonLayer(OGRLayer *l, QString name, QString path, GDALDa
 
 }
 
+LIPPolygonLayer::~LIPPolygonLayer()
+{
+    for(int i=0; i<mapFeatures.size(); i++)
+    {
+        delete mapFeatures.at(i);
+    }
+    foreach(QVector<LIPPoint*> vec, coordinates)
+    {
+        foreach(LIPPoint* point, vec)
+        {
+            delete point;
+        }
+    }
+    mapFeatures.clear();
+    coordinates.clear();
+}
+
 QString LIPPolygonLayer::returnGISName()
 {
+
     return GISName;
 
 }

@@ -8,6 +8,22 @@ LIPPointLayer::LIPPointLayer(OGRLayer *l, QString name, QString fileName, GDALDa
 
 }
 
+LIPPointLayer::~LIPPointLayer()
+{
+    for(int i=0; i<mapFeatures.size(); i++)
+    {
+        delete mapFeatures.at(i);
+    }
+
+    foreach(LIPPoint* point, coordinates)
+    {
+        delete point;
+    }
+
+    mapFeatures.clear();
+    coordinates.clear();
+}
+
 QString LIPPointLayer::returnGISName()
 {
     return GISName;
