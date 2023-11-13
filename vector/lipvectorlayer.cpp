@@ -22,7 +22,12 @@ QString LIPVectorLayer::returnFileName()
 
 LIPVectorLayer::~LIPVectorLayer()
 {
-    delete this;
+    mStyle=nullptr;
+    delete mStyle;
+    dS=nullptr;
+    GDALClose(dS);
+    layer=nullptr;
+    delete layer;
 }
 
 void LIPVectorLayer::addFeature(QVector<QPointF> coords, QVector<LIPAttribute> attrs)

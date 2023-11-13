@@ -9,6 +9,7 @@ class LIPGraphicsItem : public QGraphicsItem
 
 public:
     LIPGraphicsItem();
+    ~LIPGraphicsItem();
     void setPen(QPen pen);
     void setBrush(QBrush brush);
     void setVectorStyle(LIPVectorStyle*);

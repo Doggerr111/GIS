@@ -5,6 +5,11 @@ LIPVectorStyle::LIPVectorStyle()
 
 }
 
+LIPVectorStyle::~LIPVectorStyle()
+{
+
+}
+
 void LIPVectorStyle::setStyleUnit(LIPStyleUnit unit)
 {
     mStyleUnit=unit;

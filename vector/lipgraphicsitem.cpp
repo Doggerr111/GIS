@@ -1,5 +1,5 @@
 #include "lipgraphicsitem.h"
-
+#include "qmessagebox.h"
 LIPGraphicsItem::LIPGraphicsItem()
     : mSceneScale{1.0}
 {
@@ -14,7 +14,8 @@ LIPGraphicsItem::LIPGraphicsItem()
 
 LIPGraphicsItem::~LIPGraphicsItem()
 {
-
+    mStyle=nullptr;
+    delete mStyle;
 }
 
 void LIPGraphicsItem::setPen(QPen pen)

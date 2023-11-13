@@ -11,6 +11,7 @@ class LIPVectorStyle
 {
 public:
     LIPVectorStyle();
+    ~LIPVectorStyle();
     void setStyleUnit(LIPStyleUnit units);
     void setPen(QPen pen);
     void setWidthMM(double width);
@@ -27,7 +28,7 @@ public:
 public:
     static double pixelToMM(double pix);
     static double MMToPixel(double mm);
-    /** Формирует стандатрный стиль для векторного слоя в
+    /** Формирует стандарnный стиль для векторного слоя в
      *  зависсимости от типа геометрии*/
     static LIPVectorStyle* createDefaultVectorStyle(LIPGeometryType type);
 private:
@@ -38,9 +39,6 @@ private:
     QBrush mBrush;
     double mSceneScaleFact;
     double mPointSize;
-
-
-
 
 };
 

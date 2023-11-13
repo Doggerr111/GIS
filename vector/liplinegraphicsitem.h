@@ -8,7 +8,7 @@ class LIPLineGraphicsItem : public LIPGraphicsItem
 {
 public:
     LIPLineGraphicsItem();
-    ~LIPLineGraphicsItem() = default;
+    ~LIPLineGraphicsItem();
     void setPoints(QVector<LIPPoint*> points);
 private:
     QVector<QPointF> vect;

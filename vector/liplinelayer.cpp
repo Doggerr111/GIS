@@ -100,7 +100,7 @@ QVector<QVector<LIPPoint*>>  LIPLineLayer::returnCords()
                         point->setX(line->getX(i));
                         point->setY(line->getY(i));
                         vect.append(point);
-                        qDebug()<<"wkbLineString %d: x=%g y=%g z=%g\n", i, line->getX(i), line->getY(i), line->getZ(i);
+                        //qDebug()<<"wkbLineString %d: x=%g y=%g z=%g\n", i, line->getX(i), line->getY(i), line->getZ(i);
                     }
                     coordinates.append(vect);
 

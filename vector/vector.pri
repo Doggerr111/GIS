@@ -17,6 +17,7 @@ SOURCES += \
         $$PWD/lippolygongraphicsitem.cpp \
         $$PWD/lippolygonlayer.cpp \
         $$PWD/liptemporarygraphicsitem.cpp \
+        $$PWD/lipvectorconvertor.cpp \
         $$PWD/lipvectorlayer.cpp \
         $$PWD/lipvectorstyle.cpp \
         vector/lippointlayer.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
         $$PWD/lippolygongraphicsitem.h \
         $$PWD/lippolygonlayer.h \
         $$PWD/liptemporarygraphicsitem.h \
+        $$PWD/lipvectorconvertor.h \
         $$PWD/lipvectorlayer.h \
         $$PWD/lipvectorstyle.h \
         vector/lippointlayer.h \
@@ -40,6 +42,7 @@ HEADERS += \
 
 INCLUDEPATH += /usr/include/gdal
 LIBS += /usr/lib/libgdal.so
+LIBS += /usr/lib/x86_64-linux-gnu/libgeos.so
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

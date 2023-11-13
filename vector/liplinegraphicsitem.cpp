@@ -1,8 +1,14 @@
 #include "liplinegraphicsitem.h"
 
 LIPLineGraphicsItem::LIPLineGraphicsItem()
+    :   LIPGraphicsItem()
 {
     mPen.setWidthF(LIPVectorStyle::MMToPixel(1)/mSceneScale);
+
+}
+
+LIPLineGraphicsItem::~LIPLineGraphicsItem()
+{
 
 }
 
