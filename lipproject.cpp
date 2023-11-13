@@ -57,6 +57,21 @@ void LIPProject::setActiveLayer(QString name)
     }
 }
 
+void LIPProject::deleteVectorByPath(QString path)
+{
+    for (int i=0;i<vectorLayers.size();i++)
+    {
+        if (vectorLayers.at(i)->returnFileName()==path)
+        {
+
+            delete vectorLayers.at(i);
+            vectorLayers.removeAt(i);
+            //
+            //vectorLayers.erase(1);
+        }
+    }
+}
+
 QVector<LIPVectorLayer *> LIPProject::getVectorLayers()
 {
     return vectorLayers;
