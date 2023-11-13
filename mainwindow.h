@@ -68,6 +68,7 @@ private slots:
 
     void showContextMenu(QPoint p);
 
+
     void test(QPointF p);
     void on_treeView_clicked(const QModelIndex &index);
 
@@ -105,6 +106,7 @@ signals:
 public slots:
     void redrawNeeded(double);
     void showLayerContextMenu(const QPoint&);
+    void deleteVector(LIPVectorLayer* layer, QTreeWidgetItem* item);
 
 
 private:

@@ -261,6 +261,7 @@ void MainWindow::redrawNeeded(double f)
 
 void MainWindow::showLayerContextMenu(const QPoint &f)
 {
+    QMessageBox::information(this,"1","1");
     QTreeWidgetItem *clickedItem=ui->LayerTree->itemAt(f);
     if (clickedItem==nullptr)
         return;
@@ -271,6 +272,7 @@ void MainWindow::showLayerContextMenu(const QPoint &f)
     if (selectedLayer==nullptr)
         return;
     QMenu menu;
+    QMessageBox::information(this,"2","2");
     // Создаем пункт меню
     QAction* actionProperties = new QAction(QString::fromUtf8("Свойства"), this);
     // добавляем пункт в меню
@@ -284,11 +286,48 @@ void MainWindow::showLayerContextMenu(const QPoint &f)
         LIPVectorStyleForm* form = new LIPVectorStyleForm(nullptr,selectedLayer);
         form->exec();
     });
+    menu.addAction(actionStyle);
+    QMessageBox::information(this,"3","3");
+    QAction* actionDelete = new QAction(QString::fromUtf8("Удалить"), this);
+
+    connect(actionDelete, &QAction::triggered, this, [selectedLayer, clickedItem, this]() {
+
+        for(int i=0; i<LIPProject::getInstance().getVectorLayers().size();i++)
+        {
+            if (LIPProject::getInstance().getVectorLayers().at(i)==selectedLayer)
+            {
+                LIPProject::getInstance().deleteVectorByPath(selectedLayer->returnFileName());
+
+                QTreeWidgetItem *parent = clickedItem->parent();
+                int index;
+                if (parent) {
+                    index = parent->indexOfChild(clickedItem);
+                    delete parent->takeChild(index);
+                }
+                else {
+                    index = ui->LayerTree->indexOfTopLevelItem(clickedItem);
+                    delete ui->LayerTree->takeTopLevelItem(index);
+                }
+                //delete clickedItem;
+
+
+            }
+        }
+    });
+    QMessageBox::information(this,"4","4");
+    menu.addAction(actionDelete);
     menu.show();
     menu.exec(ui->LayerTree->mapToGlobal(f));
+    QMessageBox::information(this,"5","5");
     delete actionProperties;
     delete actionStyle;
+    delete actionDelete;
 
+
+}
+
+void MainWindow::deleteVector(LIPVectorLayer *layer, QTreeWidgetItem *item)
+{
 
 }
 
@@ -350,7 +389,7 @@ void MainWindow::on_pushButton_2_clicked()
                 OGRLineString *line = (OGRLineString *)poGeometry;
                 for (int i = 0; i < line->getNumPoints(); i++)
                 {
-                    qDebug()<<"wkbLineString %d: x=%g y=%g z=%g\n", i, line->getX(i), line->getY(i), line->getZ(i);
+                    //qDebug()<<"wkbLineString %d: x=%g y=%g z=%g\n", i, line->getX(i), line->getY(i), line->getZ(i);
                 }
                 break;
             }
@@ -360,7 +399,7 @@ void MainWindow::on_pushButton_2_clicked()
                 OGRLinearRing *ring = (OGRLinearRing *)poly->getExteriorRingCurve();
                 for (int i = 0; i < ring->getNumPoints(); i++)
                 {
-                    qDebug()<<"wkbPolygon %d: x=%g y=%g z=%g\n" +QString::number(i) + QString::number( ring->getX(i)), ring->getY(i), ring->getZ(i);
+                    //qDebug()<<"wkbPolygon %d: x=%g y=%g z=%g\n" +QString::number(i) + QString::number( ring->getX(i)), ring->getY(i), ring->getZ(i);
                 }
                 break;
             }
@@ -663,6 +702,8 @@ void MainWindow::showContextMenu(QPoint p)
     menu.show();
     menu.exec(globalPos);
 }
+
+
 
 void MainWindow::test(QPointF point)
 {
