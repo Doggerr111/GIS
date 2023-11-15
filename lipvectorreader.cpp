@@ -224,10 +224,7 @@ QRectF LIPVectorReader::ReadBoundingBox()
 
 }
 
-LIPPointLayer* LIPVectorReader::returnLayer()
-{
-    return layer;
-}
+
 
 QPair<OGRLayer*, GDALDataset*> LIPVectorReader::readOGRLayer(QString filename)
 {
@@ -295,5 +292,43 @@ LIPGeometryType LIPVectorReader::readGeometryType(OGRLayer *layer)
     default:
         break;
     }
+
+}
+
+std::map<int, QVector<LIPAttribute>>LIPVectorReader::readAttributes(OGRLayer *shpLayer)
+{
+    std::map<int, QVector<LIPAttribute>> f;
+
+    OGRFeature *shpFeature;
+    shpLayer->ResetReading();
+    int counter=0;
+    //qDebug()<<shpLayer->GetSpatialRef()->GetEPSGGeogCS();
+    while ((shpFeature = shpLayer->GetNextFeature()) != NULL)
+    {
+        qDebug()<<QString::number(counter);
+
+        OGRFeatureDefn *poFDefn = shpLayer->GetLayerDefn();
+        int iField;
+        QVector<LIPAttribute> attrs;
+        for (iField = 0; iField < poFDefn->GetFieldCount(); iField++)
+        {
+
+            OGRFieldDefn *poFieldDefn = poFDefn->GetFieldDefn(iField);
+            if (poFieldDefn->GetType() == OFTInteger)
+                attrs.append(LIPAttribute(poFieldDefn->GetNameRef(),LIPAttributeType::INT32, shpFeature->GetFieldAsInteger(iField)));
+            else if (poFieldDefn->GetType() == OFTInteger64)
+                attrs.append(LIPAttribute(poFieldDefn->GetNameRef(),LIPAttributeType::INT32, shpFeature->GetFieldAsInteger64(iField)));
+            else if (poFieldDefn->GetType() == OFTReal)
+                attrs.append(LIPAttribute(poFieldDefn->GetNameRef(),LIPAttributeType::Real, shpFeature->GetFieldAsDouble(iField)));
+            else if (poFieldDefn->GetType() == OFTString)
+                attrs.append(LIPAttribute(poFieldDefn->GetNameRef(),LIPAttributeType::String, shpFeature->GetFieldAsString(iField)));
+            else
+                attrs.append(LIPAttribute(poFieldDefn->GetNameRef(),LIPAttributeType::String, shpFeature->GetFieldAsString(iField)));
+        }
+        f.insert(std::make_pair(counter, attrs));
+        attrs.clear();
+        counter++;
+    }
+    return f;
 
 }

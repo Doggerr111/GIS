@@ -13,12 +13,14 @@ public:
     bool setActiveLayer(LIPVectorLayer* vect);
     void setActiveLayer(int index);
     void setActiveLayer(QString name);
+    void deleteVectorByPath(QString path);
 
     QVector<LIPVectorLayer*> getVectorLayers();
     LIPVectorLayer* getVecorLayerByIndx(int index);
     LIPVectorLayer* getVectorLayerByName(QString name);
     LIPVectorLayer* getVectorLayerByPath(QString path);
     LIPVectorLayer* getActiveLayer();
+
 
 public slots:
     void redrawNeeded(double);

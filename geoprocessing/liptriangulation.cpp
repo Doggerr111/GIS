@@ -41,7 +41,7 @@ void LIPTriangulation::addPoint(const QPointF &vec)
 //    {
 //        if (triIter->isBad)
 //        {
-//            qDebug() << "已经erase了，为啥还有isBad" << rhha;
+//            qDebug() << "е·Із»Џeraseдє†пјЊдёєе•Ґиїжњ‰isBad" << rhha;
 //        }
 //        rhha++;
 //    }
@@ -95,8 +95,8 @@ QVector<LIPTriangle> LIPTriangulation::getTriangulation()
 
 LIPTriangle LIPTriangulation::createSuperTriangle(const QVector<QPointF> &inputs)
 {
-    if (super)
-        delete super;
+    //if (super)
+        //delete super;
 
     // get minX minY maxX maxY of input vertexs.
     double minX = inputs[0].x();
@@ -140,7 +140,7 @@ QVector<QPointF> triangulate(LIPPointLayer *layer)
     for (QPointF* pointer : layer->returnCords()) {
             if (pointer) {
                 LIPPoint value;
-                // Пример копирования свойств
+
                 value.setX(pointer->x());
                 value.setY(pointer->y());
                 points.append(value);
@@ -153,11 +153,12 @@ QVector<QPointF> triangulate(LIPPointLayer *layer)
     }
     QVector<LIPTriangle> ret = tr.getTriangulation();
     QVector<QPointF> p;
+
     for (auto iter = ret.begin(); iter != ret.end(); iter++)
     {
         p.append(iter->getA());
         p.append(iter->getB());
         p.append(iter->getC());
     }
-    return p;
+    return p; //or p
 }

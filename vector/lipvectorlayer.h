@@ -6,8 +6,10 @@
 #include "gdal_priv.h"
 #include "ogrsf_frmts.h"
 #include "liptypes.h"
+//#include "lipattribute.h"
 #include "lipattribute.h"
 #include "lipvectorstyle.h"
+#include "lipvectorreader.h"
 
 class LIPVectorLayer: public QObject
 {
@@ -21,11 +23,14 @@ public:
     virtual void setVisible(bool=true);
     QVector<LIPAttributeType> getAttributeTypes();
     QVector<QString> getAttributeNames();
+    QStringList getAttributesNamesAsList();
     QRectF getBoundingBox();
     static QVector<LIPAttribute> stringValToAttrs(QVector<QString> names, QVector<QString> values, QVector<LIPAttributeType> types);
     LIPVectorStyle *getStyle();
     virtual void setMapFeatures();
     OGRLayer *getOGRLayer();
+    std::map<int, QVector<LIPAttribute>> getAttributes();
+
 
 protected:
     OGRLayer *layer;

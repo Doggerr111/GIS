@@ -10,21 +10,29 @@ CONFIG += c++11
 
 SOURCES += \
     $$PWD/lipcircle.cpp \
+    $$PWD/lipcutlayerform.cpp \
     $$PWD/lipedge.cpp \
     $$PWD/liptriangle.cpp \
     $$PWD/liptriangulation.cpp \
-    $$PWD/lipvoronoidiagram.cpp
+    $$PWD/lipvectorclipper.cpp \
+    $$PWD/lipvoronoidiagram.cpp \
+
 
 
 
 HEADERS += \
     $$PWD/lipcircle.h \
+    $$PWD/lipcutlayerform.h \
     $$PWD/lipedge.h \
     $$PWD/liptriangle.h \
     $$PWD/liptriangulation.h \
-    $$PWD/lipvoronoidiagram.h
+    $$PWD/lipvectorclipper.h \
+    $$PWD/lipvoronoidiagram.h \
 
 
+
+FORMS += \
+    $$PWD/lipcutlayerform.ui
 
 
 

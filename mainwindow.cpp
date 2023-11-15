@@ -1311,7 +1311,7 @@ void MainWindow::on_pushButtonTriangulationTest_clicked()
     //    QString name = QFileDialog::getSaveFileName(this,"","");
     //    LIPLayerCreator *polyCreator = new LIPLayerCreator(LIPGeometryType::LIPPolygon, name,"triangulatiuons");
     //    LIPPolygonLayer *l = dynamic_cast<LIPPolygonLayer*>(polyCreator->returnLayer());
-
+    QMessageBox::information(this,"","");
 
     LIPNewLineLayerForm *layerForm = new LIPNewLineLayerForm(nullptr, LIPGeometryType::LIPPolygon);
     layerForm->exec();

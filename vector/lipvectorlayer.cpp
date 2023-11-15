@@ -39,6 +39,11 @@ void LIPVectorLayer::setVisible(bool)
 {
 
 }
+/////////////
+std::map<int, QVector<LIPAttribute>> LIPVectorLayer::getAttributes()
+{
+    return LIPVectorReader::readAttributes(layer);
+}
 
 QVector<LIPAttributeType> LIPVectorLayer::getAttributeTypes()
 {
@@ -77,6 +82,19 @@ QVector<QString> LIPVectorLayer::getAttributeNames()
     }
     return attributeNames;
 
+}
+
+QStringList LIPVectorLayer::getAttributesNamesAsList()
+{
+    QStringList list;
+    OGRFeatureDefn* featureDefn = layer->GetLayerDefn();
+    int attributeCount = featureDefn->GetFieldCount(); // Получение количества атрибутов
+    for (int i = 0; i < attributeCount; i++)
+    {
+        OGRFieldDefn* fieldDefn = featureDefn->GetFieldDefn(i);
+        list.append(QString::fromUtf8(fieldDefn->GetNameRef())); //получаем название атрибута
+    }
+    return list;
 }
 
 QRectF LIPVectorLayer::getBoundingBox()

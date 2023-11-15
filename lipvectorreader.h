@@ -8,9 +8,9 @@
 #include "QDebug"
 #include "liptypes.h"
 #include "QMessageBox"
-#include "lippointlayer_1.h"
-#include "vector/lippointlayer.h"
-#include "vector/lippoint.h"
+//#include "lipvectorlayer.h"
+#include "lippoint.h"
+#include "lipattribute.h"
 
 class LIPVectorReader : public QObject
 {
@@ -28,17 +28,18 @@ public:
      * \brief Данная функция возвращает охват слоя
      */
     QRectF ReadBoundingBox();
-    LIPPointLayer* returnLayer();
+
     static QPair<OGRLayer*, GDALDataset*> readOGRLayer(QString filename);
     static QVector<OGRLayer*> readLayersFromDataset(GDALDataset *ds);
     static LIPGeometryType readGeometryType(OGRLayer* layer);
+    static std::map<int, QVector<LIPAttribute>> readAttributes(OGRLayer* l);
     //bool ReadGeometry():
 
 private:
     const LIPTypes::LIPDrivers driver;
     const char* fileName;
     LIPGeometryType geomertyType;
-    LIPPointLayer *layer;
+
 };
 
 #endif // LIPVECTORREADER_H

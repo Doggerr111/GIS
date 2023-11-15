@@ -37,6 +37,7 @@
 #include <algorithm>
 #include <lipcutlayerform.h>
 #include "lipattributestableform.h"
+#include "geoprocessing/liptriangulation.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE

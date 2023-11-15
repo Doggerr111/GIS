@@ -12,8 +12,12 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    customWidgets/lipattributetablewidget.cpp \
+    customWidgets/lipcombobox.cpp \
     lipaddingitems.cpp \
+    lipattributestableform.cpp \
     lipfeaturerenderer.cpp \
+    lipfilevalidator.cpp \
     lipframe.cpp \
     liplayercreator.cpp \
     liplayertreeitem.cpp \
@@ -40,8 +44,12 @@ SOURCES += \
 
 
 HEADERS += \
+    customWidgets/lipattributetablewidget.h \
+    customWidgets/lipcombobox.h \
     lipaddingitems.h \
+    lipattributestableform.h \
     lipfeaturerenderer.h \
+    lipfilevalidator.h \
     lipframe.h \
     liplayercreator.h \
     liplayertreeitem.h \
@@ -67,6 +75,7 @@ HEADERS += \
 
 
 FORMS += \
+    lipattributestableform.ui \
     lipnewattrfeatureform.ui \
     lipnewlinelayerform.ui \
     lipnewpointlayerform.ui \
@@ -77,6 +86,7 @@ FORMS += \
 INCLUDEPATH += geoprocessing/
 INCLUDEPATH += vector/
 INCLUDEPATH += /usr/include/gdal
+INCLUDEPATH += customWidgets/
 LIBS += /usr/lib/libgdal.so
 
 # Default rules for deployment.

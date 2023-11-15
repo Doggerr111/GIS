@@ -2,8 +2,9 @@
 #define LIPATTRIBUTETABLEWIDGET_H
 
 #include <QTableWidget>
-#include <lipvectorlayer.h>
+#include <vector/lipvectorlayer.h>
 #include <QDebug>
+#include "lipattribute.h"
 /** Виджет для отображения аттрибутивных таблиц векторных слоёв */
 class LIPAttributeTableWidget : public QTableWidget
 {
