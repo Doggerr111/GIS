@@ -314,8 +314,19 @@ void MainWindow::showLayerContextMenu(const QPoint &f)
             }
         }
     });
+
+    QAction* attrTable = new QAction(QString::fromUtf8("Таблица атрибутов"), this);
+    connect(attrTable, &QAction::triggered, this, [selectedLayer, clickedItem, this]() {
+        LIPAttributesTableForm* form = new LIPAttributesTableForm();
+        if (selectedLayer!=nullptr)
+            form->setLayer(selectedLayer);
+        form->exec();
+
+    });
+
     QMessageBox::information(this,"4","4");
     menu.addAction(actionDelete);
+    menu.addAction(attrTable);
     menu.show();
     menu.exec(ui->LayerTree->mapToGlobal(f));
     QMessageBox::information(this,"5","5");
@@ -456,7 +467,7 @@ void MainWindow::on_pushButton_3_clicked()
     ui->graphicsView->setScene(ui->graphicsView->scene());
     ui->graphicsView->scale(1,-1);
 
-    LIPPointLayer *l=reader.returnLayer();
+    //LIPPointLayer *l=reader.returnLayer();
 
     QRectF rect=reader.ReadBoundingBox();
     QVector<QGraphicsItem*> items;

@@ -36,6 +36,7 @@
 #include <lipmessage.h>
 #include <algorithm>
 #include <lipcutlayerform.h>
+#include "lipattributestableform.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
