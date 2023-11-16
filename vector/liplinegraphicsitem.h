@@ -12,11 +12,12 @@ public:
     void setPoints(QVector<LIPPoint*> points);
 private:
     QVector<QPointF> vect;
-
+    void calculateBoundingRect();
     // QGraphicsItem interface
 public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    QRectF bRect;
 };
 
 #endif // LIPLINEGRAPHICSITEM_H
