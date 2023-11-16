@@ -13,6 +13,12 @@ LIPTriangle::LIPTriangle(const QPointF a, const QPointF b, const QPointF c)
     calculateCircumCircle();
 }
 
+bool LIPTriangle::operator==(const LIPTriangle &right) const
+{
+    return(a==right.getA() && b==right.getB() && c==right.getC());
+
+}
+
 //LIPTriangle::LIPTriangle(const LIPTriangle &copy)
 //    :isBad(false), a(copy.a), b(copy.b), c(copy.c)
 //{

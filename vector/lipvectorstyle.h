@@ -31,6 +31,7 @@ public:
     /** Формирует стандарnный стиль для векторного слоя в
      *  зависсимости от типа геометрии*/
     static LIPVectorStyle* createDefaultVectorStyle(LIPGeometryType type);
+    LIPVectorStyle selectedStyle(LIPVectorStyle* style);
 private:
 
     LIPStyleUnit mStyleUnit;

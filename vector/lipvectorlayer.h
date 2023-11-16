@@ -30,6 +30,7 @@ public:
     virtual void setMapFeatures();
     OGRLayer *getOGRLayer();
     std::map<int, QVector<LIPAttribute>> getAttributes();
+    virtual void selectFeature(int index);
 
 
 protected:

@@ -132,3 +132,12 @@ LIPVectorStyle* LIPVectorStyle::createDefaultVectorStyle(LIPGeometryType type)
     }
     }
 }
+
+//LIPVectorStyle *LIPVectorStyle::selectedStyle(LIPVectorStyle* style)
+//{
+//    LIPVectorStyle* st = style;
+//    st->setBrushColor(Qt::red);
+//    st->setPenColor(Qt::red);
+//    return st;
+
+//}

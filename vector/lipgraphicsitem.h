@@ -14,6 +14,7 @@ public:
     void setBrush(QBrush brush);
     void setVectorStyle(LIPVectorStyle*);
     void setScaleFactor(double f);
+    void select();
 protected:
     QPen mPen;
     QBrush mBrush;

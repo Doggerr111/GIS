@@ -176,5 +176,10 @@ void LIPVectorLayer::setSceneScaleFactor(double factor)
 
 }
 
+void LIPVectorLayer::selectFeature(int index)
+{
+
+}
+
 
 

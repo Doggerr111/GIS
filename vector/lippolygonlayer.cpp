@@ -204,3 +204,9 @@ void LIPPolygonLayer::setSceneScaleFactor(double factor)
         item->setScaleFactor(mScaleFactor);
     }
 }
+
+void LIPPolygonLayer::selectFeature(int index)
+{
+    mapFeatures.at(index)->select();
+    mapFeatures.at(index)->update();
+}

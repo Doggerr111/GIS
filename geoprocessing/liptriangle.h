@@ -10,7 +10,7 @@ public:
     LIPTriangle();
     LIPTriangle(QPointF a, QPointF b, QPointF c);
     LIPTriangle(LIPPoint* a, LIPPoint* b, QPointF* c);
-
+    bool operator==(const LIPTriangle &right) const;
     bool isVertexInCircumcircle(QPointF ver);
     bool isContainEdge(QPointF a, QPointF b) const;
     bool isContainVertex(const QPointF a) const;

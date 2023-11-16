@@ -21,6 +21,7 @@ public:
     void setVisible(bool = true) override;
     QVector<LIPPolygonGraphicsItem*> returnMapFeatures();
     void addFeature(QVector<QPointF> coords, QVector<LIPAttribute> attrs) override;
+    void selectFeature(int index) override;
     void setStyle(LIPVectorStyle *style);
 public slots:
     void setSceneScaleFactor(double factor) override;

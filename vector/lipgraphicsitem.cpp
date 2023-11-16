@@ -39,3 +39,9 @@ void LIPGraphicsItem::setScaleFactor(double f)
 {
     mSceneScale=f;
 }
+
+void LIPGraphicsItem::select()
+{
+    mStyle->setPenColor(Qt::red);
+    mStyle->setBrushColor(Qt::red);
+}

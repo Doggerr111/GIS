@@ -151,7 +151,36 @@ QVector<QPointF> triangulate(LIPPointLayer *layer)
     {
         tr.addPoint(*iter);
     }
-    QVector<LIPTriangle> ret = tr.getTriangulation();
+    QVector<LIPTriangle> ret = tr.getTriangulation(); //all triangles
+    QVector<LIPEdge> interTrignales;
+    //voronoi
+//    foreach(LIPTriangle triangle, ret)
+//    {
+//        //getting edges
+//        LIPEdge ab(QLineF(triangle.getA(), triangle.getB()));
+//        LIPEdge bc(QLineF(triangle.getA(), triangle.getB()));
+//        LIPEdge ac(QLineF(triangle.getA(), triangle.getC()));
+//        foreach(LIPTriangle intersTriangle, ret)
+//        {
+//            if (intersTriangle==triangle)
+//                continue;
+////            LIPEdge abInter(QLineF(intersTriangle.getA(), intersTriangle.getB()));
+////            LIPEdge bcInter(QLineF(intersTriangle.getA(), intersTriangle.getB()));
+////            LIPEdge acInter(QLineF(intersTriangle.getA(), intersTriangle.getC()));
+//            //находим треугольники с общими гранями
+//            if (triangle.isContainEdge(intersTriangle.getA(), intersTriangle.getB())
+//                    || triangle.isContainEdge(intersTriangle.getB(), intersTriangle.getC())
+//                    || triangle.isContainEdge(intersTriangle.getA(), intersTriangle.getC()))
+//            {
+//                QPointF centerTriangle=triangle.getCircumcircle().getCenter();
+//                QPointF centerInterTriangle=intersTriangle.getCircumcircle().getCenter();
+//                interTrignales.append(LIPEdge(QLineF(centerTriangle, centerInterTriangle)));
+//            }
+//        }
+
+//    }
+
+
     QVector<QPointF> p;
 
     for (auto iter = ret.begin(); iter != ret.end(); iter++)
@@ -161,4 +190,75 @@ QVector<QPointF> triangulate(LIPPointLayer *layer)
         p.append(iter->getC());
     }
     return p; //or p
+}
+QVector<LIPCircle> tr_vecs;
+QVector<QPair<LIPCircle, LIPCircle>> pairVec;
+QPair<QVector<LIPEdge>, QVector<LIPTriangle>> generateVoronoiDiagramm(LIPPointLayer *layer)
+{
+    LIPTriangulation tr;
+    QRectF bBox=layer->getBoundingBox();
+    QVector<QPointF> points;
+    for (QPointF* pointer : layer->returnCords()) {
+            if (pointer) {
+                LIPPoint value;
+
+                value.setX(pointer->x());
+                value.setY(pointer->y());
+                points.append(value);
+            }
+        }
+    tr.createSuperTriangle(points); //
+    for (auto iter = points.begin(); iter != points.end(); iter++)
+    {
+        tr.addPoint(*iter);
+    }
+    QVector<LIPTriangle> ret = tr.getTriangulation(); //all triangles
+    QVector<LIPEdge> interTrignales;
+    //voronoi
+    foreach(LIPTriangle triangle, ret)
+    {
+        //getting edges
+        LIPEdge ab(QLineF(triangle.getA(), triangle.getB()));
+        LIPEdge bc(QLineF(triangle.getA(), triangle.getB()));
+        LIPEdge ac(QLineF(triangle.getA(), triangle.getC()));
+        foreach(LIPTriangle intersTriangle, ret)
+        {
+            if (intersTriangle==triangle)
+                continue;
+//            LIPEdge abInter(QLineF(intersTriangle.getA(), intersTriangle.getB()));
+//            LIPEdge bcInter(QLineF(intersTriangle.getA(), intersTriangle.getB()));
+//            LIPEdge acInter(QLineF(intersTriangle.getA(), intersTriangle.getC()));
+            //находим треугольники с общими гранями
+            if (triangle.isContainEdge(intersTriangle.getA(), intersTriangle.getB())
+                    || triangle.isContainEdge(intersTriangle.getB(), intersTriangle.getC())
+                    || triangle.isContainEdge(intersTriangle.getA(), intersTriangle.getC()))
+            {
+                tr_vecs.append(triangle.getCircumcircle());
+                tr_vecs.append(intersTriangle.getCircumcircle());
+                QPair<LIPCircle, LIPCircle> pair;
+                pair.first=triangle.getCircumcircle();
+                pair.second=intersTriangle.getCircumcircle();
+                pairVec.append(pair);
+                QPointF centerTriangle=triangle.getCircumcircle().getCenter();
+                QPointF centerInterTriangle=intersTriangle.getCircumcircle().getCenter();
+                interTrignales.append(LIPEdge(QLineF(centerTriangle, centerInterTriangle)));
+            }
+        }
+
+    }
+    QPair<QVector<LIPEdge>, QVector<LIPTriangle>> p;
+    p.first=interTrignales;
+    p.second=ret;
+
+    return p;
+}
+
+QVector<LIPCircle> getCircumCircles()
+{
+    return tr_vecs;
+}
+
+QVector<QPair<LIPCircle, LIPCircle> > GetPair()
+{
+    return pairVec;
 }

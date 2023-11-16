@@ -319,8 +319,10 @@ void MainWindow::showLayerContextMenu(const QPoint &f)
     connect(attrTable, &QAction::triggered, this, [selectedLayer, clickedItem, this]() {
         LIPAttributesTableForm* form = new LIPAttributesTableForm();
         if (selectedLayer!=nullptr)
+        {
             form->setLayer(selectedLayer);
-        form->exec();
+            form->show();
+        }
 
     });
 
@@ -1418,6 +1420,84 @@ void MainWindow::on_pushButton_7_clicked()
 
     QPointF f(123,1);
     //LIPVectorConvertor::QPointFtoGeosPoint(f);
+
+
+}
+
+
+void MainWindow::on_pushButtonVoronoiTest_clicked()
+{
+
+    LIPPointLayer* new_layer= dynamic_cast<LIPPointLayer*>(LIPProject::getInstance().getActiveLayer());
+    QVector<LIPEdge> vec=generateVoronoiDiagramm(new_layer).first;
+    foreach(LIPEdge edg, vec)
+    {
+        QGraphicsLineItem *line = new QGraphicsLineItem();
+        QPen pen;
+        pen.setWidthF(0.001);
+        line->setPen(pen);
+        line->setLine(QLineF(QPointF(edg.x1(),edg.y1()),QPointF(edg.x2(),edg.y2())));
+        scene->addItem(line);
+    }
+
+//    QVector<LIPTriangle> vec2=generateVoronoiDiagramm(new_layer).second;
+//    foreach(LIPTriangle tr, vec2)
+//    {
+//        QPen pen;
+//        pen.setWidthF(0.001);
+//        QGraphicsLineItem *line = new QGraphicsLineItem();
+//        line->setPen(pen);
+//        line->setLine(QLineF(tr.getA(),tr.getB()));
+//        scene->addItem(line);
+
+//        QGraphicsLineItem *line2 = new QGraphicsLineItem();
+//        line2->setPen(pen);
+//        line2->setLine(QLineF(tr.getB(),tr.getC()));
+//        scene->addItem(line2);
+
+//        QGraphicsLineItem *line3 = new QGraphicsLineItem();
+//        line3->setPen(pen);
+//        line3->setLine(QLineF(tr.getA(),tr.getC()));
+//        scene->addItem(line3);
+
+//    }
+
+
+
+//    QVector<LIPCircle> vecC = getCircumCircles();
+//    foreach(LIPCircle circ, vecC)
+//    {
+//        QPen pen;
+//        pen.setWidthF(0.0001);
+//        QGraphicsEllipseItem *ell = new QGraphicsEllipseItem();
+//        ell->setPen(pen);
+//        ell->setRect(circ.getCenter().x()-circ.getRadis(), circ.getCenter().y()-circ.getRadis(), circ.getRadis()*2,
+//                     circ.getRadis()*2);
+//        scene->addItem(ell);
+//    }
+
+//    QVector<QPair<LIPCircle, LIPCircle>> pr=GetPair();
+//    for (int i=0; i<pr.count(); i++)
+//    {
+//        LIPCircle circ=pr.at(i).first;
+//        LIPCircle circ2=pr.at(i).second;
+//        QPen pen;
+//        pen.setWidthF(0.01);
+//        pen.setColor(QColor::fromRgb(QRandomGenerator::global()->bounded(0, 256),
+//                                       QRandomGenerator::global()->bounded(0, 256),
+//                                       QRandomGenerator::global()->bounded(0, 256)));
+//        QGraphicsEllipseItem *ell = new QGraphicsEllipseItem();
+//        ell->setPen(pen);
+//        ell->setRect(circ.getCenter().x()-circ.getRadis(), circ.getCenter().y()-circ.getRadis(), circ.getRadis()*2,
+//                     circ.getRadis()*2);
+//        scene->addItem(ell);
+
+//        QGraphicsEllipseItem *ell2 = new QGraphicsEllipseItem();
+//        ell2->setPen(pen);
+//        ell2->setRect(circ2.getCenter().x()-circ2.getRadis(), circ2.getCenter().y()-circ2.getRadis(), circ2.getRadis()*2,
+//                     circ2.getRadis()*2);
+//        scene->addItem(ell2);
+//    }
 
 
 }

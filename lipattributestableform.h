@@ -2,7 +2,7 @@
 #define LIPATTRIBUTESTABLEFORM_H
 
 #include <QDialog>
-#include "lipvectorlayer.h"
+#include "vector/lipvectorlayer.h"
 
 namespace Ui {
 class LIPAttributesTableForm;
@@ -17,8 +17,12 @@ public:
     ~LIPAttributesTableForm();
     void setLayer(LIPVectorLayer* layer);
 
+private slots:
+    void on_tableWidget_itemSelectionChanged();
+
 private:
     Ui::LIPAttributesTableForm *ui;
+    LIPVectorLayer* layer;
 };
 
 #endif // LIPATTRIBUTESTABLEFORM_H
