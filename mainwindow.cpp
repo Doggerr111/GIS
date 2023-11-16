@@ -1502,3 +1502,72 @@ void MainWindow::on_pushButtonVoronoiTest_clicked()
 
 }
 
+
+void MainWindow::on_pushButtonRenderTest_clicked()
+{
+    QTransform tr= ui->graphicsView->transform().inverted();
+    QRectF sceneRect =  tr.mapRect(scene->sceneRect());
+
+    QMatrix const matrix = ui->graphicsView->matrix().inverted();
+
+    QRectF visibleRect = matrix.mapRect(ui->graphicsView->viewport()->rect());
+    visibleRect.moveTopLeft(matrix.map(QPoint(ui->graphicsView->horizontalScrollBar()->value(),
+                                              ui->graphicsView->verticalScrollBar()->value())));
+    QImage image(1920, 1080, QImage::Format_ARGB32_Premultiplied);
+    //image.setDotsPerMeterX(300);
+    //image.setDotsPerMeterY(300);
+    //image.fill(Qt::yellow);
+    image.fill(QColor(Qt::white));
+
+    {
+        QPainter painter(&image);
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setRenderHint(QPainter::TextAntialiasing);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform);
+
+        //painter.setPen(Qt::NoPen);
+        //painter.setOpacity(1.0);
+        //painter.begin(&image);  // Переместите эту строку перед настройкой порта, окна и трансформаций
+        //painter.setViewport(sceneRect.toRect());
+        //painter.setWindow(sceneRect.toRect());
+        // painter.setTransform(tr);
+        //painter.setWorldTransform(ui->graphicsView->transform());
+        //painter.begin(&image);
+        //sceneRect = scene->itemsBoundingRect();
+        //QTransform transform;
+        //painter.setMatrix(matrix);
+        //transform.translate(image.rect().width() / 2, image.rect().height() / 2);
+        //transform.scale(image.rect().width() / sceneRect.width(), image.rect().height() / sceneRect.height());
+        //transform.translate(-sceneRect.center().x(), -sceneRect.center().y());
+        //painter.setTransform(transform);
+        painter.scale(1,-1);
+        painter.scale(matrix.m11(),matrix.m22());
+        painter.translate(200, 90);
+        //painter.translate(0, -visibleRect.height());
+        //painter.setTransform(ui->graphicsView->transform());
+
+        qDebug()<<visibleRect;
+        scene->render(&painter,image.rect(),QRectF(visibleRect.x()-133,visibleRect.y()-222,
+                                                   visibleRect.width(), visibleRect.height()+100));
+        painter.end();
+    }
+
+    image.save("экстент.png");
+
+
+//    scene->setSceneRect(scene->itemsBoundingRect());                          // Re-shrink the scene to it's bounding contents
+//    QImage image(scene->sceneRect().size().toSize(), QImage::Format_ARGB32);  // Create the image with the exact size of the shrunk scene
+//    image.fill(Qt::transparent);                                              // Start all pixels transparent
+//    //image.setDevicePixelRatio(3000);
+//    QPainter painter(&image);
+//    painter.begin(&image);
+//    painter.setTransform(ui->graphicsView->transform());
+//    painter.setRenderHint(QPainter::Antialiasing);
+//    painter.setRenderHint(QPainter::TextAntialiasing);
+//    painter.setRenderHint(QPainter::SmoothPixmapTransform);
+//    scene->render(&painter);
+//    painter.end();
+//    image.save("экстент.png");
+
+}
+

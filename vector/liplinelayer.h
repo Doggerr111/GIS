@@ -28,6 +28,8 @@ public:
 
     QVector<QVector<LIPPoint*>>  returnCords();
 
+
+
     void setStyle(LIPVectorStyle *style);
 public slots:
     void setSceneScaleFactor(double factor) override;

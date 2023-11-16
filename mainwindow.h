@@ -102,6 +102,8 @@ private slots:
 
     void on_pushButtonVoronoiTest_clicked();
 
+    void on_pushButtonRenderTest_clicked();
+
 signals:
     void start_add();
     void newVectorLayer(LIPVectorLayer*);
