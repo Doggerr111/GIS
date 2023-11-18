@@ -144,7 +144,7 @@ double LIPMapCalculations::calculateGeographicDistance( const QRectF &mapExtent 
 //    yMax=113;
 //    yMin=81;
 
-  const double lat = ( yMax + yMin) * 0.5;
+  const double lat = ( yMax + yMin) * 0.5; //среднее значение
   static const double RADS = ( 4.0 * std::atan( 1.0 ) ) / 180.0;
   const double a = std::pow( std::cos( lat * RADS ), 2 );
   const double c = 2.0 * std::atan2( std::sqrt( a ), std::sqrt( 1.0 - a ) );

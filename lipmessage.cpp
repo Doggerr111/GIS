@@ -22,6 +22,27 @@ void LIPMessage::showMessage(const QString &errorMessage, int msec, messageStatu
         QVBoxLayout *layout = new QVBoxLayout;
         QPushButton *button = new QPushButton();
 
+        switch (st)
+        {
+        case Success:
+        {
+            errorWidget->setStyleSheet("background-color: rgb(3, 218, 198);"
+                                       "border: 0px solid black");
+        }
+        case Neutral:
+        {
+            errorWidget->setStyleSheet("background-color: rgb(255, 255, 0);"
+                                       "border: 0px solid black");
+        }
+        case Error:
+        {
+            errorWidget->setStyleSheet("background-color: rgb(0, 255, 0);"
+                                       "border: 0px solid black");
+        }
+        }
+        errorWidget->update();
+
+
         QPixmap pixmap(":/ui/icons/close.png");
         QIcon buttonIcon(pixmap);
         button->setIcon(buttonIcon);
@@ -52,24 +73,7 @@ void LIPMessage::showMessage(const QString &errorMessage, int msec, messageStatu
         });
         timer->setInterval(msec);
         timer->start();
-        switch (st)
-        {
-        case Success:
-        {
-            errorWidget->setStyleSheet("background-color: rgb(255, 0, 0);"
-                                       "border: 0px solid black");
-        }
-        case Neutral:
-        {
-            errorWidget->setStyleSheet("background-color: rgb(255, 255, 0);"
-                                       "border: 0px solid black");
-        }
-        case Error:
-        {
-            errorWidget->setStyleSheet("background-color: rgb(0, 255, 0);"
-                                       "border: 0px solid black");
-        }
-        }
+
 
 
     }

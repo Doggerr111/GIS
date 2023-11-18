@@ -9,6 +9,7 @@
 #include <QOpenGLWidget>
 #include <QSqlDatabase>
 #include <liptriangulation.h>
+#include <QSplitter>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,7 +25,12 @@ MainWindow::MainWindow(QWidget *parent)
         this, SLOT(showLayerContextMenu(const QPoint&)));
     sceneInitialization();
     LIPMessage::getInstance().setMainWindow(this);
-    LIPMessage::getInstance().showMessage("ffsa", 2000, messageStatus::Error);
+    LIPMessage::getInstance().showMessage("ffsa", 2000, messageStatus::Success);
+
+    ui->right_menu_frame->setAlignment(Qt::AlignRight);
+    ui->left_menu_frame->setAlignment(Qt::AlignLeft);
+    //QSplitter *splitter = new QSplitter(ui->central_frame);
+    //splitter->addWidget(ui->frame_2);
 //    img2 = QImage(QSize(ui->graphicsView->viewport()->width(),ui->graphicsView->viewport()->height()), QImage::Format_ARGB32_Premultiplied);
 //    //img2.fill( 0 );
 //    scene= new LIPMapScene();
@@ -476,7 +482,7 @@ void MainWindow::on_pushButton_3_clicked()
     //LIPPointLayer *layer = new LIPPointLayer;
     QPainter *painter=new QPainter(ui->graphicsView);
     LIPLayerTreeModel *model=new LIPLayerTreeModel();
-    ui->treeView->setModel(model);
+    //ui->treeView->setModel(model);
     QStringList cols;
     cols << "2" << "1";
     model->setColumns(cols);
@@ -647,15 +653,31 @@ void MainWindow::scenePos(QPointF p)
 
 void MainWindow::recalculateScale()
 {
+//    LIPMapCalculations *calculator = new LIPMapCalculations();
+//    calculator->setDpi(QGuiApplication::primaryScreen()->logicalDotsPerInch());
+//    QMatrix const matrix = ui->graphicsView->matrix().inverted();
+
+//    QRectF visibleRect = matrix.mapRect(ui->graphicsView->viewport()->rect());
+//    visibleRect.moveTopLeft(matrix.map(QPoint(ui->graphicsView->horizontalScrollBar()->value(),
+//                                              ui->graphicsView->verticalScrollBar()->value())));
+//    qDebug()<<visibleRect.width();
+//    double scale = calculator->calculate(visibleRect, ui->graphicsView->width());
+//    ui->lineEdit_2->setText(QString::number(static_cast<int>(scale)));
+//    qDebug()<<"map scale is "+ QString::number(scale);
+//    delete calculator;
+
+    //TODO !!!change to QRectF!!!
     LIPMapCalculations *calculator = new LIPMapCalculations();
     calculator->setDpi(QGuiApplication::primaryScreen()->logicalDotsPerInch());
     QMatrix const matrix = ui->graphicsView->matrix().inverted();
 
-    QRect visibleRect = matrix.mapRect(ui->graphicsView->viewport()->rect());
+    QRectF visibleRect = matrix.mapRect((ui->graphicsView->viewport()->rect()));
     visibleRect.moveTopLeft(matrix.map(QPoint(ui->graphicsView->horizontalScrollBar()->value(),
                                               ui->graphicsView->verticalScrollBar()->value())));
     qDebug()<<visibleRect.width();
+    qDebug()<<ui->graphicsView->width();
     double scale = calculator->calculate(visibleRect, ui->graphicsView->width());
+    //scale=calculator->calculate(scene.)
     ui->lineEdit_2->setText(QString::number(static_cast<int>(scale)));
     qDebug()<<"map scale is "+ QString::number(scale);
     delete calculator;
@@ -692,29 +714,29 @@ QRectF MainWindow::getSceneRect()
     return ui->graphicsView->mapToScene(ui->graphicsView->rect()).boundingRect();
 }
 
-void MainWindow::showContextMenu(QPoint p)
-{
-    QPoint globalPos;
-    // если запрос от QAbstractScrollArea
-    if (sender()->inherits("QTreeView"))
-        globalPos = (qobject_cast<QTreeView*>(sender())->viewport()->mapToGlobal(p));
-    // если от других виджетов
-    else
-        globalPos = ui->treeView->mapToGlobal(p);
+//void MainWindow::showContextMenu(QPoint p)
+//{
+//    QPoint globalPos;
+//    // если запрос от QAbstractScrollArea
+//    if (sender()->inherits("QTreeView"))
+//        globalPos = (qobject_cast<QTreeView*>(sender())->viewport()->mapToGlobal(p));
+//    // если от других виджетов
+//    else
+//        globalPos = ui->treeView->mapToGlobal(p);
 
-    QMenu menu;
-    // Создаем пункт меню
-    QAction* action1 = new QAction(QString::fromUtf8("Пункт 1"), this);
-    // добавляем пункт в меню
-    menu.addAction(action1);
-    // добавляем разделитель
-    menu.addSeparator();
-    // добавляем еще один пункт меню
-    QAction* action2 = new QAction(QString::fromUtf8("Пункт 2"), this);
-    menu.addAction(action2);
-    menu.show();
-    menu.exec(globalPos);
-}
+//    QMenu menu;
+//    // Создаем пункт меню
+//    QAction* action1 = new QAction(QString::fromUtf8("Пункт 1"), this);
+//    // добавляем пункт в меню
+//    menu.addAction(action1);
+//    // добавляем разделитель
+//    menu.addSeparator();
+//    // добавляем еще один пункт меню
+//    QAction* action2 = new QAction(QString::fromUtf8("Пункт 2"), this);
+//    menu.addAction(action2);
+//    menu.show();
+//    menu.exec(globalPos);
+//}
 
 
 
@@ -861,16 +883,16 @@ void MainWindow::wheelEvent(QWheelEvent *event)
 
 
 
-void MainWindow::on_treeView_clicked(const QModelIndex &index)
-{
-    //QMessageBox::information(this,"",QString::number(index.row()));
-    ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->treeView, SIGNAL(customContextMenuRequested(QPoint)),
-            this, SLOT(showContextMenu(QPoint)));
+//void MainWindow::on_treeView_clicked(const QModelIndex &index)
+//{
+//    //QMessageBox::information(this,"",QString::number(index.row()));
+//    ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+//    connect(ui->treeView, SIGNAL(customContextMenuRequested(QPoint)),
+//            this, SLOT(showContextMenu(QPoint)));
 
 
-    QMessageBox::information(this,"",layerModel->data(ui->treeView->selectionModel()->selectedIndexes().at(0), 0).toString());
-}
+//    QMessageBox::information(this,"",layerModel->data(ui->treeView->selectionModel()->selectedIndexes().at(0), 0).toString());
+//}
 
 
 void MainWindow::on_pushButton_GeoTiff_clicked()

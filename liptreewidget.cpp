@@ -36,7 +36,7 @@ void LIPTreeWidget::dropEvent(QDropEvent *event)
 {
     QTreeWidget::dropEvent(event);
     emit itemDropped();
-    qDebug()<<event->mimeData()->imageData();
+    //qDebug()<<event->mimeData()->imageData();
 //    if (event->mimeData()->hasText()) {
 //                //QTreeWidgetItem *item = new QTreeWidgetItem({event->mimeData()->imageData(), event->mimeData()->text(), ""});
 //               // currentItem()->addChild(item);
