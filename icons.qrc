@@ -8,5 +8,14 @@
         <file>ui/icons/addPolygonFeature.png</file>
         <file>ui/icons/postgis.png</file>
         <file>ui/icons/close.png</file>
+        <file>ui/icons/intersection.png</file>
+        <file>ui/icons/triangulate.png</file>
+        <file>ui/icons/selectFeature.png</file>
+        <file>ui/icons/selectFeature2.png</file>
+        <file>ui/icons/metaData.png</file>
+        <file>ui/icons/addPointFeature2.png</file>
+        <file>ui/icons/removeLayer.png</file>
+        <file>ui/icons/moveUp.png</file>
+        <file>ui/icons/moveDown.png</file>
     </qresource>
 </RCC>
