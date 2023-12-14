@@ -2,11 +2,14 @@
 #define LIPPROJECT_H
 #include <QObject>
 #include <vector/lipvectorlayer.h>
+#include <lipcoordinatesystem.h>
 class LIPProject : public QObject
 {
     Q_OBJECT
 public:
     static LIPProject &getInstance();
+
+    //layers
     void addVectorLayer(LIPVectorLayer* vect);
     void addVectorLayers(QVector<LIPVectorLayer*> vects);
     void setVectorLayers(QVector<LIPVectorLayer*> vects);
@@ -21,12 +24,21 @@ public:
     LIPVectorLayer* getVectorLayerByPath(QString path);
     LIPVectorLayer* getActiveLayer();
 
+    //SRC
+    bool addCoordinateSystem(LIPCoordinateSystem crs);
+
+    QVector<LIPCoordinateSystem> getCoordinateSystems();
 
 public slots:
     void redrawNeeded(double);
+
+signals:
+    void newCRS();
 private:
     LIPVectorLayer* activeLayer; //
     QVector<LIPVectorLayer*> vectorLayers;
+
+    QVector<LIPCoordinateSystem> CRSystems;
 
 private:
     LIPProject() = default;

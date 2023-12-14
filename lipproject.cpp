@@ -122,6 +122,18 @@ LIPVectorLayer* LIPProject::getActiveLayer()
     }
 }
 
+bool LIPProject::addCoordinateSystem(LIPCoordinateSystem crs)
+{
+    //TODO добавить проверку на корректность системы
+    CRSystems.append(crs);
+    emit newCRS();
+}
+
+QVector<LIPCoordinateSystem> LIPProject::getCoordinateSystems()
+{
+    return CRSystems;
+}
+
 
 
 void LIPProject::redrawNeeded(double f)
