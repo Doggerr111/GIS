@@ -13,6 +13,24 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QLabel{
+	color: rgb(242,242,242);
+}
+
+QTreeWidget{
+	color: rgb(242,242,242);
+}
+QMenuBar{
+	color: rgb(242,242,242);
+}
+QLineEdit {
+color: rgb(242,242,242);
+}
+QComboBox{
+color: rgb(242,242,242);
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -43,6 +61,12 @@
     </property>
     <item>
      <widget class="QFrame" name="header_frame">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
@@ -50,8 +74,9 @@
        </size>
       </property>
       <property name="styleSheet">
-       <string notr="true">QFrame{
-background-color: rgb(68,68,68)
+       <string notr="true">QFrame#header_frame {
+background-color: rgb(68,68,68);
+border-bottom: 3px solid black
 };</string>
       </property>
       <property name="frameShape">
@@ -86,9 +111,14 @@ background-color: rgb(68,68,68)
          </property>
          <property name="maximumSize">
           <size>
-           <width>139</width>
+           <width>147</width>
            <height>16777215</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QFrame{
+border: 0px solid black
+}</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -112,7 +142,7 @@ background-color: rgb(68,68,68)
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item>
+          <item alignment="Qt::AlignVCenter">
            <widget class="QPushButton" name="pushButton_addPointFeature">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
@@ -122,8 +152,14 @@ background-color: rgb(68,68,68)
             </property>
             <property name="minimumSize">
              <size>
-              <width>35</width>
-              <height>35</height>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -134,12 +170,12 @@ background-color: rgb(68,68,68)
             </property>
             <property name="icon">
              <iconset resource="icons.qrc">
-              <normaloff>:/ui/icons/addPointFeature.png</normaloff>:/ui/icons/addPointFeature.png</iconset>
+              <normaloff>:/ui/icons/addPointFeature2.png</normaloff>:/ui/icons/addPointFeature2.png</iconset>
             </property>
             <property name="iconSize">
              <size>
-              <width>30</width>
-              <height>30</height>
+              <width>60</width>
+              <height>60</height>
              </size>
             </property>
             <property name="checkable">
@@ -150,7 +186,7 @@ background-color: rgb(68,68,68)
             </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignLeft|Qt::AlignVCenter">
            <widget class="QPushButton" name="pushButton_6">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -160,8 +196,14 @@ background-color: rgb(68,68,68)
             </property>
             <property name="minimumSize">
              <size>
-              <width>35</width>
-              <height>35</height>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -172,12 +214,12 @@ background-color: rgb(68,68,68)
             </property>
             <property name="icon">
              <iconset resource="icons.qrc">
-              <normaloff>:/ui/icons/addPointFeature.png</normaloff>:/ui/icons/addPointFeature.png</iconset>
+              <normaloff>:/ui/icons/selectFeature2.png</normaloff>:/ui/icons/selectFeature2.png</iconset>
             </property>
             <property name="iconSize">
              <size>
-              <width>30</width>
-              <height>30</height>
+              <width>35</width>
+              <height>35</height>
              </size>
             </property>
             <property name="autoRepeatDelay">
@@ -195,14 +237,14 @@ background-color: rgb(68,68,68)
             </property>
             <property name="minimumSize">
              <size>
-              <width>35</width>
-              <height>35</height>
+              <width>50</width>
+              <height>50</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>35</width>
-              <height>35</height>
+              <width>50</width>
+              <height>50</height>
              </size>
             </property>
             <property name="layoutDirection">
@@ -216,16 +258,118 @@ background-color: rgb(68,68,68)
             </property>
             <property name="icon">
              <iconset resource="icons.qrc">
-              <normaloff>:/ui/icons/addPointFeature.png</normaloff>:/ui/icons/addPointFeature.png</iconset>
+              <normaloff>:/ui/icons/metaData.png</normaloff>:/ui/icons/metaData.png</iconset>
             </property>
             <property name="iconSize">
              <size>
-              <width>30</width>
-              <height>30</height>
+              <width>45</width>
+              <height>45</height>
              </size>
             </property>
             <property name="autoRepeatDelay">
              <number>300</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignRight">
+        <widget class="QFrame" name="frame_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <item>
+           <widget class="QPushButton" name="pushButton_10">
+            <property name="minimumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border: none</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/ui/icons/triangulate.png</normaloff>:/ui/icons/triangulate.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>45</width>
+              <height>45</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item alignment="Qt::AlignLeft">
+           <widget class="QPushButton" name="pushButton_9">
+            <property name="minimumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border:none</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/ui/icons/intersection.png</normaloff>:/ui/icons/intersection.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>45</width>
+              <height>45</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item alignment="Qt::AlignLeft">
+           <widget class="QPushButton" name="pushButton_8">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border:none</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/ui/icons/postgis.png</normaloff>:/ui/icons/postgis.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>45</width>
+              <height>45</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -287,7 +431,7 @@ background-color: rgb(68,68,68)
          </property>
          <property name="maximumSize">
           <size>
-           <width>499</width>
+           <width>500</width>
            <height>16777215</height>
           </size>
          </property>
@@ -303,6 +447,126 @@ background-color: rgb(68,68,68)
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QFrame" name="frame_9">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Слои проекта</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_8">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton{
+	border: none
+};</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_9">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="pushButton_11">
+               <property name="styleSheet">
+                <string notr="true">border: none</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="icons.qrc">
+                 <normaloff>:/ui/icons/removeLayer.png</normaloff>:/ui/icons/removeLayer.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_12">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="icons.qrc">
+                 <normaloff>:/ui/icons/moveUp.png</normaloff>:/ui/icons/moveUp.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_13">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="icons.qrc">
+                 <normaloff>:/ui/icons/moveDown.png</normaloff>:/ui/icons/moveDown.png</iconset>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
           <item>
            <widget class="LIPTreeWidget" name="LayerTree">
             <property name="sizePolicy">
@@ -319,11 +583,13 @@ background-color: rgb(68,68,68)
             </property>
             <property name="styleSheet">
              <string notr="true">QTreeWidget{
-border:1px solid black
+border:3px solid black;
+border-radius: 14px;
+
 };</string>
             </property>
             <property name="sizeAdjustPolicy">
-             <enum>QAbstractScrollArea::AdjustIgnored</enum>
+             <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
             </property>
             <property name="dragEnabled">
              <bool>true</bool>
@@ -402,6 +668,10 @@ border:1px solid black
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="styleSheet">
+             <string notr="true">border: 3px solid black;
+border-top: 0px solid black</string>
+            </property>
             <property name="verticalScrollBarPolicy">
              <enum>Qt::ScrollBarAlwaysOff</enum>
             </property>
@@ -456,11 +726,24 @@ background-color: rgb(68,68,68)
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item alignment="Qt::AlignHCenter|Qt::AlignTop">
+           <widget class="QLabel" name="label_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Слои базы данных</string>
+            </property>
+           </widget>
+          </item>
           <item>
            <widget class="LIPTreeWidget" name="DBLayerTree">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -478,8 +761,12 @@ background-color: rgb(68,68,68)
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">QTreeWidget{
-border:1px solid black
+             <string notr="true">
+QTreeWidget{
+border:3px solid black;
+border-radius: 14px;
+
+
 };</string>
             </property>
             <property name="verticalScrollBarPolicy">
@@ -554,12 +841,18 @@ background-color: rgb(68,68,68)
        <property name="bottomMargin">
         <number>0</number>
        </property>
-       <item>
+       <item alignment="Qt::AlignLeft">
         <widget class="QFrame" name="frame_4">
          <property name="minimumSize">
           <size>
            <width>0</width>
            <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>279</width>
+           <height>16777215</height>
           </size>
          </property>
          <property name="frameShape">
@@ -600,10 +893,10 @@ background-color: rgb(68,68,68)
          </layout>
         </widget>
        </item>
-       <item>
+       <item alignment="Qt::AlignLeft">
         <widget class="QFrame" name="frame_5">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <sizepolicy hsizetype="Maximum" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -615,7 +908,7 @@ background-color: rgb(68,68,68)
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <item>
+          <item alignment="Qt::AlignHCenter">
            <widget class="QLineEdit" name="lineEdit">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -623,9 +916,12 @@ background-color: rgb(68,68,68)
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(135, 134, 131)</string>
+            </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignHCenter">
            <widget class="QLineEdit" name="lineEdit_2">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -633,58 +929,70 @@ background-color: rgb(68,68,68)
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(135, 134, 131)</string>
+            </property>
            </widget>
           </item>
          </layout>
         </widget>
        </item>
        <item>
+        <widget class="LIPCRSComboBox" name="crsComboBox">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(135, 134, 131)</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QFrame" name="frame_6">
+         <property name="maximumSize">
+          <size>
+           <width>186</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QPushButton" name="pushButton_4">
-          <property name="geometry">
-           <rect>
-            <x>80</x>
-            <y>20</y>
-            <width>155</width>
-            <height>25</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>create shp test</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="pushButton_2">
-          <property name="geometry">
-           <rect>
-            <x>100</x>
-            <y>0</y>
-            <width>155</width>
-            <height>25</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>read</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="pushButton">
-          <property name="geometry">
-           <rect>
-            <x>-40</x>
-            <y>0</y>
-            <width>155</width>
-            <height>25</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>write</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <item>
+           <widget class="QComboBox" name="comboBox">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(135, 134, 131)</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>EPSG:4326</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>write</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_4">
+            <property name="text">
+             <string>create shp test</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="text">
+             <string>read</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -701,14 +1009,17 @@ background-color: rgb(68,68,68)
      <height>22</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(135, 134, 131)</string>
+   </property>
    <widget class="QMenu" name="menuf">
     <property name="title">
-     <string>File</string>
+     <string>Файл</string>
     </property>
    </widget>
    <widget class="QMenu" name="menuf_2">
     <property name="title">
-     <string>Vector</string>
+     <string>Вектор</string>
     </property>
     <addaction name="actionNew_point_layer"/>
     <addaction name="actionNew_line_layer"/>
@@ -718,15 +1029,37 @@ background-color: rgb(68,68,68)
    </widget>
    <widget class="QMenu" name="menuDatabase">
     <property name="title">
-     <string>Database</string>
+     <string>База данных</string>
     </property>
     <addaction name="actionConnect_to_PostGIS"/>
    </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Геообработка</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Растр</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>Анализ растров</string>
+    </property>
+   </widget>
    <addaction name="menuf"/>
    <addaction name="menuf_2"/>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
    <addaction name="menuDatabase"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(135, 134, 131)</string>
+   </property>
+  </widget>
   <action name="actionNew_point_layer">
    <property name="icon">
     <iconset resource="icons.qrc">
@@ -790,6 +1123,11 @@ background-color: rgb(68,68,68)
    <extends>QFrame</extends>
    <header location="global">lipframe.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>LIPCRSComboBox</class>
+   <extends>QComboBox</extends>
+   <header>lipcrscombobox.h</header>
   </customwidget>
  </customwidgets>
  <resources>

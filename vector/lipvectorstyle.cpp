@@ -108,7 +108,7 @@ LIPVectorStyle* LIPVectorStyle::createDefaultVectorStyle(LIPGeometryType type)
     }
     case LIPGeometryType::LIPLineString:
     {
-        pen.setWidthF(LIPVectorStyle::MMToPixel(1));
+        pen.setWidthF(LIPVectorStyle::MMToPixel(0.1));
         pen.setColor(QColor::fromRgb(QRandomGenerator::global()->bounded(0, 256),
                                        QRandomGenerator::global()->bounded(0, 256),
                                        QRandomGenerator::global()->bounded(0, 256)));

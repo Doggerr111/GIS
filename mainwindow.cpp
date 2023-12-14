@@ -16,8 +16,17 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowTitle("LIP GIS");
+    setWindowTitle("Геоинформационная система");
+
+
     LIPProject::getInstance();
+    LIPCoordinateSystemLibrary *lib = new LIPCoordinateSystemLibrary();
+    foreach(LIPCoordinateSystem CRS, lib->getCRSLib())
+    {
+        qDebug()<<CRS.getName();
+        LIPProject::getInstance().addCoordinateSystem(CRS);
+    }
+    delete lib;
     connect(ui->LayerTree, SIGNAL(itemDropped()), this, SLOT(layersOrderChanged()));
     ui->LayerTree->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->LayerTree, SIGNAL(itemChanged(QTreeWidgetItem*, int)), this, SLOT(layerTreeDataChanged(QTreeWidgetItem*, int)));
@@ -29,6 +38,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->right_menu_frame->setAlignment(Qt::AlignRight);
     ui->left_menu_frame->setAlignment(Qt::AlignLeft);
+
+
+    OGRSpatialReference srcSRS;
+    qDebug()<<srcSRS.importFromProj4("+proj=longlat +ellps=GSK2011 +no_defs +type=crs");
+    //srcSRS.IS
     //QSplitter *splitter = new QSplitter(ui->central_frame);
     //splitter->addWidget(ui->frame_2);
 //    img2 = QImage(QSize(ui->graphicsView->viewport()->width(),ui->graphicsView->viewport()->height()), QImage::Format_ARGB32_Premultiplied);
@@ -136,7 +150,15 @@ MainWindow::MainWindow(QWidget *parent)
 //    ui->LayerTree->setDropIndicatorShown(true);
 //    item123->setFlags(item->flags() | Qt::ItemIsDragEnabled );
     //ui->LayerTree->installEventFilter(this);
-
+    //ui->pushButton_7->hide();
+    //ui->pushButtonRenderTest->hide();
+    //ui->pushButtonTriangulationTest->hide();
+    //ui->pushButtonVoronoiTest->hide();
+    //ui->pushButton_3->hide();
+    //ui->pushButton_GeoTiff->hide();
+    //ui->pushButton->hide();
+    //ui->pushButton_2->hide();
+    //ui->pushButton_4->hide();
 
 
 }

@@ -51,3 +51,9 @@ void LIPLineGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
     painter->drawPolyline(vect);
 
 }
+
+
+QPainterPath LIPLineGraphicsItem::shape() const
+{
+    return QPainterPath();
+}

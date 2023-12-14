@@ -18,6 +18,10 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QRectF bRect;
+
+    // QGraphicsItem interface
+public:
+    QPainterPath shape() const;
 };
 
 #endif // LIPLINEGRAPHICSITEM_H

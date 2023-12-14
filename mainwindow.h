@@ -38,6 +38,7 @@
 #include <lipcutlayerform.h>
 #include "lipattributestableform.h"
 #include "geoprocessing/liptriangulation.h"
+#include "lipcoordinatesystemlibrary.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -68,7 +69,7 @@ private slots:
 
     QRectF getSceneRect();
 
-    void showContextMenu(QPoint p);
+    //void showContextMenu(QPoint p);
 
 
     void test(QPointF p);

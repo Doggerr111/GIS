@@ -5,7 +5,7 @@ include(geoprocessing/geoprocessing.pri)
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 
-CONFIG += c++11
+CONFIG += c++14
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -14,8 +14,11 @@ CONFIG += c++11
 SOURCES += \
     customWidgets/lipattributetablewidget.cpp \
     customWidgets/lipcombobox.cpp \
+    customWidgets/lipcrscombobox.cpp \
     lipaddingitems.cpp \
     lipattributestableform.cpp \
+    lipcoordinatesystem.cpp \
+    lipcoordinatesystemlibrary.cpp \
     lipfeaturerenderer.cpp \
     lipfilevalidator.cpp \
     lipframe.cpp \
@@ -46,8 +49,11 @@ SOURCES += \
 HEADERS += \
     customWidgets/lipattributetablewidget.h \
     customWidgets/lipcombobox.h \
+    customWidgets/lipcrscombobox.h \
     lipaddingitems.h \
     lipattributestableform.h \
+    lipcoordinatesystem.h \
+    lipcoordinatesystemlibrary.h \
     lipfeaturerenderer.h \
     lipfilevalidator.h \
     lipframe.h \
@@ -86,8 +92,12 @@ FORMS += \
 INCLUDEPATH += geoprocessing/
 INCLUDEPATH += vector/
 INCLUDEPATH += /usr/include/gdal
+INCLUDEPATH += /usr/include/geos
 INCLUDEPATH += customWidgets/
 LIBS += /usr/lib/libgdal.so
+LIBS += /lib/x86_64-linux-gnu/libgeos.so
+LIBS += /lib/x86_64-linux-gnu/libgeos.so.3.10.2
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -100,4 +110,5 @@ RESOURCES += \
 DISTFILES += \
     geoprocessing/geoprocessing.pri \
     treeView/treeView.pri \
+    ui/icons/selectFeature2.png \
     vector/test.pri
