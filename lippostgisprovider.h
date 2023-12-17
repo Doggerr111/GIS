@@ -8,7 +8,7 @@
 #include <gdal/gdal.h>
 #include <gdal/ogrsf_frmts.h>
 #include <QDebug>
-#include "lipmessage.h"
+#include "lipwidgetmanager.h"
 
 class LIPPostGisProvider
 {

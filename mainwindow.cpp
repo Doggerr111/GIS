@@ -10,20 +10,25 @@
 #include <QSqlDatabase>
 #include <liptriangulation.h>
 #include <QSplitter>
-
+#include <gdal/ogr_srs_api.h>
+#include <gdal/ogr_geometry.h>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     setWindowTitle("Геоинформационная система");
+    OGRGeometry *f;
 
 
-    LIPProject::getInstance();
+
+    //LIPProject::getInstance();
     LIPCoordinateSystemLibrary *lib = new LIPCoordinateSystemLibrary();
-    foreach(LIPCoordinateSystem CRS, lib->getCRSLib())
+    foreach(LIPCoordinateSystem *CRS, lib->getCRSLib())
     {
-        qDebug()<<CRS.getName();
+        OGRCoordinateTransformation* ref = OGRCreateCoordinateTransformation(CRS, CRS);
+        //f->transform(ref);
+        qDebug()<<CRS->getName();
         LIPProject::getInstance().addCoordinateSystem(CRS);
     }
     delete lib;
@@ -33,8 +38,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->LayerTree, SIGNAL(customContextMenuRequested(const QPoint&)),
         this, SLOT(showLayerContextMenu(const QPoint&)));
     sceneInitialization();
-    LIPMessage::getInstance().setMainWindow(this);
-    LIPMessage::getInstance().showMessage("ffsa", 2000, messageStatus::Success);
+    LIPWidgetManager::getInstance().setMainWindow(this);
+    LIPWidgetManager::getInstance().showMessage("ffsa", 2000, messageStatus::Success);
 
     ui->right_menu_frame->setAlignment(Qt::AlignRight);
     ui->left_menu_frame->setAlignment(Qt::AlignLeft);
@@ -1282,13 +1287,13 @@ void MainWindow::on_actionConnect_to_PostGIS_triggered()
     {
         OGRLayer *newLayer=vect.at(i);
         if (newLayer==nullptr)
-            LIPMessage::getInstance().showMessage(tr("Ошибка чтения слоя"), 1000, messageStatus::Error);
+            LIPWidgetManager::getInstance().showMessage(tr("Ошибка чтения слоя"), 1000, messageStatus::Error);
         LIPGeometryType type = LIPVectorReader::readGeometryType(newLayer);
         switch (type)
         {
         case LIPGeometryType::LIPPoint:
         {
-            LIPMessage::getInstance().showMessage(tr("Читаем точечный слой"), 1000, messageStatus::Error);
+            LIPWidgetManager::getInstance().showMessage(tr("Читаем точечный слой"), 1000, messageStatus::Error);
             //LIPLayerCreator *newLayer = new LIPLayerCreator(type, fileName, name);
 
             LIPPointLayer *pl = new LIPPointLayer(newLayer,"3", "3", dS);
@@ -1613,5 +1618,19 @@ void MainWindow::on_pushButtonRenderTest_clicked()
 //    painter.end();
 //    image.save("экстент.png");
 
+}
+
+
+void MainWindow::on_pushButtonTestRep_clicked()
+{
+    LIPCoordinateSystemLibrary lib;
+    LIPProject::getInstance().getActiveLayer()->reproject(lib.getCRSbyName(ui->crsComboBox->currentText()));
+}
+
+
+void MainWindow::on_pushButton_14_clicked()
+{
+   LIPCoordinateSystemLibrary lib;
+   LIPProject::getInstance().getActiveLayer()->setCoordinateSystem(lib.getCRSbyName(ui->crsComboBox->currentText()));
 }
 

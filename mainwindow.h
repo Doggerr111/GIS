@@ -33,7 +33,7 @@
 #include "treeView/liptreewidgetitem.h"
 #include "lipvectorstyleform.h"
 #include <lippostgisconnectionform.h>
-#include <lipmessage.h>
+#include <lipwidgetmanager.h>
 #include <algorithm>
 #include <lipcutlayerform.h>
 #include "lipattributestableform.h"
@@ -104,6 +104,10 @@ private slots:
     void on_pushButtonVoronoiTest_clicked();
 
     void on_pushButtonRenderTest_clicked();
+
+    void on_pushButtonTestRep_clicked();
+
+    void on_pushButton_14_clicked();
 
 signals:
     void start_add();

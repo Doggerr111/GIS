@@ -1,4 +1,5 @@
 QT       += core gui sql
+QT += testlib gui
 include(vector/vector.pri)
 include(treeView/treeView.pri)
 include(geoprocessing/geoprocessing.pri)
@@ -28,7 +29,7 @@ SOURCES += \
     lipmapcalculations.cpp \
     lipmapholder.cpp \
     lipmapscene.cpp \
-    lipmessage.cpp \
+    lipwidgetmanager.cpp \
     lipmultipoint.cpp \
     lipnewattrfeatureform.cpp \
     lipnewlinelayerform.cpp \
@@ -63,7 +64,7 @@ HEADERS += \
     lipmapcalculations.h \
     lipmapholder.h \
     lipmapscene.h \
-    lipmessage.h \
+    lipwidgetmanager.h \
     lipmultipoint.h \
     lipnewattrfeatureform.h \
     lipnewlinelayerform.h \
@@ -98,7 +99,7 @@ LIBS += /usr/lib/libgdal.so
 LIBS += /lib/x86_64-linux-gnu/libgeos.so
 LIBS += /lib/x86_64-linux-gnu/libgeos.so.3.10.2
 
-
+SUBDIRS += tests/
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

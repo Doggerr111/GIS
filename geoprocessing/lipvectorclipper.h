@@ -8,7 +8,7 @@
 #include <vector/lipvectorlayer.h>
 #include <vector/lippointgraphicsitem.h>
 #include <QObject>
-#include "lipmessage.h"
+#include "lipwidgetmanager.h"
 #include <lippolygonlayer.h>
 #include <liplinelayer.h>
 #include "liplayercreator.h"

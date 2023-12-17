@@ -1,5 +1,6 @@
 #include "lipcrscombobox.h"
 #include <QDebug>
+#include <geos/triangulate/DelaunayTriangulationBuilder.h>
 
 LIPCRSComboBox::LIPCRSComboBox(QWidget* parent)
     : QComboBox(parent)
@@ -10,9 +11,9 @@ LIPCRSComboBox::LIPCRSComboBox(QWidget* parent)
 
     //connect(LIPProject::getInstance(), &LIPProject::newCRS, this, &LIPCRSComboBox::updateCRS);
     int index=0;
-    foreach(LIPCoordinateSystem crs, LIPProject::getInstance().getCoordinateSystems())
+    foreach(LIPCoordinateSystem *crs, LIPProject::getInstance().getCoordinateSystems())
     {
-        addItem(crs.getName());
+        addItem(crs->getName());
         //setItemData(index, layer->returnFileName());
         index++;
     }
@@ -29,9 +30,9 @@ LIPCRSComboBox::LIPCRSComboBox(QWidget* parent)
 void LIPCRSComboBox::updateCRS()
 {
     clear();
-    foreach(LIPCoordinateSystem crs, LIPProject::getInstance().getCoordinateSystems())
+    foreach(LIPCoordinateSystem *crs, LIPProject::getInstance().getCoordinateSystems())
     {
-        addItem(crs.getName());
+        addItem(crs->getName());
         //setItemData(index, layer->returnFileName());
         //index++;
     }

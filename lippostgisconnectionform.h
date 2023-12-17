@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include "lippostgisprovider.h"
-#include "lipmessage.h"
+#include "lipwidgetmanager.h"
 
 namespace Ui {
 class LIPPostGisConnectionForm;

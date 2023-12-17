@@ -45,11 +45,11 @@ void LIPPostGisConnectionForm::on_pushButtonConnect_clicked()
     {
         if (mPGProvider->isPostGIS())
         {
-            LIPMessage::getInstance().showMessage(tr("Успешно подключились к ")+mPGProvider->databaseName, 5000, messageStatus::Success);
+            LIPWidgetManager::getInstance().showMessage(tr("Успешно подключились к ")+mPGProvider->databaseName, 5000, messageStatus::Success);
         }
         else
         {
-            LIPMessage::getInstance().showMessage(tr("Успешно подключились к ")+mPGProvider->databaseName, 5000, messageStatus::Success);
+            LIPWidgetManager::getInstance().showMessage(tr("Успешно подключились к ")+mPGProvider->databaseName, 5000, messageStatus::Success);
         }
     }
 }

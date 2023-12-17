@@ -9,14 +9,14 @@ OGRLayer* LIPVectorClipper::clip(LIPVectorLayer *layer, LIPVectorLayer *polyLaye
 {
     if (layer==nullptr || polyLayer==nullptr)
     {
-        LIPMessage::getInstance().showMessage("Работа инструмента невозможна, так как заданы некорректные слои", 1000,
+        LIPWidgetManager::getInstance().showMessage("Работа инструмента невозможна, так как заданы некорректные слои", 1000,
                                               messageStatus::Error);
         return nullptr;
     }
     LIPPolygonLayer *newPolyLayer = dynamic_cast<LIPPolygonLayer*>(polyLayer);
     if (newPolyLayer==nullptr)
     {
-        LIPMessage::getInstance().showMessage("Работа инструмента невозможна, так как cлой, по которому производится обрезка не является"
+        LIPWidgetManager::getInstance().showMessage("Работа инструмента невозможна, так как cлой, по которому производится обрезка не является"
                                               "полигональным", 2000, messageStatus::Error);
         return nullptr;
     }
@@ -24,7 +24,7 @@ OGRLayer* LIPVectorClipper::clip(LIPVectorLayer *layer, LIPVectorLayer *polyLaye
     OGRLayer* inputLayer = layer->getOGRLayer();
     if (clipOGRLayer==nullptr || inputLayer==nullptr)
     {
-        LIPMessage::getInstance().showMessage("Работа инструмента невозможна, так как заданы некорректные слои", 1000,
+        LIPWidgetManager::getInstance().showMessage("Работа инструмента невозможна, так как заданы некорректные слои", 1000,
                                               messageStatus::Error);
         return nullptr;
     }
