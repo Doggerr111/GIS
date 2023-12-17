@@ -29,6 +29,89 @@ QString LIPPointLayer::returnGISName()
     return GISName;
 }
 
+bool LIPPointLayer::reproject(LIPCoordinateSystem *targetCRS)
+{
+
+
+    if (layer==nullptr || targetCRS==nullptr)
+        return false;
+    OGRSpatialReference *sourceCRS = layer->GetSpatialRef();
+    OGRLayer* newLayer=dS->CreateLayer("layerRep", targetCRS);
+
+    if (sourceCRS==nullptr)
+    {
+
+        LIPWidgetManager::getInstance().showMessage("Перепроицирование невозможно так как для слоя не указана система координат,"
+                                              "Необходимо сначала задать систему координат", 5000, messageStatus::Error);
+        return false;
+    }
+    OGRCoordinateTransformation* crTr = OGRCreateCoordinateTransformation(mCRS, targetCRS);
+    OGRFeature *shpFeature;
+    layer->ResetReading();
+
+    while ((shpFeature = layer->GetNextFeature()) != nullptr)
+    {
+
+        OGRGeometry *poGeometry = shpFeature->GetGeometryRef();
+        int count = shpFeature->GetGeomFieldCount();
+        for (int i=0;i<shpFeature->GetGeomFieldCount();i++)
+        {
+            if (poGeometry != nullptr)
+            {
+                OGRPoint *pointOGR=(OGRPoint*)poGeometry;
+
+                double x=pointOGR->getX();
+                double y=pointOGR->getY();
+                //qDebug()<<x;
+
+                crTr->Transform(1, &x, &y);
+                //qDebug()<<x;
+                pointOGR->setX(x);
+                pointOGR->setY(y);
+                //qDebug()<<shpFeature->SetGeometry(pointOGR);
+                OGR_L_SetFeature(layer,shpFeature);
+
+            }
+        }
+    }
+    mCRS=targetCRS;
+    OGRFeature::DestroyFeature(shpFeature);
+    //layer->SyncToDisk();
+    dS->StartTransaction();
+    //GDALSetProjection(dS, targetCRS->ExportToWkt());
+    dS->SetSpatialRef(targetCRS);
+    dS->CommitTransaction();
+    //TODO Для изменения слоя нужно создать новый OGRLayer в который скопировать все старые параметры
+
+    update();
+    return true;
+
+}
+
+bool LIPPointLayer::reproject(LIPCoordinateSystem *sourceCRS, LIPCoordinateSystem *targetCRS)
+{
+
+}
+
+void LIPPointLayer::update()
+{
+    for(int i=0; i<mapFeatures.size(); i++)
+    {
+        delete mapFeatures.at(i);
+    }
+
+    foreach(LIPPoint* point, coordinates)
+    {
+        delete point;
+    }
+
+    mapFeatures.clear();
+    coordinates.clear();
+    //setMapFeatures();
+    emit needRepaint(this);
+
+}
+
 QVector<LIPPoint *> LIPPointLayer::returnCords()
 {
     if (layer!=nullptr)
@@ -41,23 +124,6 @@ QVector<LIPPoint *> LIPPointLayer::returnCords()
         while ((shpFeature = layer->GetNextFeature()) != NULL)
         {
             counter++;
-//            OGRFeatureDefn *poFDefn = layer->GetLayerDefn();
-//            int iField;
-//            for (iField = 0; iField < poFDefn->GetFieldCount(); iField++)
-//            {
-//                OGRFieldDefn *poFieldDefn = poFDefn->GetFieldDefn(iField);
-//                if (poFieldDefn->GetType() == OFTInteger)
-//                    qDebug()<<"%d, " +  QString::number(shpFeature->GetFieldAsInteger(iField));
-//                else if (poFieldDefn->GetType() == OFTInteger64)
-//                    qDebug()<<"%lld, "+QString::number( shpFeature->GetFieldAsInteger64(iField));
-//                else if (poFieldDefn->GetType() == OFTReal)
-//                    qDebug()<<"%.3f, "+QString::number(shpFeature->GetFieldAsDouble(iField));
-//                else if (poFieldDefn->GetType() == OFTString)
-//                    qDebug()<<"%s, " + QString(shpFeature->GetFieldAsString(iField));
-//                else
-//                    qDebug()<<"%s, " + QString(shpFeature->GetFieldAsString(iField));
-//            }
-            //printf("\n");
             OGRGeometry *poGeometry = shpFeature->GetGeometryRef();
             int count = shpFeature->GetGeomFieldCount();
 
@@ -68,10 +134,12 @@ QVector<LIPPoint *> LIPPointLayer::returnCords()
                     OGRwkbGeometryType type=poGeometry->getGeometryType();
 
                     OGRPoint *pointOGR=(OGRPoint*)poGeometry;
+
                     //qDebug()<<"x_coordinate: "+ QString::number(point->getX()) + "; y_cooordinate: "+ QString::number(point->getY());
                     LIPPoint *point = new LIPPoint();
                     point->setX(pointOGR->getX());
                     point->setY(pointOGR->getY());
+                    delete pointOGR;
 
                     coordinates.append(point);
 
@@ -86,6 +154,7 @@ QVector<LIPPoint *> LIPPointLayer::returnCords()
 
 void LIPPointLayer::setMapFeatures()
 {
+
     returnCords();
     mStyle=LIPVectorStyle::createDefaultVectorStyle(LIPGeometryType::LIPPoint);
 

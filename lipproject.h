@@ -25,9 +25,9 @@ public:
     LIPVectorLayer* getActiveLayer();
 
     //SRC
-    bool addCoordinateSystem(LIPCoordinateSystem crs);
+    bool addCoordinateSystem(LIPCoordinateSystem *crs);
 
-    QVector<LIPCoordinateSystem> getCoordinateSystems();
+    QVector<LIPCoordinateSystem*> getCoordinateSystems();
 
 public slots:
     void redrawNeeded(double);
@@ -38,7 +38,7 @@ private:
     LIPVectorLayer* activeLayer; //
     QVector<LIPVectorLayer*> vectorLayers;
 
-    QVector<LIPCoordinateSystem> CRSystems;
+    QVector<LIPCoordinateSystem*> CRSystems;
 
 private:
     LIPProject() = default;

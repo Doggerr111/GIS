@@ -1,5 +1,5 @@
 #include "lipcoordinatesystem.h"
-
+#include <QDebug>
 LIPCoordinateSystem::LIPCoordinateSystem()
 {
 
@@ -19,11 +19,16 @@ bool LIPCoordinateSystem::setProj(QString proj)
     const char *projChar = ba.data();
     if (importFromProj4(projChar) == OGRERR_NONE)
     {
+        qDebug()<<"import ok";
         return true;
+
+
     }
     else
     {
+        qDebug()<<"import not ok";
         return false;
+
     }
 }
 
@@ -32,7 +37,20 @@ bool LIPCoordinateSystem::isProjValid(QString proj)
 
 }
 
+LIPCoordinateSystem* LIPCoordinateSystem::fromOGR(OGRSpatialReference* ref)
+{
+    LIPCoordinateSystem* newCRS = static_cast<LIPCoordinateSystem*>(ref);
+    newCRS->setName(ref->GetName());
+    return newCRS;
+    //newCRS->setProj(ref->GetProjParm())
+}
+
 QString LIPCoordinateSystem::getName()
 {
     return mName;
+}
+
+const char *LIPCoordinateSystem::getProj()
+{
+    return mProjString.toUtf8().constData();
 }

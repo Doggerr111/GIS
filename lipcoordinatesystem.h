@@ -11,9 +11,11 @@ public:
     bool setName(QString name);
     bool setProj(QString proj);
     bool isProjValid(QString proj);
+    static LIPCoordinateSystem* fromOGR(OGRSpatialReference* ref);
 
 
     QString getName();
+    const char *getProj();
 private:
     QString mName;
     QString mProjString;

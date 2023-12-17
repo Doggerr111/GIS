@@ -4,11 +4,17 @@ LIPVectorLayer::LIPVectorLayer(OGRLayer *l, QString path, GDALDataset *dataset)
     : layer{l},
       dS{dataset},
       fileName{path}
-
-
+      //mCRS{nullptr}
 {
 
+    connect(this, SIGNAL(needRepaint(LIPVectorLayer*)),LIPWidgetManager::getInstance().getScene(), SLOT(drawVectorLayer(LIPVectorLayer*)));
+    if (l!=nullptr)
+    {
+        qDebug()<<l->GetSpatialRef()->GetEPSGGeogCS();
+        mCRS=static_cast<LIPCoordinateSystem*>(l->GetSpatialRef());
+    }
 }
+
 
 QString LIPVectorLayer::returnGISName()
 {
@@ -39,15 +45,90 @@ void LIPVectorLayer::setVisible(bool)
 {
 
 }
+
+bool LIPVectorLayer::reproject(LIPCoordinateSystem *targetCRS)
+{
+    return true;
+}
+
+bool LIPVectorLayer::reproject(LIPCoordinateSystem *sourceCRS, LIPCoordinateSystem *targetCRS)
+{
+
+}
+
+void LIPVectorLayer::update()
+{
+    emit needRepaint(this);
+}
 /////////////
 std::map<int, QVector<LIPAttribute>> LIPVectorLayer::getAttributes()
 {
     return LIPVectorReader::readAttributes(layer);
 }
 
+bool LIPVectorLayer::setCoordinateSystem(LIPCoordinateSystem *targetCRS)
+{
+    if (targetCRS==nullptr)
+        return false;
+
+    //dS->SetSpatialRef(targetCRS);
+    OGRDataSource* ds;
+    //ds->SetSpatialRef(targetCRS);
+    //char** pszWKT;
+    //targetCRS->exportToWkt(pszWKT);
+    //dS->SetProjection(targetCRS->getProj());
+    //layer->GetSpatialRef()->SetProjection(targetCRS->getProj());
+    qDebug()<<layer->GetLayerDefn()->OGRFeatureDefn::GetGeomFieldDefn(0)->GetSpatialRef();
+    layer->GetLayerDefn()->OGRFeatureDefn::GetGeomFieldDefn(0)->SetSpatialRef(targetCRS);
+    qDebug()<<layer->GetLayerDefn()->OGRFeatureDefn::GetGeomFieldDefn(0)->GetSpatialRef();
+    layer->SyncToDisk();
+//    const char *originalString = layer->GetName();
+//    const char *stringToAdd = "_rep";
+//    size_t originalStringLength = strlen(originalString);
+//    size_t stringToAddLength = strlen(stringToAdd);
+//    char *resultString = (char *)malloc((originalStringLength + stringToAddLength + 1) * sizeof(char));
+//    strcpy(resultString, originalString);
+//    strcat(resultString, stringToAdd);
+//    //free(resultString);
+
+//    // так как нет функции, меняющей систему координат OGRLayer, придется создать новый слой и скопировать в него все объекты
+//    OGRLayer* newLayer = dS->CreateLayer(resultString, targetCRS, layer->GetGeomType(), nullptr); //слой с новой СК
+//    QString oldName=layer->GetName();
+//    // копирование атрибутов
+//    OGRFeatureDefn* featureDefn = layer->GetLayerDefn();
+//    for (int i = 0; i < featureDefn->GetFieldCount(); i++)
+//    {
+//        OGRFieldDefn* fieldDefn = featureDefn->GetFieldDefn(i);
+//        newLayer->CreateField(fieldDefn);
+//    }
+
+//    // копируем геометрию и значения атрибутов
+//    layer->ResetReading();
+//    OGRFeature* feature = nullptr;
+//    while ((feature = layer->GetNextFeature()) != nullptr) {
+//        OGRFeature* newFeature = new OGRFeature(featureDefn);
+//        newFeature->SetFrom(feature);
+//        newLayer->CreateFeature(newFeature);
+//        delete newFeature;
+//        delete feature;
+//    }
+
+//    delete targetCRS;
+//    //layer=newLayer;
+//    // Закройте слои и источник данных
+//    dS->DeleteLayer(0);
+//    dS->SetSpatialRef(targetCRS);
+
+//    //layer->SyncToDisk();
+//    newLayer->SyncToDisk();
+
+    //GDALClose(dataSource);
+}
+
 QVector<LIPAttributeType> LIPVectorLayer::getAttributeTypes()
 {
     OGRFeatureDefn* featureDefn = layer->GetLayerDefn();
+
     int attributeCount = featureDefn->GetFieldCount(); // Получение количества атрибутов
     for (int i = 0; i < attributeCount; i++)
     {
