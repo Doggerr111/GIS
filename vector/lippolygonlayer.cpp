@@ -35,8 +35,10 @@ QString LIPPolygonLayer::returnGISName()
 
 QVector<QVector<LIPPoint *> > LIPPolygonLayer::returnCords()
 {
+
     if (layer!=nullptr)
     {
+        coordinates.clear();
         layer->GetName();
         OGRFeature *shpFeature;
         layer->ResetReading();

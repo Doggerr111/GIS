@@ -114,9 +114,10 @@ void LIPPointLayer::update()
 
 QVector<LIPPoint *> LIPPointLayer::returnCords()
 {
-    coordinates.clear();
+
     if (layer!=nullptr)
     {
+        coordinates.clear();
         layer->GetName();
         OGRFeature *shpFeature;
         layer->ResetReading();
