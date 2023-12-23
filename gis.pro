@@ -96,9 +96,10 @@ INCLUDEPATH += /usr/include/gdal
 INCLUDEPATH += /usr/include/geos
 INCLUDEPATH += customWidgets/
 LIBS += /usr/lib/libgdal.so
-LIBS += /lib/x86_64-linux-gnu/libgeos.so
-LIBS += /lib/x86_64-linux-gnu/libgeos.so.3.10.2
-
+#LIBS += /lib/x86_64-linux-gnu/libgeos.so
+#LIBS += /lib/x86_64-linux-gnu/libgeos.so.3.10.2
+LIBS += /home/doger/Documents/geosBuildgit/build/lib/libgeos.so
+LIBS += /home/doger/Documents/geosBuildgit/build/lib/libgeos.so.3.13.0
 SUBDIRS += tests/
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
