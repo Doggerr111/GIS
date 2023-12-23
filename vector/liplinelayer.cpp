@@ -58,6 +58,7 @@ QVector<QVector<LIPPoint*>>  LIPLineLayer::returnCords()
 {
     if (layer!=nullptr)
     {
+        coordinates.clear();
         layer->GetName();
         OGRFeature *shpFeature;
         layer->ResetReading();

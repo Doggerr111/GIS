@@ -114,6 +114,7 @@ void LIPPointLayer::update()
 
 QVector<LIPPoint *> LIPPointLayer::returnCords()
 {
+    coordinates.clear();
     if (layer!=nullptr)
     {
         layer->GetName();
@@ -148,7 +149,9 @@ QVector<LIPPoint *> LIPPointLayer::returnCords()
             }
 
         }
+        qDebug()<<"SIZE OF ARRAY"+ QString::number(coordinates.size());
         return coordinates;
+
     }
 }
 
